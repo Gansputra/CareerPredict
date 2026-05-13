@@ -60,7 +60,7 @@ class User extends Authenticatable
 
     public function skills()
     {
-        return $this->belongsToMany(Skill::class, 'user_skills')->withPivot('level')->withTimestamps();
+        return $this->belongsToMany(Skill::class, 'user_skills')->withPivot('level', 'source')->withTimestamps();
     }
 
     public function interests()

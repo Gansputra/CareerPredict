@@ -16,69 +16,89 @@ class AssessmentSeeder extends Seeder
         $categories = [
             [
                 'name' => 'Analytical',
-                'description' => 'Logic, problem solving, and data analysis.',
+                'description' => 'Logic, problem solving, and data-driven decision making.',
                 'icon' => 'fa-microchip',
                 'questions' => [
-                    'Do you enjoy solving complex logical puzzles?',
-                    'Are you interested in identifying patterns in data?',
-                    'Do you like working with spreadsheets and numbers?',
+                    ['q' => 'I enjoy solving complex logical puzzles and brainteasers.', 'w' => 1.2],
+                    ['q' => 'I like identifying patterns and trends in datasets.', 'w' => 1.0],
+                    ['q' => 'I prefer making decisions based on data rather than intuition.', 'w' => 1.1],
+                    ['q' => 'I find it satisfying to break down large problems into smaller parts.', 'w' => 1.0],
+                    ['q' => 'I enjoy working with spreadsheets, statistics, or mathematical models.', 'w' => 0.9],
+                    ['q' => 'I am curious about how systems and processes work internally.', 'w' => 0.8],
                 ]
             ],
             [
                 'name' => 'Creative',
-                'description' => 'Visual design, art, and creative thinking.',
+                'description' => 'Visual design, artistic expression, and innovative thinking.',
                 'icon' => 'fa-palette',
                 'questions' => [
-                    'Do you enjoy designing user interfaces or layouts?',
-                    'Do you like creating visual content or art?',
-                    'Are you interested in branding and aesthetics?',
+                    ['q' => 'I enjoy designing user interfaces, layouts, or visual compositions.', 'w' => 1.2],
+                    ['q' => 'I often come up with original ideas or unconventional solutions.', 'w' => 1.1],
+                    ['q' => 'I am drawn to aesthetics, color theory, and visual harmony.', 'w' => 1.0],
+                    ['q' => 'I like creating visual content such as illustrations, photos, or videos.', 'w' => 0.9],
+                    ['q' => 'I enjoy brainstorming and ideation sessions with creative teams.', 'w' => 0.8],
+                    ['q' => 'I pay close attention to branding and product design details.', 'w' => 1.0],
                 ]
             ],
             [
                 'name' => 'Technical',
-                'description' => 'Coding, software engineering, and systems.',
+                'description' => 'Software development, systems architecture, and engineering.',
                 'icon' => 'fa-code',
                 'questions' => [
-                    'Do you enjoy writing code to solve problems?',
-                    'Are you interested in how computer systems work?',
-                    'Do you like learning new programming languages?',
+                    ['q' => 'I enjoy writing code or building software applications.', 'w' => 1.2],
+                    ['q' => 'I am fascinated by how computer systems, networks, and APIs work.', 'w' => 1.0],
+                    ['q' => 'I like learning new programming languages or frameworks.', 'w' => 1.1],
+                    ['q' => 'I enjoy debugging and troubleshooting technical issues.', 'w' => 0.9],
+                    ['q' => 'I am comfortable working with databases, servers, or cloud platforms.', 'w' => 1.0],
+                    ['q' => 'I like automating repetitive tasks using scripts or tools.', 'w' => 0.8],
                 ]
             ],
             [
                 'name' => 'Communication',
-                'description' => 'Public speaking, writing, and social interaction.',
+                'description' => 'Public speaking, writing, persuasion, and social interaction.',
                 'icon' => 'fa-comments',
                 'questions' => [
-                    'Do you enjoy public speaking or presenting?',
-                    'Are you good at explaining complex ideas to others?',
-                    'Do you like writing articles or documentation?',
+                    ['q' => 'I enjoy presenting ideas to groups or speaking publicly.', 'w' => 1.2],
+                    ['q' => 'I am good at explaining complex concepts in simple terms.', 'w' => 1.1],
+                    ['q' => 'I like writing articles, reports, or documentation.', 'w' => 0.9],
+                    ['q' => 'I find it natural to build relationships and network with others.', 'w' => 1.0],
+                    ['q' => 'I enjoy negotiating, persuading, or influencing others.', 'w' => 1.0],
+                    ['q' => 'I am comfortable mediating conflicts or facilitating discussions.', 'w' => 0.8],
                 ]
             ],
             [
                 'name' => 'Leadership',
-                'description' => 'Management, strategy, and team leading.',
+                'description' => 'Team management, strategic planning, and organizational leadership.',
                 'icon' => 'fa-users-gear',
                 'questions' => [
-                    'Do you enjoy leading teams towards a goal?',
-                    'Are you comfortable making difficult decisions?',
-                    'Do you like organizing tasks and projects?',
+                    ['q' => 'I enjoy leading teams and guiding people towards a shared goal.', 'w' => 1.2],
+                    ['q' => 'I am comfortable making high-stakes decisions under pressure.', 'w' => 1.1],
+                    ['q' => 'I like organizing workflows, setting milestones, and tracking progress.', 'w' => 1.0],
+                    ['q' => 'I enjoy mentoring or coaching others to improve their skills.', 'w' => 0.9],
+                    ['q' => 'I think strategically about long-term goals and vision.', 'w' => 1.0],
+                    ['q' => 'I am energized by taking ownership and responsibility for outcomes.', 'w' => 0.8],
                 ]
             ],
         ];
 
         foreach ($categories as $cat) {
-            $category = AssessmentCategory::create([
-                'name' => $cat['name'],
-                'slug' => Str::slug($cat['name']),
-                'description' => $cat['description'],
-                'icon' => $cat['icon'],
-            ]);
+            $category = AssessmentCategory::updateOrCreate(
+                ['slug' => Str::slug($cat['name'])],
+                [
+                    'name' => $cat['name'],
+                    'description' => $cat['description'],
+                    'icon' => $cat['icon'],
+                ]
+            );
+
+            // Remove old questions for this category before re-seeding
+            AssessmentQuestion::where('category_id', $category->id)->delete();
 
             foreach ($cat['questions'] as $q) {
                 AssessmentQuestion::create([
                     'category_id' => $category->id,
-                    'question' => $q,
-                    'weight' => 1,
+                    'question' => $q['q'],
+                    'weight' => $q['w'],
                 ]);
             }
         }

@@ -26,7 +26,10 @@ class JobCategorySeeder extends Seeder
         ];
 
         foreach ($categories as $category) {
-            \App\Models\JobCategory::create($category);
+            \App\Models\JobCategory::firstOrCreate(
+                ['slug' => $category['slug']],
+                ['name' => $category['name']]
+            );
         }
     }
 }

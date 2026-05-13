@@ -37,16 +37,21 @@ class DashboardController extends Controller
         $answeredQuestions = UserAssessmentAnswer::where('user_id', $user->id)->count();
         $progress = $totalQuestions > 0 ? ($answeredQuestions / $totalQuestions) * 100 : 0;
 
-        // Smart Recommendations
-        $cfService = new CertaintyFactorService();
-        $topMatches = array_slice($cfService->calculate($user), 0, 5);
+        // Smart Recommendations — only if user has taken the DNA test
+        $topMatches = [];
+        $recentRecommendations = collect();
 
-        // Recent Recommendations from DB
-        $recentRecommendations = Recommendation::with('job')
-            ->where('user_id', $user->id)
-            ->latest()
-            ->limit(5)
-            ->get();
+        if ($answeredQuestions > 0) {
+            $cfService = new CertaintyFactorService();
+            $topMatches = array_slice($cfService->calculate($user), 0, 5);
+
+            // Recent Recommendations from DB
+            $recentRecommendations = Recommendation::with('job')
+                ->where('user_id', $user->id)
+                ->latest()
+                ->limit(5)
+                ->get();
+        }
 
         $recentApplications = Application::with('job')
             ->where('user_id', $user->id)

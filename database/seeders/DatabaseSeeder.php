@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             JobCategorySeeder::class,
             SkillSeeder::class,
             InterestSeeder::class,
+            AssessmentSeeder::class,
             JobListingSeeder::class,
             QuestionnaireSeeder::class,
             UserSeeder::class,

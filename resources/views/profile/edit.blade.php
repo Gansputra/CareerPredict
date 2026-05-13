@@ -19,22 +19,58 @@
             </div>
         </div>
 
-        <!-- Skills Section -->
-        <div class="glass p-8" data-aos="fade-up">
-            <h3 class="text-xl font-bold text-white mb-6">Your Detected Skills</h3>
-            <div class="flex flex-wrap gap-3">
-                @forelse(Auth::user()->skills as $skill)
-                <div class="px-4 py-2 rounded-xl bg-blue-600/10 border border-blue-500/20 text-blue-500 text-sm font-bold flex items-center gap-2">
-                    <i class="fas fa-check-circle"></i>
-                    {{ $skill->name }}
-                    <span class="text-[10px] bg-blue-500 text-white px-1.5 rounded ml-1">Lvl {{ $skill->pivot->level }}</span>
+        <!-- Skills & Interests Section -->
+        <div class="glass p-8 animate-fade-in">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-bold text-white"><i class="fas fa-microchip text-blue-400 mr-2"></i> Your Detected Skills</h3>
+                <div class="flex gap-2">
+                    @if(Auth::user()->skills->count() > 0)
+                    <form action="{{ route('cv.reset') }}" method="POST" class="inline" id="cvResetForm">
+                        @csrf
+                        <button type="button" onclick="confirmCvReset()" class="px-3 py-1.5 rounded-lg bg-red-500/10 text-red-400 text-xs font-bold hover:bg-red-500/20 transition-all">
+                            <i class="fas fa-trash-alt mr-1"></i> Reset
+                        </button>
+                    </form>
+                    @endif
+                    <a href="{{ route('cv.index') }}" class="px-3 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 text-xs font-bold hover:bg-blue-600/20 transition-all">
+                        <i class="fas fa-upload mr-1"></i> {{ Auth::user()->skills->count() > 0 ? 'Re-upload CV' : 'Upload CV' }}
+                    </a>
                 </div>
-                @empty
-                <div class="text-slate-500 text-sm italic py-4 border-2 border-dashed border-slate-800 rounded-2xl w-full text-center">
-                    No skills detected yet. Try uploading your CV (PDF) to automatically identify your expertise!
-                </div>
-                @endforelse
             </div>
+
+            @if(Auth::user()->skills->count() > 0)
+            <div class="flex flex-wrap gap-3 mb-6">
+                @foreach(Auth::user()->skills as $skill)
+                <div class="px-4 py-2 rounded-xl {{ $skill->pivot->source === 'cv' ? 'bg-blue-600/10 border-blue-500/20' : 'bg-emerald-600/10 border-emerald-500/20' }} border text-sm font-bold flex items-center gap-2">
+                    <i class="fas fa-check-circle {{ $skill->pivot->source === 'cv' ? 'text-blue-400' : 'text-emerald-400' }}"></i>
+                    <span class="text-white">{{ $skill->name }}</span>
+                    <span class="text-[9px] {{ $skill->pivot->source === 'cv' ? 'bg-blue-500' : 'bg-emerald-500' }} text-white px-1.5 py-0.5 rounded-full ml-1">Lvl {{ $skill->pivot->level }}</span>
+                    <span class="text-[8px] {{ $skill->pivot->source === 'cv' ? 'text-blue-500' : 'text-emerald-500' }} uppercase font-bold tracking-wider">{{ $skill->pivot->source }}</span>
+                </div>
+                @endforeach
+            </div>
+
+            @if(Auth::user()->interests->count() > 0)
+            <div class="pt-5 border-t border-slate-800">
+                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3"><i class="fas fa-heart text-purple-400 mr-1"></i> Detected Interests</h4>
+                <div class="flex flex-wrap gap-2">
+                    @foreach(Auth::user()->interests as $interest)
+                    <span class="px-3 py-1.5 rounded-full bg-purple-500/10 text-purple-400 text-xs font-bold">{{ $interest->name }}</span>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+            @else
+            <div class="text-center py-8 border-2 border-dashed border-slate-800 rounded-2xl">
+                <div class="w-16 h-16 mx-auto bg-slate-800 rounded-2xl flex items-center justify-center mb-4">
+                    <i class="fas fa-file-pdf text-slate-600 text-2xl"></i>
+                </div>
+                <p class="text-slate-500 text-sm mb-4">No skills detected yet. Upload your CV to automatically identify your expertise!</p>
+                <a href="{{ route('cv.index') }}" class="btn-premium px-6 py-2 text-sm">
+                    <i class="fas fa-wand-magic-sparkles mr-2"></i> Analyze My CV
+                </a>
+            </div>
+            @endif
         </div>
 
         <!-- Password Update -->
@@ -53,3 +89,26 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+function confirmCvReset() {
+    Swal.fire({
+        title: 'Reset CV Data?',
+        text: 'This will remove all skills and interests detected from your CV. You can re-upload anytime.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#334155',
+        confirmButtonText: 'Yes, Reset',
+        cancelButtonText: 'Cancel',
+        background: '#1e293b',
+        color: '#fff'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('cvResetForm').submit();
+        }
+    });
+}
+</script>
+@endpush

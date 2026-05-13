@@ -47,30 +47,6 @@
             </div>
         </div>
 
-        <!-- CV Upload -->
-        <div class="pt-6 border-t border-slate-800">
-            <label class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-4">Curriculum Vitae (CV)</label>
-            <div class="flex items-center gap-6 p-6 bg-slate-900/30 border border-slate-800 rounded-2xl">
-                <div class="w-16 h-16 bg-blue-600/10 rounded-xl flex items-center justify-center text-blue-500 text-2xl">
-                    <i class="fas fa-file-pdf"></i>
-                </div>
-                <div class="flex-1">
-                    <input type="file" name="cv" id="cv" class="block w-full text-sm text-slate-400
-                        file:mr-4 file:py-2 file:px-4
-                        file:rounded-full file:border-0
-                        file:text-sm file:font-semibold
-                        file:bg-blue-600/10 file:text-blue-500
-                        hover:file:bg-blue-600/20 transition-all cursor-pointer">
-                    <p class="mt-2 text-[10px] text-slate-500">PDF, DOC, or DOCX up to 5MB</p>
-                </div>
-                @if($user->profile?->cv_path)
-                <a href="{{ Storage::url($user->profile->cv_path) }}" target="_blank" class="px-4 py-2 bg-slate-800 text-white text-xs font-bold rounded-lg hover:bg-slate-700 transition-all">
-                    View Current CV
-                </a>
-                @endif
-            </div>
-            <x-input-error class="mt-2" :messages="$errors->get('cv')" />
-        </div>
 
         <div class="flex items-center gap-4 pt-6">
             <button type="submit" class="btn-premium px-10 py-3">{{ __('Save Profile') }}</button>

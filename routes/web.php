@@ -26,6 +26,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // New Assessment System
     Route::get('/assessment', [AssessmentController::class, 'index'])->name('assessment.index');
     Route::post('/assessment', [AssessmentController::class, 'store'])->name('assessment.store');
+    Route::post('/assessment/reset', [AssessmentController::class, 'reset'])->name('assessment.reset');
+
+    // CV Analyzer
+    Route::get('/cv-analyzer', [App\Http\Controllers\CvAnalyzerController::class, 'index'])->name('cv.index');
+    Route::post('/cv-analyzer/analyze', [App\Http\Controllers\CvAnalyzerController::class, 'analyze'])->name('cv.analyze');
+    Route::post('/cv-analyzer/reset', [App\Http\Controllers\CvAnalyzerController::class, 'reset'])->name('cv.reset');
 
     // Jobs
     Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
