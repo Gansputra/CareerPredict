@@ -50,7 +50,7 @@
                     </button>
                 </div>
 
-                <nav class="px-4 space-y-2 pb-28">
+                <nav class="px-4 space-y-2 pb-36">
                     <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-4">Main Menu</p>
                     
                     <a href="{{ route('dashboard') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('dashboard') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
@@ -125,7 +125,7 @@
                     </form>
                 </nav>
 
-                <div class="absolute bottom-0 left-0 w-full px-4 pb-4 bg-[#1e293b]">
+                <div class="absolute bottom-0 left-0 w-full px-4 pb-5 pt-3 bg-[#1e293b] border-t border-slate-700/60">
                     <div class="glass p-3 rounded-2xl flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full bg-slate-700 overflow-hidden shrink-0">
                             @if(Auth::user()->profile?->avatar)
