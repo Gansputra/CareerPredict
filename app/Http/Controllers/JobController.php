@@ -14,8 +14,12 @@ class JobController extends Controller
         $query = JobListing::with('category')->where('is_active', true);
 
         if ($request->filled('search')) {
-            $query->where('title', 'like', '%' . $request->search . '%')
-                  ->orWhere('description', 'like', '%' . $request->search . '%');
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', '%' . $search . '%')
+                  ->orWhere('description', 'like', '%' . $search . '%')
+                  ->orWhere('company_name', 'like', '%' . $search . '%');
+            });
         }
 
         if ($request->filled('category')) {
@@ -26,10 +30,19 @@ class JobController extends Controller
             $query->where('type', $request->type);
         }
 
-        $jobs = $query->latest()->paginate(12);
-        $categories = JobCategory::all();
+        if ($request->filled('location')) {
+            $query->where('location', $request->location);
+        }
 
-        return view('jobs.index', compact('jobs', 'categories'));
+        $jobs = $query->latest()->paginate(12)->withQueryString();
+        $categories = JobCategory::all();
+        $locations = JobListing::where('is_active', true)
+            ->select('location')
+            ->distinct()
+            ->orderBy('location')
+            ->pluck('location');
+
+        return view('jobs.index', compact('jobs', 'categories', 'locations'));
     }
 
     public function show($slug)

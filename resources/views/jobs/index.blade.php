@@ -5,8 +5,8 @@
 @section('content')
 <div class="space-y-8">
     <!-- Filter Section -->
-    <div class="glass p-6" data-aos="fade-down">
-        <form action="{{ route('jobs.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div class="glass p-6">
+        <form action="{{ route('jobs.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-5 gap-4">
             <div class="md:col-span-2">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by job title, company, or keyword..." class="w-full bg-slate-900 border-slate-700 rounded-xl px-4 py-3 text-white focus:ring-blue-500">
             </div>
@@ -18,6 +18,14 @@
                     @endforeach
                 </select>
             </div>
+            <div>
+                <select name="location" class="w-full bg-slate-900 border-slate-700 rounded-xl px-4 py-3 text-white focus:ring-blue-500">
+                    <option value="">All Locations</option>
+                    @foreach($locations as $loc)
+                        <option value="{{ $loc }}" {{ request('location') == $loc ? 'selected' : '' }}>{{ $loc }}</option>
+                    @endforeach
+                </select>
+            </div>
             <button type="submit" class="btn-premium">Filter Results</button>
         </form>
     </div>
@@ -25,7 +33,7 @@
     <!-- Job Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @foreach($jobs as $job)
-        <div class="glass-dark p-6 card-hover flex flex-col h-full" data-aos="fade-up" data-aos-delay="{{ $loop->index % 6 * 50 }}">
+        <div class="glass-dark p-6 card-hover flex flex-col h-full animate-fade-in" style="animation-delay: {{ $loop->index % 6 * 50 }}ms">
             <div class="flex items-start justify-between mb-6">
                 <div class="w-12 h-12 bg-slate-800 rounded-2xl flex items-center justify-center">
                     <i class="fas fa-building text-slate-500 text-xl"></i>
