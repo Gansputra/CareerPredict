@@ -5,9 +5,20 @@
 @section('content')
 <div class="w-full space-y-8">
     <div class="flex items-center justify-between" data-aos="fade-down">
-        <div>
-            <h1 class="text-3xl font-extrabold text-white">Profile Settings</h1>
-            <p class="text-slate-400 mt-1">Manage your professional information and account security.</p>
+        <div class="flex items-center gap-4">
+            <!-- Profile Photo Mini -->
+            <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-slate-700 bg-slate-800 shrink-0 shadow-lg">
+                @if($user->profile?->avatar)
+                    <img src="{{ asset('storage/' . $user->profile->avatar) }}" class="w-full h-full object-cover" alt="{{ $user->name }}">
+                @else
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=0D8ABC&color=fff" class="w-full h-full object-cover" alt="{{ $user->name }}">
+                @endif
+            </div>
+
+            <div>
+                <h1 class="text-3xl font-extrabold text-white">Profile Settings</h1>
+                <p class="text-slate-400 mt-1">Manage your professional information and account security.</p>
+            </div>
         </div>
     </div>
 

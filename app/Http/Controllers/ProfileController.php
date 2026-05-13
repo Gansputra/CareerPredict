@@ -11,6 +11,7 @@ use App\Models\Skill;
 use App\Models\UserSkill;
 use Smalot\PdfParser\Parser;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -41,6 +42,17 @@ class ProfileController extends Controller
 
         // Update or Create Profile
         $profileData = $request->safe()->only(['phone', 'headline', 'bio']);
+
+        if ($request->hasFile('photo')) {
+            $photoFile = $request->file('photo');
+            $photoPath = $photoFile->store('photos', 'public');
+            $profileData['avatar'] = $photoPath;
+
+            // Delete old photo if it exists
+            if ($user->profile && $user->profile->avatar) {
+                Storage::disk('public')->delete($user->profile->avatar);
+            }
+        }
         
         if ($request->hasFile('cv')) {
             $file = $request->file('cv');

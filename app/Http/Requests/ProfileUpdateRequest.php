@@ -30,6 +30,7 @@ class ProfileUpdateRequest extends FormRequest
             'headline' => ['nullable', 'string', 'max:255'],
             'bio' => ['nullable', 'string'],
             'cv' => ['nullable', 'file', 'mimes:pdf,doc,docx', 'max:5120'], // Max 5MB
+            'photo' => ['nullable', 'image', 'max:2048'], // Max 2MB
         ];
     }
 }

@@ -52,3 +52,15 @@
 .animate-fade-in {
     animation: fadeIn 0.4s ease-out both;
 }
+
+/* Light Mode Optical Inversion */
+.light-mode {
+    filter: invert(1) hue-rotate(180deg);
+}
+
+/* Re-invert images, media, and specific elements so they look normal */
+.light-mode img,
+.light-mode video,
+.light-mode .ignore-invert {
+    filter: invert(1) hue-rotate(180deg);
+}

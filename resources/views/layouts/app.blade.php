@@ -16,8 +16,12 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="antialiased selection:bg-blue-500/30">
-        <div class="min-h-screen bg-[#0f172a]" x-data="{ sidebarOpen: false }" @keydown.escape.window="sidebarOpen = false">
+    <body class="antialiased selection:bg-blue-500/30 transition-colors duration-300"
+          x-data="{ sidebarOpen: false, theme: localStorage.getItem('theme') || 'dark' }" 
+          x-init="$watch('theme', val => localStorage.setItem('theme', val))"
+          :class="{ 'light-mode': theme === 'light' }">
+        <div class="min-h-screen bg-[#0f172a]" 
+             @keydown.escape.window="sidebarOpen = false">
 
             <!-- Mobile Overlay -->
             <div x-show="sidebarOpen"
@@ -99,7 +103,11 @@
                 <div class="absolute bottom-0 left-0 w-full px-4 pb-4 bg-[#1e293b]">
                     <div class="glass p-3 rounded-2xl flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full bg-slate-700 overflow-hidden shrink-0">
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=0D8ABC&color=fff" alt="Avatar">
+                            @if(Auth::user()->profile?->avatar)
+                                <img src="{{ asset('storage/' . Auth::user()->profile->avatar) }}" alt="Avatar" class="w-full h-full object-cover">
+                            @else
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=0D8ABC&color=fff" alt="Avatar" class="w-full h-full object-cover">
+                            @endif
                         </div>
                         <div class="flex-1 overflow-hidden">
                             <p class="text-xs font-bold text-white truncate">{{ Auth::user()->name }}</p>
@@ -127,13 +135,23 @@
                                 <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
                                 <input type="text" placeholder="Search anything..." class="bg-slate-900 border-slate-700 rounded-xl pl-10 pr-4 py-2 text-sm focus:ring-blue-500 focus:border-blue-500 text-slate-300 w-48 lg:w-64">
                             </div>
+
+                            <!-- Theme Toggle -->
+                            <button @click="theme = theme === 'dark' ? 'light' : 'dark'" class="relative w-10 h-10 flex items-center justify-center rounded-lg hover:bg-slate-800 transition-colors ignore-invert bg-slate-800/50">
+                                <i class="fas text-lg" :class="theme === 'dark' ? 'fa-sun text-amber-400' : 'fa-moon text-slate-400'"></i>
+                            </button>
+
                             <button class="relative p-2 rounded-lg hover:bg-slate-800 transition-colors">
                                 <i class="fas fa-bell text-slate-400"></i>
                                 <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
                             </button>
                             <!-- Mobile avatar -->
                             <div class="w-8 h-8 rounded-full bg-slate-700 overflow-hidden lg:hidden">
-                                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=0D8ABC&color=fff&size=32" alt="Avatar">
+                                @if(Auth::user()->profile?->avatar)
+                                    <img src="{{ asset('storage/' . Auth::user()->profile->avatar) }}" alt="Avatar" class="w-full h-full object-cover">
+                                @else
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=0D8ABC&color=fff&size=32" alt="Avatar" class="w-full h-full object-cover">
+                                @endif
                             </div>
                         </div>
                     </div>
