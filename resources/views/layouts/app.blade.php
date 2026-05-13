@@ -63,6 +63,31 @@
                         <span class="font-medium">Career DNA Test</span>
                     </a>
 
+                    <a href="{{ route('roadmap.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('roadmap.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
+                        <i class="fas fa-map-signs text-lg w-6"></i>
+                        <span class="font-medium">Learning Roadmap</span>
+                    </a>
+
+                    <a href="{{ route('salary.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('salary.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
+                        <i class="fas fa-money-bill-trend-up text-lg w-6"></i>
+                        <span class="font-medium">Salary Insights</span>
+                    </a>
+
+                    <a href="{{ route('skillmatrix.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('skillmatrix.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
+                        <i class="fas fa-layer-group text-lg w-6"></i>
+                        <span class="font-medium">Skill Matrix</span>
+                    </a>
+
+                    <a href="{{ route('tracker.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('tracker.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
+                        <i class="fas fa-clipboard-list text-lg w-6"></i>
+                        <span class="font-medium">App Tracker</span>
+                    </a>
+
+                    <a href="{{ route('interview.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('interview.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
+                        <i class="fas fa-microphone-lines text-lg w-6"></i>
+                        <span class="font-medium">Interview Sim</span>
+                    </a>
+
                     <a href="{{ route('jobs.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('jobs.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-briefcase text-lg w-6"></i>
                         <span class="font-medium">Job Explorer</span>

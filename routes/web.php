@@ -41,6 +41,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Salary Insights
+    Route::get('/salary', [App\Http\Controllers\SalaryInsightsController::class, 'index'])->name('salary.index');
+
+    // Learning Roadmap
+    Route::get('/roadmap', [App\Http\Controllers\RoadmapController::class, 'index'])->name('roadmap.index');
+    Route::get('/roadmap/{slug}', [App\Http\Controllers\RoadmapController::class, 'show'])->name('roadmap.show');
+
+    // Skill Matrix
+    Route::get('/skill-matrix', [App\Http\Controllers\SkillMatrixController::class, 'index'])->name('skillmatrix.index');
+
+    // Application Tracker
+    Route::get('/tracker', [App\Http\Controllers\ApplicationTrackerController::class, 'index'])->name('tracker.index');
+
+    // Interview Simulator
+    Route::get('/interview', [App\Http\Controllers\InterviewSimulatorController::class, 'index'])->name('interview.index');
+    Route::get('/interview/{category}', [App\Http\Controllers\InterviewSimulatorController::class, 'show'])->name('interview.show');
 });
 
 // Admin Routes
