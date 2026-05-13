@@ -55,7 +55,8 @@ class ProfileController extends Controller
                     $text = $pdf->getText();
                     
                     // Basic Skill Extraction Logic
-                    $this->extractSkillsFromText($user, $text);
+                    $skillCount = $this->extractSkillsFromText($user, $text);
+                    session()->flash('skill_count', $skillCount);
                 } catch (\Exception $e) {
                     // Log error or ignore if failed
                 }
@@ -67,26 +68,40 @@ class ProfileController extends Controller
             $profileData
         );
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        $message = 'Profile updated successfully.';
+        $skillCount = session('skill_count', 0);
+        
+        if ($skillCount > 0) {
+            $message .= ' We also detected ' . $skillCount . ' skills from your CV!';
+        } elseif ($request->hasFile('cv')) {
+            $message .= ' CV uploaded, but no matching skills were detected. Make sure your skills are listed clearly.';
+        }
+
+        return Redirect::route('profile.edit')->with('success', $message);
     }
 
     private function extractSkillsFromText($user, $text)
     {
         $allSkills = Skill::all();
         $detectedSkillIds = [];
-        $text = strtolower($text);
+        // Normalize text: remove extra spaces and newlines
+        $normalizedText = strtolower(preg_replace('/\s+/', ' ', $text));
+        $count = 0;
 
         foreach ($allSkills as $skill) {
-            if (str_contains($text, strtolower($skill->name))) {
-                $detectedSkillIds[$skill->id] = ['level' => 3]; // Default level 3 for detected skills
+            $skillName = strtolower($skill->name);
+            // Search for whole word or exact phrase
+            if (preg_match('/\b' . preg_quote($skillName, '/') . '\b/i', $normalizedText)) {
+                $detectedSkillIds[$skill->id] = ['level' => 3]; 
+                $count++;
             }
         }
 
         if (!empty($detectedSkillIds)) {
-            // Sync detected skills (without detaching existing ones if they weren't in CV? 
-            // Better to use syncWithoutDetaching)
             $user->skills()->syncWithoutDetaching($detectedSkillIds);
         }
+
+        return $count;
     }
 
     /**
