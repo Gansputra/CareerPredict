@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@layer base {
+    body {
+        @apply bg-[#0f172a] text-slate-200;
+        font-family: 'Inter', sans-serif;
+    }
+}
+
+@layer components {
+    .glass {
+        @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl;
+    }
+    
+    .glass-dark {
+        @apply bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl;
+    }
+
+    .btn-premium {
+        @apply px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transform hover:-translate-y-1 active:scale-95;
+    }
+
+    .card-hover {
+        @apply transition-all duration-300 hover:transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-indigo-500/10;
+    }
+
+    .text-gradient {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400;
+    }
+}
+
+/* Animations */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+.gradient-bg {
+    background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.1) 0%, rgba(15, 23, 42, 1) 100%);
+}
