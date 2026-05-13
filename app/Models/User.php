@@ -82,4 +82,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Application::class);
     }
+
+    public function personalityScores()
+    {
+        return $this->hasMany(PersonalityScore::class);
+    }
+
+    public function assessmentAnswers()
+    {
+        return $this->hasMany(UserAssessmentAnswer::class);
+    }
 }

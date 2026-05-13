@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\JobListing;
 use App\Models\Recommendation;
 use App\Models\Application;
+use App\Models\UserAssessmentAnswer;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
@@ -20,7 +21,15 @@ class AdminController extends Controller
             'total_jobs' => JobListing::count(),
             'total_recommendations' => Recommendation::count(),
             'total_applications' => Application::count(),
+            'completed_assessments' => UserAssessmentAnswer::distinct('user_id')->count(),
         ];
+
+        $popularJobs = Recommendation::select('job_id', DB::raw('count(*) as count'))
+            ->with('job')
+            ->groupBy('job_id')
+            ->orderBy('count', 'desc')
+            ->take(5)
+            ->get();
 
         $driver = DB::getDriverName();
         $dateField = $driver === 'sqlite' 
@@ -37,6 +46,6 @@ class AdminController extends Controller
             ->groupBy('job_categories.name')
             ->get();
 
-        return view('admin.dashboard', compact('stats', 'userGrowth', 'categoryPopularity'));
+        return view('admin.dashboard', compact('stats', 'userGrowth', 'categoryPopularity', 'popularJobs'));
     }
 }

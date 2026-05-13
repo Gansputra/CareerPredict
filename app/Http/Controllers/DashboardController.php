@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
 use App\Models\Recommendation;
 use App\Models\Application;
+use App\Models\PersonalityScore;
+use App\Models\UserAssessmentAnswer;
+use App\Services\CertaintyFactorService;
 
 class DashboardController extends Controller
 {
@@ -18,12 +20,28 @@ class DashboardController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
+        // Basic Stats
         $stats = [
             'recommendations' => Recommendation::where('user_id', $user->id)->count(),
             'applications' => Application::where('user_id', $user->id)->count(),
             'skills' => $user->skills()->count(),
         ];
 
+        // Personality Data for Chart
+        $personalityScores = PersonalityScore::with('category')
+            ->where('user_id', $user->id)
+            ->get();
+
+        // Assessment Progress
+        $totalQuestions = \App\Models\AssessmentQuestion::count();
+        $answeredQuestions = UserAssessmentAnswer::where('user_id', $user->id)->count();
+        $progress = $totalQuestions > 0 ? ($answeredQuestions / $totalQuestions) * 100 : 0;
+
+        // Smart Recommendations
+        $cfService = new CertaintyFactorService();
+        $topMatches = array_slice($cfService->calculate($user), 0, 5);
+
+        // Recent Recommendations from DB
         $recentRecommendations = Recommendation::with('job')
             ->where('user_id', $user->id)
             ->latest()
@@ -36,6 +54,6 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
-        return view('dashboard', compact('stats', 'recentRecommendations', 'recentApplications'));
+        return view('dashboard', compact('stats', 'personalityScores', 'progress', 'topMatches', 'recentRecommendations', 'recentApplications'));
     }
 }

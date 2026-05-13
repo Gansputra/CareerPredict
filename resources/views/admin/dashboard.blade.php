@@ -71,37 +71,44 @@
         </div>
     </div>
 
-    <!-- Recent System Activity -->
-    <div class="glass-dark p-8" data-aos="fade-up">
-        <h3 class="text-xl font-bold text-white mb-8">Recent System Activity</h3>
-        <div class="overflow-x-auto">
-            <table class="w-full text-left">
-                <thead>
-                    <tr class="border-b border-slate-800">
-                        <th class="pb-4 text-xs font-bold uppercase tracking-widest text-slate-500">User</th>
-                        <th class="pb-4 text-xs font-bold uppercase tracking-widest text-slate-500">Action</th>
-                        <th class="pb-4 text-xs font-bold uppercase tracking-widest text-slate-500">Status</th>
-                        <th class="pb-4 text-xs font-bold uppercase tracking-widest text-slate-500">Time</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-800/50">
-                    @foreach(range(1, 5) as $i)
-                    <tr>
-                        <td class="py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-slate-700"></div>
-                                <span class="text-sm font-medium text-white">User {{ $i }}</span>
-                            </div>
-                        </td>
-                        <td class="py-4 text-sm text-slate-400">Completed Career Assessment</td>
-                        <td class="py-4">
-                            <span class="px-2 py-1 rounded-md bg-emerald-500/10 text-emerald-500 text-[10px] font-bold uppercase">Success</span>
-                        </td>
-                        <td class="py-4 text-sm text-slate-500">{{ $i }} hours ago</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Popular Jobs -->
+        <div class="lg:col-span-2 glass-dark p-8" data-aos="fade-right">
+            <h3 class="text-xl font-bold text-white mb-8">Most Popular Job Matches</h3>
+            <div class="space-y-4">
+                @foreach($popularJobs as $pop)
+                <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-800/50 border border-slate-700/50">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-blue-600/10 rounded-lg flex items-center justify-center text-blue-500">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-white">{{ $pop->job->title }}</p>
+                            <p class="text-[10px] text-slate-500 uppercase">{{ $pop->job->company_name }}</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm font-bold text-blue-500">{{ $pop->count }} Matches</p>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Assessment Stats -->
+        <div class="glass-dark p-8" data-aos="fade-left">
+            <h3 class="text-xl font-bold text-white mb-8">Assessment Stats</h3>
+            <div class="space-y-8">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-white mb-2">{{ $stats['completed_assessments'] }}</div>
+                    <p class="text-xs text-slate-500 uppercase tracking-widest font-bold">Assessments Completed</p>
+                </div>
+                <div class="pt-8 border-t border-slate-800">
+                    <p class="text-sm text-slate-400 leading-relaxed italic text-center">
+                        "{{ round(($stats['completed_assessments'] / max($stats['total_users'], 1)) * 100) }}% of users have completed their professional DNA profile."
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 </div>

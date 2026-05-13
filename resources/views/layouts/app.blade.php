@@ -35,9 +35,9 @@
                         <span class="font-medium">Dashboard</span>
                     </a>
 
-                    <a href="{{ route('expert.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('expert.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
+                    <a href="{{ route('assessment.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('assessment.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-wand-magic-sparkles text-lg w-6"></i>
-                        <span class="font-medium">Skill Assessment</span>
+                        <span class="font-medium">Career DNA Test</span>
                     </a>
 
                     <a href="{{ route('jobs.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('jobs.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
@@ -50,6 +50,10 @@
                     <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.dashboard') ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-chart-line text-lg w-6"></i>
                         <span class="font-medium">Admin Dashboard</span>
+                    </a>
+                    <a href="{{ route('admin.jobs.import') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.jobs.import') ? 'bg-slate-700 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
+                        <i class="fas fa-file-import text-lg w-6"></i>
+                        <span class="font-medium">Job Importer</span>
                     </a>
                     @endif
 
