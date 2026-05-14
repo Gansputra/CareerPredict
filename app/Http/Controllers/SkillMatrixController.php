@@ -71,32 +71,31 @@ class SkillMatrixController extends Controller
             ],
         ];
 
-        // Demo: simulated user current skill levels (in a real app, from DB / assessment results)
-        $userSkills = [
-            'Python'          => 55,
-            'Statistics'      => 40,
-            'Machine Learning'=> 30,
-            'SQL'             => 60,
-            'Data Viz'        => 45,
-            'Deep Learning'   => 20,
-            'JavaScript'      => 70,
-            'HTML/CSS'        => 80,
-            'React/Vue'       => 50,
-            'PHP/Node'        => 55,
-            'Docker'          => 25,
-            'Figma'           => 35,
-            'User Research'   => 30,
-            'Prototyping'     => 40,
-            'Typography'      => 50,
-            'Color Theory'    => 45,
-            'CSS'             => 65,
-            'Strategy'        => 40,
-            'Agile/Scrum'     => 55,
-            'Data Analysis'   => 50,
-            'Communication'   => 75,
-            'Roadmapping'     => 35,
-            'Leadership'      => 45,
+        // Real user skills from DB (from CV Analyzer / Career DNA Test)
+        // Convert level (1-5) to percentage (0-100) for chart display
+        $dbSkills = $user->skills()->get();
+        $userSkills = [];
+
+        foreach ($dbSkills as $skill) {
+            $userSkills[$skill->name] = ($skill->pivot->level / 5) * 100;
+        }
+
+        // Also map common aliases so they match career requirement names
+        $aliases = [
+            'PHP' => 'PHP/Node', 'Laravel' => 'PHP/Node', 'Node.js' => 'PHP/Node',
+            'React' => 'React/Vue', 'Vue.js' => 'React/Vue', 'Angular' => 'React/Vue',
+            'HTML/CSS' => 'HTML/CSS', 'Tailwind CSS' => 'CSS', 'Bootstrap' => 'CSS',
+            'UI Design' => 'Figma', 'UX Research' => 'User Research',
+            'Data Analysis' => 'Data Analysis', 'Data Science' => 'Statistics',
+            'Machine Learning' => 'Machine Learning', 'Deep Learning' => 'Deep Learning',
+            'Project Management' => 'Agile/Scrum',
         ];
+
+        foreach ($dbSkills as $skill) {
+            if (isset($aliases[$skill->name]) && !isset($userSkills[$aliases[$skill->name]])) {
+                $userSkills[$aliases[$skill->name]] = ($skill->pivot->level / 5) * 100;
+            }
+        }
 
         return view('skillmatrix.index', compact('careers', 'userSkills', 'user'));
     }

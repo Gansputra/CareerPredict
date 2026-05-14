@@ -21,7 +21,27 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn-premium px-10 w-full md:w-auto">Apply Now</button>
+                <div class="flex flex-wrap gap-3 w-full md:w-auto">
+                    @php $isTracked = \App\Models\Application::where('user_id', Auth::id())->where('job_id', $job->id)->exists(); @endphp
+                    @if($isTracked)
+                        <span class="px-5 py-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 text-sm font-bold">
+                            <i class="fas fa-check-circle mr-1"></i> Already Tracked
+                        </span>
+                    @else
+                        <form action="{{ route('tracker.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="job_id" value="{{ $job->id }}">
+                            <button type="submit" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-sm transition-all">
+                                <i class="fas fa-bookmark mr-1"></i> Save to Tracker
+                            </button>
+                        </form>
+                    @endif
+                    @if($job->url)
+                    <a href="{{ $job->url }}" target="_blank" class="btn-premium px-10">Apply Now <i class="fas fa-external-link-alt ml-2 text-xs"></i></a>
+                    @else
+                    <button class="btn-premium px-10">Apply Now</button>
+                    @endif
+                </div>
             </div>
 
             <div class="space-y-8">

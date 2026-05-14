@@ -54,6 +54,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Application Tracker
     Route::get('/tracker', [App\Http\Controllers\ApplicationTrackerController::class, 'index'])->name('tracker.index');
+    Route::post('/tracker', [App\Http\Controllers\ApplicationTrackerController::class, 'store'])->name('tracker.store');
+    Route::patch('/tracker/{application}/status', [App\Http\Controllers\ApplicationTrackerController::class, 'updateStatus'])->name('tracker.updateStatus');
+    Route::patch('/tracker/{application}/notes', [App\Http\Controllers\ApplicationTrackerController::class, 'updateNotes'])->name('tracker.updateNotes');
+    Route::delete('/tracker/{application}', [App\Http\Controllers\ApplicationTrackerController::class, 'destroy'])->name('tracker.destroy');
 
     // Interview Simulator
     Route::get('/interview', [App\Http\Controllers\InterviewSimulatorController::class, 'index'])->name('interview.index');

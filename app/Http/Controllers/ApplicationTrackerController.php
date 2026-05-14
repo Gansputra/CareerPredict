@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Application;
+use App\Models\JobListing;
 
 class ApplicationTrackerController extends Controller
 {
@@ -12,52 +14,129 @@ class ApplicationTrackerController extends Controller
      */
     public function index()
     {
-        // Demo static data – in a real app this would come from DB per user
-        $columns = [
+        $user = Auth::user();
+        $apps = Application::with('job.category')
+            ->where('user_id', $user->id)
+            ->latest()
+            ->get();
+
+        $statuses = [
             'wishlist' => [
                 'label' => 'Wishlist',
                 'icon'  => 'fas fa-star',
                 'color' => 'slate',
-                'cards' => [
-                    ['id'=>1, 'company'=>'Tokopedia',    'role'=>'Data Scientist',      'location'=>'Jakarta', 'salary'=>'IDR 18M', 'logo'=>'T'],
-                    ['id'=>2, 'company'=>'Gojek',        'role'=>'Backend Engineer',    'location'=>'Remote',  'salary'=>'IDR 15M', 'logo'=>'G'],
-                ],
             ],
             'applied' => [
                 'label' => 'Applied',
                 'icon'  => 'fas fa-paper-plane',
                 'color' => 'blue',
-                'cards' => [
-                    ['id'=>3, 'company'=>'Shopee',       'role'=>'Product Manager',     'location'=>'Jakarta', 'salary'=>'IDR 20M', 'logo'=>'S'],
-                    ['id'=>4, 'company'=>'Traveloka',    'role'=>'UI/UX Designer',      'location'=>'Jakarta', 'salary'=>'IDR 14M', 'logo'=>'T'],
-                ],
             ],
             'interview' => [
                 'label' => 'Interview',
                 'icon'  => 'fas fa-comments',
                 'color' => 'amber',
-                'cards' => [
-                    ['id'=>5, 'company'=>'Bukalapak',    'role'=>'Frontend Developer',  'location'=>'Remote',  'salary'=>'IDR 12M', 'logo'=>'B'],
-                ],
             ],
             'offered' => [
                 'label' => 'Offered 🎉',
                 'icon'  => 'fas fa-trophy',
                 'color' => 'emerald',
-                'cards' => [
-                    ['id'=>6, 'company'=>'Ruangguru',    'role'=>'Full Stack Developer','location'=>'Jakarta', 'salary'=>'IDR 16M', 'logo'=>'R'],
-                ],
             ],
             'rejected' => [
                 'label' => 'Rejected',
                 'icon'  => 'fas fa-times-circle',
                 'color' => 'red',
-                'cards' => [
-                    ['id'=>7, 'company'=>'Grab',         'role'=>'DevOps Engineer',     'location'=>'Jakarta', 'salary'=>'IDR 17M', 'logo'=>'G'],
-                ],
             ],
         ];
 
-        return view('tracker.index', compact('columns'));
+        // Group applications by status
+        $columns = [];
+        foreach ($statuses as $key => $meta) {
+            $columns[$key] = array_merge($meta, [
+                'cards' => $apps->where('status', $key)->values(),
+            ]);
+        }
+
+        return view('tracker.index', compact('columns', 'statuses'));
+    }
+
+    /**
+     * Save a job to the tracker (from Job Explorer).
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'job_id' => 'required|exists:job_listings,id',
+            'status' => 'sometimes|in:wishlist,applied,interview,offered,rejected',
+        ]);
+
+        $user = Auth::user();
+
+        // Check if already tracked
+        $existing = Application::where('user_id', $user->id)
+            ->where('job_id', $request->job_id)
+            ->first();
+
+        if ($existing) {
+            return back()->with('warning', 'This job is already in your tracker.');
+        }
+
+        Application::create([
+            'user_id' => $user->id,
+            'job_id'  => $request->job_id,
+            'status'  => $request->status ?? 'wishlist',
+            'notes'   => null,
+        ]);
+
+        return back()->with('success', 'Job saved to your tracker!');
+    }
+
+    /**
+     * Update status of an application (AJAX for drag/dropdown).
+     */
+    public function updateStatus(Request $request, Application $application)
+    {
+        if ($application->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $request->validate([
+            'status' => 'required|in:wishlist,applied,interview,offered,rejected',
+        ]);
+
+        $application->update(['status' => $request->status]);
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'status' => $request->status]);
+        }
+
+        return back()->with('success', 'Status updated!');
+    }
+
+    /**
+     * Update notes of an application.
+     */
+    public function updateNotes(Request $request, Application $application)
+    {
+        if ($application->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $application->update(['notes' => $request->notes]);
+
+        return back()->with('success', 'Notes updated!');
+    }
+
+    /**
+     * Remove a job from the tracker.
+     */
+    public function destroy(Application $application)
+    {
+        if ($application->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $application->delete();
+
+        return back()->with('success', 'Removed from tracker.');
     }
 }

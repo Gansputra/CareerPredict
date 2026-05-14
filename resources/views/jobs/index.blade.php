@@ -52,7 +52,16 @@
                     <span class="text-slate-500"><i class="fas fa-map-marker-alt mr-1"></i> {{ $job->location }}</span>
                     <span class="text-emerald-500 font-bold">{{ $job->salary_range }}</span>
                 </div>
-                <a href="{{ route('jobs.show', $job->slug) }}" class="block w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-center text-sm font-bold transition-all">View Details</a>
+                <div class="flex gap-2">
+                    <a href="{{ route('jobs.show', $job->slug) }}" class="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-center text-sm font-bold transition-all">View Details</a>
+                    <form action="{{ route('tracker.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="job_id" value="{{ $job->id }}">
+                        <button type="submit" class="w-11 h-11 rounded-xl bg-slate-800 hover:bg-blue-600 text-slate-400 hover:text-white transition-all flex items-center justify-center" title="Save to Tracker">
+                            <i class="fas fa-bookmark"></i>
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
         @endforeach
