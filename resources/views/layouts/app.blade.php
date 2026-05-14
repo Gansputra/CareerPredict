@@ -54,13 +54,23 @@
                     <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-4">Main Menu</p>
                     
                     <a href="{{ route('dashboard') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('dashboard') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
-                        <i class="fas fa-th-large text-lg w-6"></i>
+                        <i class="fas fa-house text-lg w-6"></i>
                         <span class="font-medium">Dashboard</span>
                     </a>
 
                     <a href="{{ route('assessment.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('assessment.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-wand-magic-sparkles text-lg w-6"></i>
                         <span class="font-medium">Career DNA Test</span>
+                    </a>
+
+                    <a href="{{ route('cv.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('cv.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
+                        <i class="fas fa-file-pdf text-lg w-6"></i>
+                        <span class="font-medium">CV Analyzer</span>
+                    </a>
+
+                    <a href="{{ route('jobs.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('jobs.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
+                        <i class="fas fa-briefcase text-lg w-6"></i>
+                        <span class="font-medium">Job Explorer</span>
                     </a>
 
                     <a href="{{ route('roadmap.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('roadmap.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
@@ -86,16 +96,6 @@
                     <a href="{{ route('interview.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('interview.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-microphone-lines text-lg w-6"></i>
                         <span class="font-medium">Interview Sim</span>
-                    </a>
-
-                    <a href="{{ route('jobs.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('jobs.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
-                        <i class="fas fa-briefcase text-lg w-6"></i>
-                        <span class="font-medium">Job Explorer</span>
-                    </a>
-
-                    <a href="{{ route('cv.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('cv.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
-                        <i class="fas fa-file-pdf text-lg w-6"></i>
-                        <span class="font-medium">CV Analyzer</span>
                     </a>
 
                     @if(Auth::user()->isAdmin())
