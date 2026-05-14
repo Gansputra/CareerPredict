@@ -65,10 +65,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // Admin Routes
-Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
     Route::get('/jobs/import', [JobImportController::class, 'index'])->name('jobs.import');
-    Route::post('/jobs/import', [JobImportController::class, 'import'])->name('jobs.import.post');
+    Route::post('/jobs/import/csv', [JobImportController::class, 'importCsv'])->name('jobs.import.csv');
+    Route::post('/jobs/import/api', [JobImportController::class, 'importApi'])->name('jobs.import.api');
+    Route::post('/jobs/clear', [JobImportController::class, 'clearJobs'])->name('jobs.clear');
+    Route::post('/jobs/import', [JobImportController::class, 'importCsv'])->name('jobs.import.post');
     Route::resource('jobs', JobManagementController::class);
     Route::resource('users', UserManagementController::class);
 });

@@ -38,12 +38,12 @@
             <aside class="fixed inset-y-0 left-0 z-50 w-72 transition-all duration-300 transform bg-[#1e293b] border-r border-slate-800 overflow-y-auto"
                    :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'">
                 <div class="flex items-center justify-between px-6 py-6">
-                    <div class="flex items-center gap-3">
+                    <a href="{{ route('dashboard') }}" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
                         <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/40">
                             <i class="fas fa-brain text-white text-xl"></i>
                         </div>
                         <span class="text-2xl font-bold tracking-tight text-white">Career<span class="text-blue-500">Predict</span></span>
-                    </div>
+                    </a>
                     <!-- Close button (mobile only) -->
                     <button @click="sidebarOpen = false" class="lg:hidden p-2 rounded-lg hover:bg-slate-800 transition-colors">
                         <i class="fas fa-times text-slate-400"></i>
@@ -53,6 +53,7 @@
                 <nav class="px-4 space-y-2 pb-36">
                     <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-4">Main Menu</p>
                     
+                    @if(!Auth::user()->isAdmin())
                     <a href="{{ route('dashboard') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('dashboard') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-house text-lg w-6"></i>
                         <span class="font-medium">Dashboard</span>
@@ -97,6 +98,7 @@
                         <i class="fas fa-microphone-lines text-lg w-6"></i>
                         <span class="font-medium">Interview Sim</span>
                     </a>
+                    @endif
 
                     @if(Auth::user()->isAdmin())
                     <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 mt-8 mb-4">Admin Panel</p>
