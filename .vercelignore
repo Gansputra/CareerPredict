@@ -1,0 +1,6 @@
+/vendor
+/node_modules
+/public/storage
+/storage/*.key
+*.log
+.git

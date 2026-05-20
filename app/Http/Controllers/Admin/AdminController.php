@@ -32,9 +32,12 @@ class AdminController extends Controller
             ->get();
 
         $driver = DB::getDriverName();
-        $dateField = $driver === 'sqlite' 
-            ? 'strftime("%m", created_at) as month' 
-            : 'DATE_FORMAT(created_at, "%M") as month';
+        $dateField = match ($driver) {
+            'sqlite' => 'strftime("%m", created_at) as month',
+            'pgsql' => "to_char(created_at, 'FMMonth') as month",
+            default => 'DATE_FORMAT(created_at, "%M") as month',
+        };
+
 
         $userGrowth = User::select(DB::raw('count(*) as count'), DB::raw($dateField))
             ->where('role', 'user')
