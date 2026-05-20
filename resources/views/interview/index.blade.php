@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Interview Simulator')
+@section('title', 'Simulasi Interview')
 
 @section('content')
 <div class="max-w-6xl mx-auto space-y-8">
@@ -12,10 +12,10 @@
             Interview Prep
         </div>
         <h1 class="text-3xl font-bold text-white mb-2">
-            Interview <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-pink-400">Simulator</span>
+            Simulasi <span class="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-pink-400">Interview</span>
         </h1>
         <p class="text-slate-400 text-sm max-w-2xl">
-            Practice the most common interview questions for your target career. Click a category to reveal the questions with expert answer tips.
+            Latihan pertanyaan interview paling umum untuk karir target Anda. Klik kategori untuk membuka pertanyaan beserta tips jawaban dari ahli.
         </p>
     </div>
 
@@ -47,12 +47,12 @@
 
             <h2 class="text-lg font-bold text-white mb-1 group-hover:{{ $c['text'] }} transition-colors">{{ $cat['label'] }}</h2>
             <p class="text-sm text-slate-500 flex-1 mb-5">
-                Practice {{ $cat['count'] }} carefully crafted questions with expert tips for the {{ $cat['label'] }} interview.
+                Latihan {{ $cat['count'] }} pertanyaan yang dikurasi dengan tips dari ahli untuk interview {{ $cat['label'] }}.
             </p>
 
             <a href="{{ route('interview.show', $key) }}"
                class="w-full py-2.5 px-4 bg-gradient-to-r {{ $c['btn'] }} text-white text-sm font-bold rounded-xl transition-all text-center shadow-lg">
-                Start Practice <i class="fas fa-arrow-right ml-1"></i>
+                Mulai Latihan <i class="fas fa-arrow-right ml-1"></i>
             </a>
         </div>
         @endforeach
@@ -64,9 +64,9 @@
             <i class="fas fa-lightbulb"></i>
         </div>
         <div>
-            <p class="font-semibold text-white mb-1">Pro Tip: Use the STAR Method</p>
+            <p class="font-semibold text-white mb-1">Tips Pro: Gunakan Metode STAR</p>
             <p class="text-sm text-slate-400 leading-relaxed">
-                For behavioural questions, structure your answer using <strong class="text-slate-300">S</strong>ituation, <strong class="text-slate-300">T</strong>ask, <strong class="text-slate-300">A</strong>ction, and <strong class="text-slate-300">R</strong>esult. This keeps your answer concise, relevant, and impactful.
+                Untuk pertanyaan perilaku, susun jawaban Anda menggunakan <strong class="text-slate-300">S</strong>ituasi, <strong class="text-slate-300">T</strong>ugas, <strong class="text-slate-300">A</strong>ksi, dan <strong class="text-slate-300">R</strong>esult. Ini membuat jawaban Anda ringkas, relevan, dan berdampak.
             </p>
         </div>
     </div>

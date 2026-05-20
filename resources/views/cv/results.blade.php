@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
-@section('title', 'CV Analysis Results')
+@section('title', 'Hasil Analisis CV')
 
 @section('content')
 <div class="space-y-8">
     <!-- Header -->
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-            <h1 class="text-3xl font-extrabold text-white mb-1">CV Analysis <span class="text-gradient">Report</span></h1>
-            <p class="text-slate-400 text-sm">Your personalized career intelligence report powered by Certainty Factor analysis.</p>
+            <h1 class="text-3xl font-extrabold text-white mb-1">Laporan Analisis <span class="text-gradient">CV</span></h1>
+            <p class="text-slate-400 text-sm">Laporan inteligensi karir personal Anda yang didukung analisis Certainty Factor.</p>
         </div>
         <a href="{{ route('cv.index') }}" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-sm transition-all shrink-0">
-            <i class="fas fa-redo mr-2"></i> Analyze Another CV
+            <i class="fas fa-redo mr-2"></i> Analisis CV Lain
         </a>
     </div>
 
@@ -22,7 +22,7 @@
                 <div class="w-9 h-9 bg-blue-600/10 rounded-xl flex items-center justify-center">
                     <i class="fas fa-code text-blue-400 text-sm"></i>
                 </div>
-                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Skills Found</span>
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Keahlian Ditemukan</span>
             </div>
             <p class="text-3xl font-extrabold text-white">{{ count($detectedSkills) }}</p>
         </div>
@@ -31,7 +31,7 @@
                 <div class="w-9 h-9 bg-purple-600/10 rounded-xl flex items-center justify-center">
                     <i class="fas fa-heart text-purple-400 text-sm"></i>
                 </div>
-                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Interests</span>
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Minat</span>
             </div>
             <p class="text-3xl font-extrabold text-white">{{ count($detectedInterests) }}</p>
         </div>
@@ -40,7 +40,7 @@
                 <div class="w-9 h-9 bg-emerald-600/10 rounded-xl flex items-center justify-center">
                     <i class="fas fa-briefcase text-emerald-400 text-sm"></i>
                 </div>
-                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Job Matches</span>
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Kecocokan Lowongan</span>
             </div>
             <p class="text-3xl font-extrabold text-white">{{ count($recommendations) }}</p>
         </div>
@@ -49,7 +49,7 @@
                 <div class="w-9 h-9 bg-amber-600/10 rounded-xl flex items-center justify-center">
                     <i class="fas fa-file-lines text-amber-400 text-sm"></i>
                 </div>
-                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Words Scanned</span>
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Kata Dipindai</span>
             </div>
             <p class="text-3xl font-extrabold text-white">{{ number_format($cvInfo['word_count']) }}</p>
         </div>
@@ -60,8 +60,8 @@
         <!-- Detected Skills -->
         <div class="glass-dark p-6 lg:p-8">
             <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-bold text-white"><i class="fas fa-microchip text-blue-400 mr-2"></i> Detected Skills</h3>
-                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{{ count($detectedSkills) }} found</span>
+                <h3 class="text-lg font-bold text-white"><i class="fas fa-microchip text-blue-400 mr-2"></i> Keahlian Terdeteksi</h3>
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{{ count($detectedSkills) }} ditemukan</span>
             </div>
             @if(count($detectedSkills) > 0)
             <div class="space-y-3">
@@ -86,7 +86,7 @@
             @else
             <div class="text-center py-8">
                 <i class="fas fa-search text-slate-700 text-3xl mb-3"></i>
-                <p class="text-slate-500 text-sm">No skills detected. Try a more detailed CV.</p>
+                <p class="text-slate-500 text-sm">Tidak ada keahlian terdeteksi. Coba CV yang lebih detail.</p>
             </div>
             @endif
         </div>
@@ -94,7 +94,7 @@
         <!-- Career Category Fit -->
         <div class="glass-dark p-6 lg:p-8">
             <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-bold text-white"><i class="fas fa-chart-pie text-purple-400 mr-2"></i> Career Fit Analysis</h3>
+                <h3 class="text-lg font-bold text-white"><i class="fas fa-chart-pie text-purple-400 mr-2"></i> Analisis Kecocokan Karir</h3>
             </div>
             @if(count($careerCategories) > 0)
             <div class="space-y-4">
@@ -103,27 +103,27 @@
                     <div class="flex items-center justify-between mb-2">
                         <span class="text-sm font-medium text-white">{{ $cat['name'] }}</span>
                         <span class="text-xs font-bold {{ $cat['score'] >= 50 ? 'text-emerald-400' : ($cat['score'] >= 25 ? 'text-blue-400' : 'text-slate-400') }}">
-                            {{ $cat['score'] }}% fit
+                            {{ $cat['score'] }}% cocok
                         </span>
                     </div>
                     <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
                         <div class="h-full rounded-full transition-all duration-1000 {{ $cat['score'] >= 50 ? 'bg-gradient-to-r from-emerald-500 to-teal-400' : ($cat['score'] >= 25 ? 'bg-gradient-to-r from-blue-500 to-indigo-400' : 'bg-slate-600') }}"
                              style="width: {{ $cat['score'] }}%"></div>
                     </div>
-                    <p class="text-[10px] text-slate-500 mt-1">{{ $cat['matched'] }} of {{ $cat['total'] }} key skills matched</p>
+                    <p class="text-[10px] text-slate-500 mt-1">{{ $cat['matched'] }} dari {{ $cat['total'] }} keahlian kunci cocok</p>
                 </div>
                 @endforeach
             </div>
             @else
             <div class="text-center py-8">
                 <i class="fas fa-chart-bar text-slate-700 text-3xl mb-3"></i>
-                <p class="text-slate-500 text-sm">Not enough data for career analysis.</p>
+                <p class="text-slate-500 text-sm">Data tidak cukup untuk analisis karir.</p>
             </div>
             @endif
 
             @if(count($detectedInterests) > 0)
             <div class="mt-8 pt-6 border-t border-slate-800">
-                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Detected Interests</h4>
+                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Minat Terdeteksi</h4>
                 <div class="flex flex-wrap gap-2">
                     @foreach($detectedInterests as $interest)
                     <span class="px-3 py-1.5 rounded-full bg-purple-500/10 text-purple-400 text-xs font-bold">{{ $interest['name'] }}</span>
@@ -138,8 +138,8 @@
     <div>
         <div class="flex items-center justify-between mb-6">
             <div>
-                <h2 class="text-2xl font-bold text-white">Recommended Jobs</h2>
-                <p class="text-slate-400 text-sm">Based on your CV analysis, ranked by Certainty Factor score.</p>
+                <h2 class="text-2xl font-bold text-white">Lowongan yang Direkomendasikan</h2>
+                <p class="text-slate-400 text-sm">Berdasarkan analisis CV Anda, diurutkan berdasarkan skor Certainty Factor.</p>
             </div>
         </div>
 
@@ -153,7 +153,7 @@
                 <div class="px-4 py-2 bg-gradient-to-r {{ $loop->first ? 'from-blue-600 to-indigo-600' : ($loop->index === 1 ? 'from-indigo-600/50 to-purple-600/50' : 'from-slate-700 to-slate-600') }} flex items-center justify-between">
                     <span class="text-[10px] font-bold text-white uppercase tracking-widest">
                         <i class="fas {{ $loop->first ? 'fa-trophy' : ($loop->index === 1 ? 'fa-medal' : 'fa-award') }} mr-1"></i>
-                        #{{ $loop->iteration }} Best Match
+                        #{{ $loop->iteration }} Kecocokan Terbaik
                     </span>
                     <span class="text-xs font-bold text-white/80">CF {{ $rec['score'] }}</span>
                 </div>
@@ -161,10 +161,10 @@
 
                 <div class="p-6 flex-1">
                     <div class="flex items-center justify-between mb-4">
-                        <span class="px-2.5 py-1 rounded-full bg-blue-600/10 text-blue-500 text-[10px] font-bold uppercase tracking-widest">{{ $rec['job']->category->name ?? 'General' }}</span>
+                        <span class="px-2.5 py-1 rounded-full bg-blue-600/10 text-blue-500 text-[10px] font-bold uppercase tracking-widest">{{ $rec['job']->category->name ?? 'Umum' }}</span>
                         <div class="text-right">
                             <span class="text-xl font-bold text-white">{{ $rec['confidence'] }}%</span>
-                            <p class="text-[8px] text-slate-500 uppercase font-bold">Match</p>
+                            <p class="text-[8px] text-slate-500 uppercase font-bold">Kecocokan</p>
                         </div>
                     </div>
 
@@ -193,7 +193,7 @@
                 <div class="p-4 bg-slate-800/30 border-t border-slate-800 flex items-center justify-between">
                     <span class="text-xs text-slate-500"><i class="fas fa-map-marker-alt mr-1"></i> {{ $rec['job']->location }}</span>
                     <a href="{{ route('jobs.show', $rec['job']->slug) }}" class="text-sm font-bold text-blue-500 hover:text-blue-400 transition-colors">
-                        View <i class="fas fa-arrow-right ml-1"></i>
+                        Lihat <i class="fas fa-arrow-right ml-1"></i>
                     </a>
                 </div>
             </div>
@@ -204,9 +204,9 @@
             <div class="w-20 h-20 bg-slate-800 rounded-3xl flex items-center justify-center mx-auto mb-6">
                 <i class="fas fa-search text-slate-600 text-3xl"></i>
             </div>
-            <h3 class="text-xl font-bold text-white mb-3">No Strong Matches Found</h3>
-            <p class="text-slate-400 max-w-md mx-auto mb-6">Your CV didn't produce strong matches with current job listings. Try uploading a more detailed CV or browse jobs manually.</p>
-            <a href="{{ route('jobs.index') }}" class="btn-premium px-8">Browse All Jobs</a>
+            <h3 class="text-xl font-bold text-white mb-3">Tidak Ada Kecocokan Kuat</h3>
+            <p class="text-slate-400 max-w-md mx-auto mb-6">CV Anda tidak menghasilkan kecocokan kuat dengan lowongan saat ini. Coba unggah CV yang lebih detail atau jelajahi lowongan secara manual.</p>
+            <a href="{{ route('jobs.index') }}" class="btn-premium px-8">Jelajahi Semua Lowongan</a>
         </div>
         @endif
     </div>
@@ -214,15 +214,15 @@
     <!-- Bottom CTA -->
     <div class="glass p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
         <div>
-            <h3 class="text-lg font-bold text-white mb-1">Want deeper insights?</h3>
-            <p class="text-slate-400 text-sm">Take the full Career DNA Test for a comprehensive personality-based analysis.</p>
+            <h3 class="text-lg font-bold text-white mb-1">Ingin analisis lebih dalam?</h3>
+            <p class="text-slate-400 text-sm">Ambil Tes DNA Karir lengkap untuk analisis komprehensif berbasis kepribadian.</p>
         </div>
         <div class="flex gap-3">
             <a href="{{ route('cv.index') }}" class="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 transition-all text-white font-bold text-sm">
-                <i class="fas fa-upload mr-2"></i> Re-upload
+                <i class="fas fa-upload mr-2"></i> Unggah Ulang
             </a>
             <a href="{{ route('assessment.index') }}" class="btn-premium px-5 py-3 text-sm">
-                <i class="fas fa-dna mr-2"></i> Career DNA Test
+                <i class="fas fa-dna mr-2"></i> Tes DNA Karir
             </a>
         </div>
     </div>

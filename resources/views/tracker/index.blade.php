@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Application Tracker')
+@section('title', 'Pelacak Lamaran')
 
 @section('content')
 <div class="max-w-full space-y-6">
@@ -10,12 +10,12 @@
         <div>
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-bold tracking-widest uppercase mb-3 border border-amber-500/20">
                 <i class="fas fa-clipboard-list"></i>
-                Kanban Board
+                Papan Kanban
             </div>
             <h1 class="text-2xl sm:text-3xl font-bold text-white mb-1">
-                Application <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">Tracker</span>
+                Pelacak <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">Lamaran</span>
             </h1>
-            <p class="text-slate-400 text-sm">Drag & drop cards between columns to update status. Save jobs from Job Explorer!</p>
+            <p class="text-slate-400 text-sm">Seret & lepas kartu antar kolom untuk mengubah status. Simpan lowongan dari Jelajahi Lowongan!</p>
         </div>
 
         {{-- Stats --}}
@@ -138,7 +138,7 @@
                     @empty
                     <div class="kanban-empty flex flex-col items-center justify-center py-10 text-slate-600 border-2 border-dashed border-slate-700/60 rounded-2xl">
                         <i class="fas fa-inbox text-3xl mb-2"></i>
-                        <p class="text-xs">Drop cards here</p>
+                        <p class="text-xs">Taruh kartu di sini</p>
                     </div>
                     @endforelse
                 </div>
@@ -155,10 +155,10 @@
         <div class="w-20 h-20 mx-auto bg-slate-800 rounded-3xl flex items-center justify-center mb-6">
             <i class="fas fa-briefcase text-slate-600 text-3xl"></i>
         </div>
-        <h3 class="text-xl font-bold text-white mb-3">Start Tracking Your Applications</h3>
-        <p class="text-slate-400 max-w-md mx-auto mb-6">Browse jobs and click "Save to Tracker" to add them here. Drag cards between columns to update status!</p>
+        <h3 class="text-xl font-bold text-white mb-3">Mulai Lacak Lamaran Anda</h3>
+        <p class="text-slate-400 max-w-md mx-auto mb-6">Jelajahi lowongan dan klik "Simpan ke Pelacak" untuk menambahkannya di sini. Seret kartu antar kolom untuk mengubah status!</p>
         <a href="{{ route('jobs.index') }}" class="btn-premium px-8 py-3">
-            <i class="fas fa-search mr-2"></i> Browse Jobs
+            <i class="fas fa-search mr-2"></i> Jelajahi Lowongan
         </a>
     </div>
     @endif
@@ -167,7 +167,7 @@
     <div id="toast" class="fixed bottom-6 right-6 z-50 hidden">
         <div class="bg-emerald-500 text-white px-5 py-3 rounded-xl shadow-2xl shadow-emerald-500/30 flex items-center gap-3 text-sm font-bold animate-fade-in">
             <i class="fas fa-check-circle"></i>
-            <span id="toast-msg">Status updated!</span>
+            <span id="toast-msg">Status diperbarui!</span>
         </div>
     </div>
 
@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (evt.from.children.length === 0) {
                     const placeholder = document.createElement('div');
                     placeholder.className = 'kanban-empty flex flex-col items-center justify-center py-10 text-slate-600 border-2 border-dashed border-slate-700/60 rounded-2xl';
-                    placeholder.innerHTML = '<i class="fas fa-inbox text-3xl mb-2"></i><p class="text-xs">Drop cards here</p>';
+                    placeholder.innerHTML = '<i class="fas fa-inbox text-3xl mb-2"></i><p class="text-xs">Taruh kartu di sini</p>';
                     evt.from.appendChild(placeholder);
                 }
 

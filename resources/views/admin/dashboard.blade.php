@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Admin Dashboard')
+@section('title', 'Dashboard Admin')
 
 @section('content')
 <div class="space-y-8">
@@ -13,7 +13,7 @@
                 </div>
                 <span class="text-xs font-bold text-emerald-500">+12% <i class="fas fa-arrow-up"></i></span>
             </div>
-            <p class="text-xs text-slate-500 uppercase font-bold tracking-widest">Total Users</p>
+            <p class="text-xs text-slate-500 uppercase font-bold tracking-widest">Total Pengguna</p>
             <h3 class="text-2xl font-bold text-white">{{ $stats['total_users'] }}</h3>
         </div>
 
@@ -24,7 +24,7 @@
                 </div>
                 <span class="text-xs font-bold text-emerald-500">+5% <i class="fas fa-arrow-up"></i></span>
             </div>
-            <p class="text-xs text-slate-500 uppercase font-bold tracking-widest">Job Vacancies</p>
+            <p class="text-xs text-slate-500 uppercase font-bold tracking-widest">Lowongan Kerja</p>
             <h3 class="text-2xl font-bold text-white">{{ $stats['total_jobs'] }}</h3>
         </div>
 
@@ -35,7 +35,7 @@
                 </div>
                 <span class="text-xs font-bold text-emerald-500">+24% <i class="fas fa-arrow-up"></i></span>
             </div>
-            <p class="text-xs text-slate-500 uppercase font-bold tracking-widest">Total Recs</p>
+            <p class="text-xs text-slate-500 uppercase font-bold tracking-widest">Total Rekomendasi</p>
             <h3 class="text-2xl font-bold text-white">{{ $stats['total_recommendations'] }}</h3>
         </div>
 
@@ -46,7 +46,7 @@
                 </div>
                 <span class="text-xs font-bold text-rose-500">-2% <i class="fas fa-arrow-down"></i></span>
             </div>
-            <p class="text-xs text-slate-500 uppercase font-bold tracking-widest">Applications</p>
+            <p class="text-xs text-slate-500 uppercase font-bold tracking-widest">Lamaran</p>
             <h3 class="text-2xl font-bold text-white">{{ $stats['total_applications'] }}</h3>
         </div>
     </div>
@@ -55,10 +55,10 @@
         <!-- User Growth Chart -->
         <div class="glass-dark p-8" data-aos="fade-right">
             <div class="flex items-center justify-between mb-8">
-                <h3 class="text-xl font-bold text-white">User Registration Growth</h3>
+                <h3 class="text-xl font-bold text-white">Pertumbuhan Registrasi Pengguna</h3>
                 <select class="bg-slate-800 border-none rounded-lg text-xs text-slate-400">
-                    <option>Last 6 Months</option>
-                    <option>Last Year</option>
+                    <option>6 Bulan Terakhir</option>
+                    <option>1 Tahun Terakhir</option>
                 </select>
             </div>
             <canvas id="growthChart" height="250"></canvas>
@@ -66,7 +66,7 @@
 
         <!-- Category Distribution -->
         <div class="glass-dark p-8" data-aos="fade-left">
-            <h3 class="text-xl font-bold text-white mb-8">Job Categories Popularity</h3>
+            <h3 class="text-xl font-bold text-white mb-8">Popularitas Kategori Lowongan</h3>
             <canvas id="categoryChart" height="250"></canvas>
         </div>
     </div>
@@ -74,7 +74,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Popular Jobs -->
         <div class="lg:col-span-2 glass-dark p-8" data-aos="fade-right">
-            <h3 class="text-xl font-bold text-white mb-8">Most Popular Job Matches</h3>
+            <h3 class="text-xl font-bold text-white mb-8">Lowongan Paling Populer</h3>
             <div class="space-y-4">
                 @foreach($popularJobs as $pop)
                 <div class="flex items-center justify-between p-4 rounded-2xl bg-slate-800/50 border border-slate-700/50">
@@ -88,7 +88,7 @@
                         </div>
                     </div>
                     <div class="text-right">
-                        <p class="text-sm font-bold text-blue-500">{{ $pop->count }} Matches</p>
+                        <p class="text-sm font-bold text-blue-500">{{ $pop->count }} Kecocokan</p>
                     </div>
                 </div>
                 @endforeach
@@ -97,15 +97,15 @@
 
         <!-- Assessment Stats -->
         <div class="glass-dark p-8" data-aos="fade-left">
-            <h3 class="text-xl font-bold text-white mb-8">Assessment Stats</h3>
+            <h3 class="text-xl font-bold text-white mb-8">Statistik Asesmen</h3>
             <div class="space-y-8">
                 <div class="text-center">
                     <div class="text-4xl font-bold text-white mb-2">{{ $stats['completed_assessments'] }}</div>
-                    <p class="text-xs text-slate-500 uppercase tracking-widest font-bold">Assessments Completed</p>
+                    <p class="text-xs text-slate-500 uppercase tracking-widest font-bold">Asesmen Selesai</p>
                 </div>
                 <div class="pt-8 border-t border-slate-800">
                     <p class="text-sm text-slate-400 leading-relaxed italic text-center">
-                        "{{ round(($stats['completed_assessments'] / max($stats['total_users'], 1)) * 100) }}% of users have completed their professional DNA profile."
+                        "{{ round(($stats['completed_assessments'] / max($stats['total_users'], 1)) * 100) }}% pengguna telah melengkapi profil DNA profesional mereka."
                     </p>
                 </div>
             </div>
@@ -122,7 +122,7 @@
         data: {
             labels: {!! json_encode($userGrowth->pluck('month')) !!},
             datasets: [{
-                label: 'New Users',
+                label: 'Pengguna Baru',
                 data: {!! json_encode($userGrowth->pluck('count')) !!},
                 borderColor: '#2563eb',
                 backgroundColor: 'rgba(37, 99, 235, 0.1)',

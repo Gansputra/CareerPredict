@@ -1,22 +1,22 @@
 @extends('layouts.app')
 
-@section('title', 'Career DNA Test')
+@section('title', 'Tes DNA Karir')
 
 @section('content')
 <div class="max-w-4xl mx-auto" x-data="assessmentWizard()">
     <!-- Header -->
     <div class="text-center mb-10">
-        <h1 class="text-4xl font-extrabold text-white mb-3">Discover Your <span class="text-gradient">Career DNA</span></h1>
-        <p class="text-slate-400 max-w-xl mx-auto">Complete all steps to unlock your personalized career recommendations powered by Certainty Factor analysis.</p>
+        <h1 class="text-4xl font-extrabold text-white mb-3">Temukan <span class="text-gradient">DNA Karir</span> Anda</h1>
+        <p class="text-slate-400 max-w-xl mx-auto">Selesaikan semua langkah untuk membuka rekomendasi karir personal yang didukung analisis Certainty Factor.</p>
 
         @if($hasHistory)
         <div class="mt-6 inline-flex items-center gap-3 px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20">
             <i class="fas fa-info-circle text-amber-400"></i>
-            <span class="text-amber-400 text-sm font-medium">You have a previous assessment.</span>
+            <span class="text-amber-400 text-sm font-medium">Anda memiliki asesmen sebelumnya.</span>
             <form action="{{ route('assessment.reset') }}" method="POST" class="inline" id="resetForm">
                 @csrf
                 <button type="button" onclick="confirmReset()" class="text-sm font-bold text-red-400 hover:text-red-300 underline transition-colors">
-                    Reset & Start Fresh
+                    Reset & Mulai Baru
                 </button>
             </form>
         </div>
@@ -50,7 +50,7 @@
         </div>
         <div class="flex justify-between mt-2">
             <span class="text-[10px] text-slate-500 font-bold" x-text="progressLabel"></span>
-            <span class="text-[10px] text-blue-400 font-bold" x-text="Math.round(progress) + '% Complete'"></span>
+            <span class="text-[10px] text-blue-400 font-bold" x-text="Math.round(progress) + '% Selesai'"></span>
         </div>
     </div>
 
@@ -95,11 +95,11 @@
 
                                     <div class="max-w-xl mx-auto">
                                         <div class="flex items-center justify-between mb-1.5 sm:mb-0">
-                                            <span class="text-[9px] text-slate-500 font-bold uppercase tracking-widest hidden sm:block">Disagree</span>
-                                            <span class="text-[9px] text-slate-500 font-bold uppercase tracking-widest hidden sm:block">Agree</span>
+                                            <span class="text-[9px] text-slate-500 font-bold uppercase tracking-widest hidden sm:block">Tidak Setuju</span>
+                                            <span class="text-[9px] text-slate-500 font-bold uppercase tracking-widest hidden sm:block">Setuju</span>
                                         </div>
                                         <div class="flex items-center justify-center gap-2 sm:gap-3">
-                                            <span class="text-[8px] sm:hidden text-slate-500 font-bold uppercase shrink-0">No</span>
+                                            <span class="text-[8px] sm:hidden text-slate-500 font-bold uppercase shrink-0">Tdk</span>
                                             <template x-for="val in [1, 2, 3, 4, 5]" :key="val">
                                                 <label class="cursor-pointer group" @click="setAnswer(q.id, val)">
                                                     <input type="radio" :name="'answers[' + q.id + ']'" :value="val"
@@ -109,7 +109,7 @@
                                                     </div>
                                                 </label>
                                             </template>
-                                            <span class="text-[8px] sm:hidden text-slate-500 font-bold uppercase shrink-0">Yes</span>
+                                            <span class="text-[8px] sm:hidden text-slate-500 font-bold uppercase shrink-0">Ya</span>
                                         </div>
                                     </div>
                                 </div>
@@ -135,8 +135,8 @@
                         <i class="fas fa-tools"></i>
                     </div>
                     <div>
-                        <h2 class="text-2xl font-bold text-white">Technical & Soft Skills</h2>
-                        <p class="text-slate-400 text-sm">Rate your proficiency in each skill area (1 = Beginner, 5 = Expert). Skip skills you don't have.</p>
+                        <h2 class="text-2xl font-bold text-white">Keahlian Teknis & Soft Skill</h2>
+                        <p class="text-slate-400 text-sm">Nilai kemampuan Anda di setiap bidang keahlian (1 = Pemula, 5 = Ahli). Lewati keahlian yang tidak Anda miliki.</p>
                     </div>
                 </div>
 
@@ -148,7 +148,7 @@
                             <span class="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full {{ $skill->type === 'technical' ? 'bg-blue-500/10 text-blue-400' : 'bg-purple-500/10 text-purple-400' }}">{{ $skill->type }}</span>
                         </div>
                         <div class="flex items-center gap-1.5">
-                            <span class="text-[9px] text-slate-600 w-6">Skip</span>
+                            <span class="text-[9px] text-slate-600 w-6">Lewat</span>
                             @for($i = 0; $i <= 5; $i++)
                             <label class="flex-1 cursor-pointer">
                                 <input type="radio" name="skills[{{ $skill->id }}]" value="{{ $i }}" class="hidden peer" {{ $i === 0 ? 'checked' : '' }}>
@@ -176,8 +176,8 @@
                         <i class="fas fa-heart"></i>
                     </div>
                     <div>
-                        <h2 class="text-2xl font-bold text-white">Career Interests</h2>
-                        <p class="text-slate-400 text-sm">Select topics and fields that genuinely excite you. Pick at least 2.</p>
+                        <h2 class="text-2xl font-bold text-white">Minat Karir</h2>
+                        <p class="text-slate-400 text-sm">Pilih topik dan bidang yang benar-benar menarik bagi Anda. Pilih minimal 2.</p>
                     </div>
                 </div>
 
@@ -193,7 +193,7 @@
                     @endforeach
                 </div>
                 <p class="text-xs text-slate-500 mt-4 text-center">
-                    <span x-text="interestCount"></span> selected — <span :class="interestCount >= 2 ? 'text-emerald-400' : 'text-amber-400'" x-text="interestCount >= 2 ? 'Ready to submit!' : 'Select at least 2'"></span>
+                    <span x-text="interestCount"></span> dipilih — <span :class="interestCount >= 2 ? 'text-emerald-400' : 'text-amber-400'" x-text="interestCount >= 2 ? 'Siap disubmit!' : 'Pilih minimal 2'"></span>
                 </p>
             </div>
         </div>
@@ -204,7 +204,7 @@
                     x-show="currentStep > 0"
                     @click="prevStep()"
                     class="px-6 py-3 rounded-xl bg-slate-800 text-white font-bold hover:bg-slate-700 transition-all">
-                <i class="fas fa-arrow-left mr-2"></i> Previous
+                <i class="fas fa-arrow-left mr-2"></i> Sebelumnya
             </button>
             <div x-show="currentStep === 0"></div>
 
@@ -212,7 +212,7 @@
                     x-show="currentStep < totalSteps - 1"
                     @click="nextStep()"
                     class="btn-premium px-8 py-3">
-                Continue <i class="fas fa-arrow-right ml-2"></i>
+                Lanjutkan <i class="fas fa-arrow-right ml-2"></i>
             </button>
 
             <button type="submit"
@@ -220,14 +220,14 @@
                     :disabled="isSubmitting"
                     class="btn-premium px-8 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 disabled:opacity-50 disabled:cursor-not-allowed">
                 <span x-show="!isSubmitting">
-                    <i class="fas fa-dna mr-2"></i> Analyze My Career DNA
+                    <i class="fas fa-dna mr-2"></i> Analisis DNA Karir Saya
                 </span>
                 <span x-show="isSubmitting" class="flex items-center gap-3">
                     <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
                     </svg>
-                    Analyzing with CF Engine...
+                    Menganalisis dengan Mesin CF...
                 </span>
             </button>
         </div>
@@ -245,8 +245,8 @@
             isSubmitting: false,
             stepLabels: [
                 ...{!! json_encode($categories->pluck('name')) !!},
-                'Skills',
-                'Interests'
+                'Keahlian',
+                'Minat'
             ],
 
             get totalSteps() {
@@ -257,11 +257,11 @@
             },
             get progressLabel() {
                 if (this.currentStep < this.categories.length) {
-                    return 'Step ' + (this.currentStep + 1) + ': ' + this.categories[this.currentStep].name + ' Assessment';
+                    return 'Langkah ' + (this.currentStep + 1) + ': Asesmen ' + this.categories[this.currentStep].name;
                 } else if (this.currentStep === this.categories.length) {
-                    return 'Step ' + (this.currentStep + 1) + ': Skills Rating';
+                    return 'Langkah ' + (this.currentStep + 1) + ': Penilaian Keahlian';
                 } else {
-                    return 'Step ' + (this.currentStep + 1) + ': Interest Selection';
+                    return 'Langkah ' + (this.currentStep + 1) + ': Pemilihan Minat';
                 }
             },
             nextStep() {
@@ -273,8 +273,8 @@
                     if (!allAnswered) {
                         Swal.fire({
                             icon: 'warning',
-                            title: 'Incomplete',
-                            text: 'Please answer all questions in this category before continuing.',
+                            title: 'Belum Lengkap',
+                            text: 'Silakan jawab semua pertanyaan di kategori ini sebelum melanjutkan.',
                             background: '#1e293b',
                             color: '#fff',
                             confirmButtonColor: '#2563eb'
@@ -307,14 +307,14 @@
 
     function confirmReset() {
         Swal.fire({
-            title: 'Reset Career DNA?',
-            text: 'This will erase all your assessment data, skills, interests, and recommendations. You cannot undo this.',
+            title: 'Reset DNA Karir?',
+            text: 'Ini akan menghapus semua data asesmen, keahlian, minat, dan rekomendasi Anda. Tindakan ini tidak dapat dibatalkan.',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#ef4444',
             cancelButtonColor: '#334155',
-            confirmButtonText: 'Yes, Reset Everything',
-            cancelButtonText: 'Cancel',
+            confirmButtonText: 'Ya, Reset Semua',
+            cancelButtonText: 'Batal',
             background: '#1e293b',
             color: '#fff'
         }).then((result) => {

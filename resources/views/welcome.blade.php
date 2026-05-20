@@ -25,9 +25,9 @@
                 </div>
                 
                 <div class="hidden md:flex items-center gap-8 text-sm font-medium">
-                    <a href="#features" class="hover:text-blue-400 transition-colors">Features</a>
-                    <a href="#how-it-works" class="hover:text-blue-400 transition-colors">Methodology</a>
-                    <a href="{{ route('jobs.index') }}" class="hover:text-blue-400 transition-colors">Jobs</a>
+                    <a href="#features" class="hover:text-blue-400 transition-colors">Fitur</a>
+                    <a href="#how-it-works" class="hover:text-blue-400 transition-colors">Metodologi</a>
+                    <a href="{{ route('jobs.index') }}" class="hover:text-blue-400 transition-colors">Lowongan</a>
                 </div>
 
                 <div class="flex items-center gap-3">
@@ -35,9 +35,9 @@
                         @auth
                             <a href="{{ url('/dashboard') }}" class="btn-premium py-2 px-5 text-sm">Dashboard</a>
                         @else
-                            <a href="{{ route('login') }}" class="text-sm font-medium hover:text-blue-400 transition-colors hidden sm:inline">Log in</a>
+                            <a href="{{ route('login') }}" class="text-sm font-medium hover:text-blue-400 transition-colors hidden sm:inline">Masuk</a>
                             @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="btn-premium py-2 px-5 text-sm">Get Started</a>
+                                <a href="{{ route('register') }}" class="btn-premium py-2 px-5 text-sm">Mulai Sekarang</a>
                             @endif
                         @endauth
                     @endif
@@ -61,18 +61,18 @@
                  class="md:hidden mt-2 mx-4 sm:mx-6 glass rounded-2xl shadow-2xl overflow-hidden">
                 <div class="px-4 py-3 space-y-1">
                     <a href="#features" @click="mobileMenu = false" class="block px-4 py-3 rounded-xl text-slate-300 hover:bg-white/10 hover:text-white transition-all font-medium text-sm">
-                        <i class="fas fa-sparkles mr-2 w-5 text-center"></i> Features
+                        <i class="fas fa-sparkles mr-2 w-5 text-center"></i> Fitur
                     </a>
                     <a href="#how-it-works" @click="mobileMenu = false" class="block px-4 py-3 rounded-xl text-slate-300 hover:bg-white/10 hover:text-white transition-all font-medium text-sm">
-                        <i class="fas fa-flask mr-2 w-5 text-center"></i> Methodology
+                        <i class="fas fa-flask mr-2 w-5 text-center"></i> Metodologi
                     </a>
                     <a href="{{ route('jobs.index') }}" class="block px-4 py-3 rounded-xl text-slate-300 hover:bg-white/10 hover:text-white transition-all font-medium text-sm">
-                        <i class="fas fa-briefcase mr-2 w-5 text-center"></i> Jobs
+                        <i class="fas fa-briefcase mr-2 w-5 text-center"></i> Lowongan
                     </a>
                     @guest
                     <div class="pt-2 mt-2 border-t border-white/10">
                         <a href="{{ route('login') }}" class="block px-4 py-3 rounded-xl text-slate-300 hover:bg-white/10 hover:text-white transition-all font-medium text-sm">
-                            <i class="fas fa-sign-in-alt mr-2 w-5 text-center"></i> Log in
+                            <i class="fas fa-sign-in-alt mr-2 w-5 text-center"></i> Masuk
                         </a>
                     </div>
                     @endguest
@@ -90,21 +90,21 @@
             <div class="container mx-auto px-6 relative z-10 text-center">
                 <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border-white/10 mb-8 animate-bounce" data-aos="fade-down">
                     <span class="flex h-2 w-2 rounded-full bg-blue-500"></span>
-                    <span class="text-xs font-semibold tracking-wider uppercase text-blue-400">Powered by Certainty Factor Method</span>
+                    <span class="text-xs font-semibold tracking-wider uppercase text-blue-400">Didukung Metode Certainty Factor</span>
                 </div>
                 
                 <h1 class="text-5xl md:text-8xl font-extrabold mb-6 leading-tight" data-aos="fade-up">
-                    Find Your Perfect <br>
-                    <span class="text-gradient">Career Path</span>
+                    Temukan Jalur <br>
+                    <span class="text-gradient">Karir Idealmu</span>
                 </h1>
                 
                 <p class="text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed" data-aos="fade-up" data-aos-delay="100">
-                    Our AI expert system uses the Certainty Factor method to match your skills and interests with the world's best job opportunities.
+                    Sistem pakar AI kami menggunakan metode Certainty Factor untuk mencocokkan keahlian dan minat Anda dengan peluang kerja terbaik.
                 </p>
 
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4" data-aos="fade-up" data-aos-delay="200">
-                    <a href="{{ route('register') }}" class="btn-premium w-full sm:w-auto px-10">Start Assessment</a>
-                    <a href="#how-it-works" class="px-10 py-3 rounded-xl border border-slate-700 hover:bg-slate-800 transition-all font-semibold">Learn More</a>
+                    <a href="{{ route('register') }}" class="btn-premium w-full sm:w-auto px-10">Mulai Asesmen</a>
+                    <a href="#how-it-works" class="px-10 py-3 rounded-xl border border-slate-700 hover:bg-slate-800 transition-all font-semibold">Pelajari Selengkapnya</a>
                 </div>
 
                 <!-- Floating Elements -->
@@ -122,8 +122,8 @@
         <!-- Features -->
         <section id="features" class="py-24 bg-slate-900/50">
             <div class="container mx-auto px-6 text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold mb-4" data-aos="fade-up">Intelligent Career Analysis</h2>
-                <p class="text-slate-500" data-aos="fade-up" data-aos-delay="100">Advanced features designed to help you succeed in the modern job market.</p>
+                <h2 class="text-3xl md:text-5xl font-bold mb-4" data-aos="fade-up">Analisis Karir Cerdas</h2>
+                <p class="text-slate-500" data-aos="fade-up" data-aos-delay="100">Fitur canggih yang dirancang untuk membantu Anda sukses di dunia kerja modern.</p>
             </div>
 
             <div class="container mx-auto px-6 grid md:grid-cols-3 gap-8">
@@ -131,24 +131,24 @@
                     <div class="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-6">
                         <i class="fas fa-microchip text-blue-500 text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-4 text-white">CF Recommendation</h3>
-                    <p class="text-slate-400 leading-relaxed">Uses certainty factor logic to combine multiple evidences and provide accurate job matching scores.</p>
+                    <h3 class="text-xl font-bold mb-4 text-white">Rekomendasi CF</h3>
+                    <p class="text-slate-400 leading-relaxed">Menggunakan logika certainty factor untuk menggabungkan berbagai bukti dan memberikan skor pencocokan pekerjaan yang akurat.</p>
                 </div>
                 
                 <div class="glass p-8 card-hover" data-aos="fade-up" data-aos-delay="100">
                     <div class="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center mb-6">
                         <i class="fas fa-chart-pie text-emerald-500 text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-4 text-white">Skill Mapping</h3>
-                    <p class="text-slate-400 leading-relaxed">Visualize your skill gaps and identify what you need to learn for your dream career.</p>
+                    <h3 class="text-xl font-bold mb-4 text-white">Pemetaan Keahlian</h3>
+                    <p class="text-slate-400 leading-relaxed">Visualisasikan kesenjangan keahlian Anda dan identifikasi apa yang perlu dipelajari untuk karir impian.</p>
                 </div>
 
                 <div class="glass p-8 card-hover" data-aos="fade-up" data-aos-delay="200">
                     <div class="w-14 h-14 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-6">
                         <i class="fas fa-briefcase text-purple-500 text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-4 text-white">Real-time Matching</h3>
-                    <p class="text-slate-400 leading-relaxed">Instantly match with live job vacancies from our extensive database of partner companies.</p>
+                    <h3 class="text-xl font-bold mb-4 text-white">Pencocokan Real-time</h3>
+                    <p class="text-slate-400 leading-relaxed">Langsung cocokkan dengan lowongan kerja aktif dari database mitra perusahaan kami yang luas.</p>
                 </div>
             </div>
         </section>
@@ -163,7 +163,7 @@
                     <span class="font-bold text-white uppercase tracking-wider">CareerPredict</span>
                 </div>
                 <div class="text-slate-500 text-sm">
-                    &copy; 2026 CareerPredict. Built for Excellence.
+                    &copy; 2026 CareerPredict. Dibangun untuk Keunggulan.
                 </div>
                 <div class="flex gap-6">
                     <a href="#" class="text-slate-400 hover:text-white transition-colors"><i class="fab fa-github"></i></a>

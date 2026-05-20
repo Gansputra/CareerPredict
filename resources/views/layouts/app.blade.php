@@ -35,9 +35,9 @@
                  class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"></div>
 
             <!-- Sidebar -->
-            <aside class="fixed inset-y-0 left-0 z-50 w-72 transition-all duration-300 transform bg-[#1e293b] border-r border-slate-800 overflow-y-auto"
+            <aside class="fixed inset-y-0 left-0 z-50 w-72 transition-all duration-300 transform bg-[#1e293b] border-r border-slate-800 flex flex-col"
                    :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'">
-                <div class="flex items-center justify-between px-6 py-6">
+                <div class="flex items-center justify-between px-6 py-6 shrink-0">
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
                         <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/40">
                             <i class="fas fa-brain text-white text-xl"></i>
@@ -50,8 +50,8 @@
                     </button>
                 </div>
 
-                <nav class="px-4 space-y-2 pb-36">
-                    <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-4">Main Menu</p>
+                <nav class="px-4 space-y-2 pb-6 flex-1 overflow-y-auto">
+                    <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-4">Menu Utama</p>
                     
                     @if(!Auth::user()->isAdmin())
                     <a href="{{ route('dashboard') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('dashboard') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
@@ -61,73 +61,73 @@
 
                     <a href="{{ route('assessment.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('assessment.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-wand-magic-sparkles text-lg w-6"></i>
-                        <span class="font-medium">Career DNA Test</span>
+                        <span class="font-medium">Tes DNA Karir</span>
                     </a>
 
                     <a href="{{ route('cv.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('cv.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-file-pdf text-lg w-6"></i>
-                        <span class="font-medium">CV Analyzer</span>
+                        <span class="font-medium">Analisis CV</span>
                     </a>
 
                     <a href="{{ route('jobs.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('jobs.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-briefcase text-lg w-6"></i>
-                        <span class="font-medium">Job Explorer</span>
+                        <span class="font-medium">Jelajahi Lowongan</span>
                     </a>
 
                     <a href="{{ route('roadmap.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('roadmap.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-map-signs text-lg w-6"></i>
-                        <span class="font-medium">Learning Roadmap</span>
+                        <span class="font-medium">Peta Belajar</span>
                     </a>
 
                     <a href="{{ route('salary.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('salary.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-money-bill-trend-up text-lg w-6"></i>
-                        <span class="font-medium">Salary Insights</span>
+                        <span class="font-medium">Info Gaji</span>
                     </a>
 
                     <a href="{{ route('skillmatrix.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('skillmatrix.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-layer-group text-lg w-6"></i>
-                        <span class="font-medium">Skill Matrix</span>
+                        <span class="font-medium">Matriks Keahlian</span>
                     </a>
 
                     <a href="{{ route('tracker.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('tracker.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-clipboard-list text-lg w-6"></i>
-                        <span class="font-medium">App Tracker</span>
+                        <span class="font-medium">Pelacak Lamaran</span>
                     </a>
 
                     <a href="{{ route('interview.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('interview.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-microphone-lines text-lg w-6"></i>
-                        <span class="font-medium">Interview Sim</span>
+                        <span class="font-medium">Simulasi Interview</span>
                     </a>
                     @endif
 
                     @if(Auth::user()->isAdmin())
-                    <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 mt-8 mb-4">Admin Panel</p>
+                    <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 mt-8 mb-4">Panel Admin</p>
                     <a href="{{ route('admin.dashboard') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.dashboard') ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-chart-line text-lg w-6"></i>
                         <span class="font-medium">Admin Dashboard</span>
                     </a>
                     <a href="{{ route('admin.jobs.import') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.jobs.import') ? 'bg-slate-700 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-file-import text-lg w-6"></i>
-                        <span class="font-medium">Job Importer</span>
+                        <span class="font-medium">Impor Lowongan</span>
                     </a>
                     @endif
 
-                    <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 mt-8 mb-4">Account</p>
+                    <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 mt-8 mb-4">Akun</p>
                     <a href="{{ route('profile.edit') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('profile.*') ? 'bg-slate-700 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-user-circle text-lg w-6"></i>
-                        <span class="font-medium">My Profile</span>
+                        <span class="font-medium">Profil Saya</span>
                     </a>
 
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:bg-red-500/10 hover:text-red-500 transition-all">
                             <i class="fas fa-sign-out-alt text-lg w-6"></i>
-                            <span class="font-medium">Logout</span>
+                            <span class="font-medium">Keluar</span>
                         </button>
                     </form>
                 </nav>
 
-                <div class="absolute bottom-0 left-0 w-full px-4 pb-5 pt-3 bg-[#1e293b] border-t border-slate-700/60">
+                <div class="shrink-0 px-4 pb-5 pt-3 bg-[#1e293b] border-t border-slate-700/60">
                     <div class="glass p-3 rounded-2xl flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full bg-slate-700 overflow-hidden shrink-0">
                             @if(Auth::user()->profile?->avatar)
@@ -160,11 +160,11 @@
                         <div class="flex items-center gap-2 sm:gap-4 lg:gap-6">
                             <div class="relative hidden md:block">
                                 <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
-                                <input type="text" placeholder="Search anything..." class="bg-slate-900 border-slate-700 rounded-xl pl-10 pr-4 py-2 text-sm focus:ring-blue-500 focus:border-blue-500 text-slate-300 w-48 lg:w-64">
+                                <input type="text" placeholder="Cari sesuatu..." class="bg-slate-900 border-slate-700 rounded-xl pl-10 pr-4 py-2 text-sm focus:ring-blue-500 focus:border-blue-500 text-slate-300 w-48 lg:w-64">
                             </div>
 
                             <!-- Theme Toggle -->
-                            <button @click="theme = theme === 'dark' ? 'light' : 'dark'" class="relative w-10 h-10 flex items-center justify-center rounded-lg hover:bg-slate-800 transition-all duration-300 bg-slate-800/50" title="Toggle theme">
+                            <button @click="theme = theme === 'dark' ? 'light' : 'dark'" class="relative w-10 h-10 flex items-center justify-center rounded-lg hover:bg-slate-800 transition-all duration-300 bg-slate-800/50" title="Ganti tema">
                                 <i class="fas text-lg transition-transform duration-300" :class="theme === 'dark' ? 'fa-sun text-amber-400 rotate-0' : 'fa-moon text-indigo-500 rotate-12'"></i>
                             </button>
 

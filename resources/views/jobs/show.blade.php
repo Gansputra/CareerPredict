@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Job Details')
+@section('title', 'Detail Lowongan')
 
 @section('content')
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -32,28 +32,28 @@
                             @csrf
                             <input type="hidden" name="job_id" value="{{ $job->id }}">
                             <button type="submit" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-sm transition-all">
-                                <i class="fas fa-bookmark mr-1"></i> Save to Tracker
+                                <i class="fas fa-bookmark mr-1"></i> Simpan ke Pelacak
                             </button>
                         </form>
                     @endif
                     @if($job->url)
-                    <a href="{{ $job->url }}" target="_blank" class="btn-premium px-10">Apply Now <i class="fas fa-external-link-alt ml-2 text-xs"></i></a>
+                    <a href="{{ $job->url }}" target="_blank" class="btn-premium px-10">Lamar Sekarang <i class="fas fa-external-link-alt ml-2 text-xs"></i></a>
                     @else
-                    <button class="btn-premium px-10">Apply Now</button>
+                    <button class="btn-premium px-10">Lamar Sekarang</button>
                     @endif
                 </div>
             </div>
 
             <div class="space-y-8">
                 <div>
-                    <h3 class="text-xl font-bold text-white mb-4">Description</h3>
+                    <h3 class="text-xl font-bold text-white mb-4">Deskripsi</h3>
                     <div class="text-slate-400 leading-relaxed space-y-4">
                         {!! nl2br(e($job->description)) !!}
                     </div>
                 </div>
 
                 <div>
-                    <h3 class="text-xl font-bold text-white mb-4">Requirements</h3>
+                    <h3 class="text-xl font-bold text-white mb-4">Persyaratan</h3>
                     <div class="text-slate-400 leading-relaxed space-y-4">
                         {!! nl2br(e($job->requirements)) !!}
                     </div>
@@ -81,14 +81,14 @@
     <!-- Sidebar Info -->
     <div class="space-y-6">
         <div class="glass-dark p-6" data-aos="fade-left">
-            <h3 class="text-lg font-bold text-white mb-6">Job Overview</h3>
+            <h3 class="text-lg font-bold text-white mb-6">Ringkasan Lowongan</h3>
             <div class="space-y-6">
                 <div class="flex items-center gap-4">
                     <div class="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-500">
                         <i class="fas fa-calendar-alt"></i>
                     </div>
                     <div>
-                        <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Date Posted</p>
+                        <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Tanggal Posting</p>
                         <p class="text-sm font-bold text-white">{{ $job->created_at->diffForHumans() }}</p>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
                         <i class="fas fa-money-bill-wave"></i>
                     </div>
                     <div>
-                        <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Salary Range</p>
+                        <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Kisaran Gaji</p>
                         <p class="text-sm font-bold text-white">{{ $job->salary_range }}</p>
                     </div>
                 </div>
@@ -108,7 +108,7 @@
                         <i class="fas fa-tags"></i>
                     </div>
                     <div>
-                        <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Category</p>
+                        <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Kategori</p>
                         <p class="text-sm font-bold text-white">{{ $job->category->name }}</p>
                     </div>
                 </div>
@@ -116,9 +116,9 @@
         </div>
 
         <div class="glass-dark p-6" data-aos="fade-left" data-aos-delay="100">
-            <h3 class="text-lg font-bold text-white mb-4">About the Company</h3>
-            <p class="text-sm text-slate-400 mb-6 leading-relaxed">This company is a leading player in the {{ $job->category->name }} sector, known for its innovation and commitment to employee growth.</p>
-            <a href="#" class="text-blue-500 text-sm font-bold hover:underline">Visit Website <i class="fas fa-external-link-alt ml-1 text-[10px]"></i></a>
+            <h3 class="text-lg font-bold text-white mb-4">Tentang Perusahaan</h3>
+            <p class="text-sm text-slate-400 mb-6 leading-relaxed">Perusahaan ini adalah pemain terkemuka di sektor {{ $job->category->name }}, dikenal dengan inovasi dan komitmennya terhadap pengembangan karyawan.</p>
+            <a href="#" class="text-blue-500 text-sm font-bold hover:underline">Kunjungi Website <i class="fas fa-external-link-alt ml-1 text-[10px]"></i></a>
         </div>
     </div>
 </div>

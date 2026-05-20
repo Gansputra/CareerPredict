@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $roadmap['title'] . ' Roadmap')
+@section('title', $roadmap['title'] . ' - Peta Belajar')
 
 @section('content')
 <div class="max-w-4xl mx-auto pb-12">

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'My Profile Settings')
+@section('title', 'Pengaturan Profil')
 
 @section('content')
 <div class="w-full space-y-8">
@@ -16,8 +16,8 @@
             </div>
 
             <div>
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-white">Profile Settings</h1>
-                <p class="text-slate-400 text-sm mt-1">Manage your professional information and account security.</p>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-white">Pengaturan Profil</h1>
+                <p class="text-slate-400 text-sm mt-1">Kelola informasi profesional dan keamanan akun Anda.</p>
             </div>
         </div>
     </div>
@@ -33,7 +33,7 @@
         <!-- Skills & Interests Section -->
         <div class="glass p-8 animate-fade-in">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-                <h3 class="text-lg sm:text-xl font-bold text-white"><i class="fas fa-microchip text-blue-400 mr-2"></i> Your Detected Skills</h3>
+                <h3 class="text-lg sm:text-xl font-bold text-white"><i class="fas fa-microchip text-blue-400 mr-2"></i> Keahlian Terdeteksi</h3>
                 <div class="flex gap-2">
                     @if(Auth::user()->skills->count() > 0)
                     <form action="{{ route('cv.reset') }}" method="POST" class="inline" id="cvResetForm">
@@ -44,7 +44,7 @@
                     </form>
                     @endif
                     <a href="{{ route('cv.index') }}" class="px-3 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 text-xs font-bold hover:bg-blue-600/20 transition-all">
-                        <i class="fas fa-upload mr-1"></i> {{ Auth::user()->skills->count() > 0 ? 'Re-upload CV' : 'Upload CV' }}
+                        <i class="fas fa-upload mr-1"></i> {{ Auth::user()->skills->count() > 0 ? 'Unggah Ulang CV' : 'Unggah CV' }}
                     </a>
                 </div>
             </div>
@@ -63,7 +63,7 @@
 
             @if(Auth::user()->interests->count() > 0)
             <div class="pt-5 border-t border-slate-800">
-                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3"><i class="fas fa-heart text-purple-400 mr-1"></i> Detected Interests</h4>
+                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3"><i class="fas fa-heart text-purple-400 mr-1"></i> Minat Terdeteksi</h4>
                 <div class="flex flex-wrap gap-2">
                     @foreach(Auth::user()->interests as $interest)
                     <span class="px-3 py-1.5 rounded-full bg-purple-500/10 text-purple-400 text-xs font-bold">{{ $interest->name }}</span>
@@ -76,9 +76,9 @@
                 <div class="w-16 h-16 mx-auto bg-slate-800 rounded-2xl flex items-center justify-center mb-4">
                     <i class="fas fa-file-pdf text-slate-600 text-2xl"></i>
                 </div>
-                <p class="text-slate-500 text-sm mb-4">No skills detected yet. Upload your CV to automatically identify your expertise!</p>
+                <p class="text-slate-500 text-sm mb-4">Belum ada keahlian terdeteksi. Unggah CV Anda untuk mengidentifikasi keahlian secara otomatis!</p>
                 <a href="{{ route('cv.index') }}" class="btn-premium px-6 py-2 text-sm">
-                    <i class="fas fa-wand-magic-sparkles mr-2"></i> Analyze My CV
+                    <i class="fas fa-wand-magic-sparkles mr-2"></i> Analisis CV Saya
                 </a>
             </div>
             @endif
@@ -105,14 +105,14 @@
 <script>
 function confirmCvReset() {
     Swal.fire({
-        title: 'Reset CV Data?',
-        text: 'This will remove all skills and interests detected from your CV. You can re-upload anytime.',
+        title: 'Reset Data CV?',
+        text: 'Ini akan menghapus semua keahlian dan minat yang terdeteksi dari CV Anda. Anda bisa unggah ulang kapan saja.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#ef4444',
         cancelButtonColor: '#334155',
-        confirmButtonText: 'Yes, Reset',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: 'Ya, Reset',
+        cancelButtonText: 'Batal',
         background: '#1e293b',
         color: '#fff'
     }).then((result) => {

@@ -30,7 +30,7 @@
                         </div>
                     </a>
                     <h2 class="text-3xl font-bold text-white">Career<span class="text-blue-500">Predict</span></h2>
-                    <p class="text-slate-500 text-sm mt-2">Welcome back to your career companion.</p>
+                    <p class="text-slate-500 text-sm mt-2">Selamat datang kembali di partner karir Anda.</p>
                 </div>
 
                 <div class="glass p-8 shadow-2xl">

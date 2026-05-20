@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Learning Roadmap')
+@section('title', 'Peta Belajar')
 
 @section('content')
 <div class="max-w-7xl mx-auto space-y-8">
@@ -10,11 +10,11 @@
         <div>
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-bold tracking-widest uppercase mb-3 border border-blue-500/20">
                 <i class="fas fa-map-signs"></i>
-                Career Paths
+                Jalur Karir
             </div>
-            <h1 class="text-3xl font-bold text-white mb-2">Learning <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">Roadmaps</span></h1>
+            <h1 class="text-3xl font-bold text-white mb-2">Peta <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">Belajar</span></h1>
             <p class="text-slate-400 text-sm max-w-2xl">
-                Choose a career path below to view a step-by-step guide on the skills and technologies you need to master to achieve your dream job.
+                Pilih jalur karir di bawah ini untuk melihat panduan langkah demi langkah tentang keahlian dan teknologi yang perlu Anda kuasai untuk meraih pekerjaan impian.
             </p>
         </div>
     </div>
@@ -33,7 +33,7 @@
                         <i class="{{ $roadmap['icon'] }}"></i>
                     </div>
                     <span class="px-3 py-1 bg-slate-900/50 rounded-full border border-slate-700 text-xs font-medium text-slate-300">
-                        {{ count($roadmap['steps']) }} Steps
+                        {{ count($roadmap['steps']) }} Langkah
                     </span>
                 </div>
                 
@@ -44,13 +44,13 @@
                 
                 <div class="grid grid-cols-2 gap-4 mb-6 relative z-10">
                     <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700/50">
-                        <p class="text-[10px] uppercase tracking-wider text-slate-500 font-bold mb-1">Estimated Time</p>
+                        <p class="text-[10px] uppercase tracking-wider text-slate-500 font-bold mb-1">Estimasi Waktu</p>
                         <p class="text-sm font-semibold text-white flex items-center gap-2">
                             <i class="fas fa-clock text-slate-400"></i> {{ $roadmap['estimated_time'] }}
                         </p>
                     </div>
                     <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700/50">
-                        <p class="text-[10px] uppercase tracking-wider text-slate-500 font-bold mb-1">Difficulty</p>
+                        <p class="text-[10px] uppercase tracking-wider text-slate-500 font-bold mb-1">Tingkat Kesulitan</p>
                         <p class="text-sm font-semibold text-white flex items-center gap-2">
                             <i class="fas fa-layer-group text-slate-400"></i> {{ $roadmap['difficulty'] }}
                         </p>
@@ -58,7 +58,7 @@
                 </div>
                 
                 <a href="{{ route('roadmap.show', $slug) }}" class="w-full py-3 px-4 bg-slate-700 hover:bg-{{ $roadmap['color'] }}-600 text-white text-sm font-bold rounded-xl transition-all text-center flex items-center justify-center gap-2 relative z-10">
-                    View Roadmap <i class="fas fa-arrow-right"></i>
+                    Lihat Peta Belajar <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>

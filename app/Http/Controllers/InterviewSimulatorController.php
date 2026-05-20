@@ -7,20 +7,20 @@ use Illuminate\Http\Request;
 class InterviewSimulatorController extends Controller
 {
     /**
-     * Bank of interview questions grouped by career category.
+     * Bank pertanyaan interview dikelompokkan per kategori karir.
      */
     private $questions = [
         'general' => [
-            'label' => 'General / HR',
+            'label' => 'Umum / HRD',
             'icon'  => 'fas fa-user-tie',
             'color' => 'slate',
             'questions' => [
-                ['q' => 'Tell me about yourself.', 'tip' => 'Keep it professional – focus on your background, key skills, and why you\'re excited about this role. Use the Present–Past–Future structure.'],
-                ['q' => 'What are your greatest strengths?', 'tip' => 'Pick 2–3 strengths directly relevant to the job. Back each one up with a concrete example.'],
-                ['q' => 'What is your biggest weakness?', 'tip' => 'Choose a genuine weakness, but frame it as something you are actively working to improve. Avoid clichés like "I work too hard."'],
-                ['q' => 'Where do you see yourself in 5 years?', 'tip' => 'Show ambition but align your goal with the company\'s growth. Mention skills you want to develop.'],
-                ['q' => 'Why do you want to leave your current job?', 'tip' => 'Stay positive. Focus on growth opportunities at the new company rather than criticising your current employer.'],
-                ['q' => 'Why should we hire you?', 'tip' => 'Summarise your top 3 relevant skills, give a brief result-oriented example for each, then close with your enthusiasm for the role.'],
+                ['q' => 'Ceritakan tentang diri Anda.', 'tip' => 'Tetap profesional – fokus pada latar belakang, keahlian utama, dan alasan Anda tertarik dengan posisi ini. Gunakan struktur Masa Kini–Masa Lalu–Masa Depan.'],
+                ['q' => 'Apa kelebihan terbesar Anda?', 'tip' => 'Pilih 2–3 kelebihan yang relevan dengan pekerjaan. Dukung setiap kelebihan dengan contoh nyata.'],
+                ['q' => 'Apa kelemahan terbesar Anda?', 'tip' => 'Pilih kelemahan yang jujur, tapi sampaikan sebagai hal yang sedang Anda perbaiki. Hindari jawaban klise seperti "Saya terlalu pekerja keras."'],
+                ['q' => 'Di mana Anda melihat diri Anda dalam 5 tahun ke depan?', 'tip' => 'Tunjukkan ambisi yang sejalan dengan pertumbuhan perusahaan. Sebutkan keterampilan yang ingin Anda kembangkan.'],
+                ['q' => 'Mengapa Anda ingin keluar dari pekerjaan saat ini?', 'tip' => 'Tetap positif. Fokus pada peluang pertumbuhan di perusahaan baru daripada mengkritik perusahaan lama.'],
+                ['q' => 'Mengapa kami harus merekrut Anda?', 'tip' => 'Rangkum 3 keahlian utama Anda yang relevan, berikan contoh singkat yang berorientasi hasil, lalu tutup dengan antusiasme Anda terhadap posisi ini.'],
             ],
         ],
         'data-scientist' => [
@@ -28,11 +28,11 @@ class InterviewSimulatorController extends Controller
             'icon'  => 'fas fa-chart-pie',
             'color' => 'blue',
             'questions' => [
-                ['q' => 'Explain the difference between supervised and unsupervised learning.', 'tip' => 'Supervised learning uses labelled data; unsupervised finds patterns in unlabelled data. Give a real-world example for each (e.g., spam detection vs. customer segmentation).'],
-                ['q' => 'How do you handle missing data in a dataset?', 'tip' => 'Mention multiple strategies: deletion (listwise/pairwise), mean/median imputation, model-based imputation (KNN, regression), and when each is appropriate.'],
-                ['q' => 'What is overfitting and how do you prevent it?', 'tip' => 'Overfitting = model memorises training data. Prevention: cross-validation, regularisation (L1/L2), dropout, reducing model complexity, more data.'],
-                ['q' => 'Explain the bias–variance tradeoff.', 'tip' => 'High bias = underfitting; high variance = overfitting. A good model balances both. Use a simple diagram analogy to explain.'],
-                ['q' => 'Walk me through a data science project you completed.', 'tip' => 'Use STAR format: Situation, Task, Action, Result. Mention the tools, the metric you optimised, and the business impact.'],
+                ['q' => 'Jelaskan perbedaan antara supervised dan unsupervised learning.', 'tip' => 'Supervised learning menggunakan data berlabel; unsupervised menemukan pola dalam data tanpa label. Berikan contoh nyata masing-masing (misal: deteksi spam vs. segmentasi pelanggan).'],
+                ['q' => 'Bagaimana Anda menangani data yang hilang (missing data) dalam dataset?', 'tip' => 'Sebutkan beberapa strategi: penghapusan (listwise/pairwise), imputasi mean/median, imputasi berbasis model (KNN, regresi), dan kapan masing-masing tepat digunakan.'],
+                ['q' => 'Apa itu overfitting dan bagaimana cara mencegahnya?', 'tip' => 'Overfitting = model menghafal data latih. Pencegahan: cross-validation, regularisasi (L1/L2), dropout, mengurangi kompleksitas model, menambah data.'],
+                ['q' => 'Jelaskan tradeoff bias-variance.', 'tip' => 'Bias tinggi = underfitting; variance tinggi = overfitting. Model yang baik menyeimbangkan keduanya. Gunakan analogi diagram sederhana untuk menjelaskan.'],
+                ['q' => 'Ceritakan proyek data science yang pernah Anda selesaikan.', 'tip' => 'Gunakan format STAR: Situasi, Tugas, Aksi, Hasil. Sebutkan alat yang digunakan, metrik yang dioptimasi, dan dampak bisnisnya.'],
             ],
         ],
         'software-engineer' => [
@@ -40,23 +40,23 @@ class InterviewSimulatorController extends Controller
             'icon'  => 'fas fa-laptop-code',
             'color' => 'indigo',
             'questions' => [
-                ['q' => 'Explain the difference between REST and GraphQL.', 'tip' => 'REST uses fixed endpoints per resource; GraphQL uses a single endpoint where the client specifies exactly what data it needs. Mention trade-offs (over-fetching, complexity).'],
-                ['q' => 'What is the SOLID principle?', 'tip' => 'S–Single Responsibility, O–Open/Closed, L–Liskov Substitution, I–Interface Segregation, D–Dependency Inversion. Give a brief example for at least two.'],
-                ['q' => 'How do you ensure code quality in a team?', 'tip' => 'Mention code reviews, linting, automated testing (unit, integration, e2e), CI/CD pipelines, and documentation standards.'],
-                ['q' => 'Explain how a database index works.', 'tip' => 'An index is a data structure (often B-tree) that speeds up reads at the cost of slower writes and extra storage. Mention when NOT to use indexes.'],
-                ['q' => 'Describe a challenging bug you fixed.', 'tip' => 'Use STAR. Highlight your debugging process: reproduction, isolation, root-cause analysis, fix, and regression test.'],
+                ['q' => 'Jelaskan perbedaan antara REST dan GraphQL.', 'tip' => 'REST menggunakan endpoint tetap per resource; GraphQL menggunakan satu endpoint di mana klien menentukan data yang dibutuhkan. Sebutkan trade-off (over-fetching, kompleksitas).'],
+                ['q' => 'Apa itu prinsip SOLID?', 'tip' => 'S–Single Responsibility, O–Open/Closed, L–Liskov Substitution, I–Interface Segregation, D–Dependency Inversion. Berikan contoh singkat minimal untuk dua prinsip.'],
+                ['q' => 'Bagaimana Anda memastikan kualitas kode dalam tim?', 'tip' => 'Sebutkan code review, linting, automated testing (unit, integration, e2e), CI/CD pipeline, dan standar dokumentasi.'],
+                ['q' => 'Jelaskan cara kerja database index.', 'tip' => 'Index adalah struktur data (biasanya B-tree) yang mempercepat pembacaan dengan mengorbankan kecepatan penulisan dan penyimpanan tambahan. Sebutkan kapan TIDAK perlu menggunakan index.'],
+                ['q' => 'Ceritakan bug yang sulit yang pernah Anda perbaiki.', 'tip' => 'Gunakan STAR. Soroti proses debugging: reproduksi, isolasi, analisis akar masalah, perbaikan, dan uji regresi.'],
             ],
         ],
         'ui-ux-designer' => [
-            'label' => 'UI/UX Designer',
+            'label' => 'Desainer UI/UX',
             'icon'  => 'fas fa-pen-nib',
             'color' => 'purple',
             'questions' => [
-                ['q' => 'Walk me through your design process.', 'tip' => 'Describe your end-to-end process: Research → Define → Ideate → Prototype → Test → Iterate. Mention tools (Figma, Maze, etc.).'],
-                ['q' => 'How do you handle design feedback you disagree with?', 'tip' => 'Show empathy, ask clarifying questions to understand the reasoning, present data to support your decision, and be willing to compromise.'],
-                ['q' => 'What\'s the difference between UX and UI?', 'tip' => 'UX = the overall experience and feel; UI = the visual and interactive elements. A great UI can still have poor UX.'],
-                ['q' => 'How do you make designs accessible?', 'tip' => 'Mention WCAG guidelines, colour contrast ratios (4.5:1 for normal text), keyboard navigation, screen reader support, and alt text for images.'],
-                ['q' => 'Describe a time your design significantly improved a metric.', 'tip' => 'Give a concrete before/after metric (e.g., conversion rate, task completion time). Explain your research, design decision, and A/B test result.'],
+                ['q' => 'Ceritakan proses desain Anda dari awal sampai akhir.', 'tip' => 'Jelaskan proses end-to-end: Riset → Definisi → Ideasi → Prototipe → Uji → Iterasi. Sebutkan alat yang digunakan (Figma, Maze, dll.).'],
+                ['q' => 'Bagaimana Anda menangani feedback desain yang tidak Anda setujui?', 'tip' => 'Tunjukkan empati, ajukan pertanyaan klarifikasi, presentasikan data untuk mendukung keputusan Anda, dan tunjukkan kemauan berkompromi.'],
+                ['q' => 'Apa perbedaan antara UX dan UI?', 'tip' => 'UX = pengalaman dan kesan keseluruhan; UI = elemen visual dan interaktif. UI yang bagus tetap bisa punya UX yang buruk.'],
+                ['q' => 'Bagaimana Anda membuat desain yang aksesibel?', 'tip' => 'Sebutkan panduan WCAG, rasio kontras warna (4.5:1 untuk teks normal), navigasi keyboard, dukungan screen reader, dan alt text untuk gambar.'],
+                ['q' => 'Ceritakan saat desain Anda secara signifikan meningkatkan sebuah metrik.', 'tip' => 'Berikan metrik before/after yang konkret (misal: conversion rate, waktu penyelesaian tugas). Jelaskan riset, keputusan desain, dan hasil A/B test.'],
             ],
         ],
         'product-manager' => [
@@ -64,17 +64,17 @@ class InterviewSimulatorController extends Controller
             'icon'  => 'fas fa-tasks',
             'color' => 'emerald',
             'questions' => [
-                ['q' => 'How do you prioritise features when everything is urgent?', 'tip' => 'Describe a framework: RICE (Reach, Impact, Confidence, Effort), MoSCoW, or Kano model. Show how you balance business value vs. effort.'],
-                ['q' => 'Tell me how you define success for a product.', 'tip' => 'Connect to business goals → OKRs → key metrics (DAU, retention, NPS, revenue). Emphasise leading vs. lagging indicators.'],
-                ['q' => 'How do you work with engineering when you disagree?', 'tip' => 'Show you understand technical constraints. Describe how you align on "why" before "what", use data to resolve disagreements, and maintain trust.'],
-                ['q' => 'How do you gather and use customer feedback?', 'tip' => 'Mention qualitative (interviews, usability tests) and quantitative (surveys, analytics). Explain how you synthesise insights into actionable requirements.'],
-                ['q' => 'Describe a product failure and what you learned.', 'tip' => 'Be honest. Focus on what indicators you missed, what you would do differently, and the growth mindset you developed.'],
+                ['q' => 'Bagaimana Anda memprioritaskan fitur ketika semuanya terasa mendesak?', 'tip' => 'Jelaskan framework: RICE (Reach, Impact, Confidence, Effort), MoSCoW, atau model Kano. Tunjukkan cara Anda menyeimbangkan nilai bisnis vs. usaha.'],
+                ['q' => 'Bagaimana Anda mendefinisikan kesuksesan sebuah produk?', 'tip' => 'Hubungkan ke tujuan bisnis → OKR → metrik utama (DAU, retensi, NPS, revenue). Tekankan leading vs. lagging indicators.'],
+                ['q' => 'Bagaimana Anda bekerja dengan tim engineering saat ada ketidaksepakatan?', 'tip' => 'Tunjukkan pemahaman Anda tentang batasan teknis. Jelaskan bagaimana Anda menyelaraskan "mengapa" sebelum "apa", gunakan data untuk menyelesaikan perbedaan, dan menjaga kepercayaan.'],
+                ['q' => 'Bagaimana Anda mengumpulkan dan menggunakan feedback pelanggan?', 'tip' => 'Sebutkan kualitatif (wawancara, uji kegunaan) dan kuantitatif (survei, analytics). Jelaskan cara Anda mensintesis insight menjadi kebutuhan yang bisa ditindaklanjuti.'],
+                ['q' => 'Ceritakan tentang kegagalan produk dan apa yang Anda pelajari.', 'tip' => 'Jujur. Fokus pada indikator yang terlewat, apa yang akan Anda lakukan secara berbeda, dan pola pikir berkembang yang Anda kembangkan.'],
             ],
         ],
     ];
 
     /**
-     * Show the interview simulator landing page.
+     * Tampilkan halaman utama simulator interview.
      */
     public function index()
     {
@@ -93,7 +93,7 @@ class InterviewSimulatorController extends Controller
     }
 
     /**
-     * Show questions for a specific career category.
+     * Tampilkan pertanyaan untuk kategori karir tertentu.
      */
     public function show($category)
     {

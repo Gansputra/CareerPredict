@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'CV Analyzer')
+@section('title', 'Analisis CV')
 
 @section('content')
 <div class="max-w-4xl mx-auto space-y-8">
     <!-- Header -->
     <div class="text-center">
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-bold uppercase tracking-widest mb-6">
-            <i class="fas fa-robot"></i> AI-Powered Analysis
+            <i class="fas fa-robot"></i> Analisis Berbasis AI
         </div>
-        <h1 class="text-4xl font-extrabold text-white mb-3">CV <span class="text-gradient">Intelligence</span></h1>
-        <p class="text-slate-400 max-w-xl mx-auto">Upload your CV/Resume and let our Certainty Factor engine analyze your skills, interests, and recommend the best career paths for you.</p>
+        <h1 class="text-4xl font-extrabold text-white mb-3">CV <span class="text-gradient">Cerdas</span></h1>
+        <p class="text-slate-400 max-w-xl mx-auto">Unggah CV/Resume Anda dan biarkan mesin Certainty Factor kami menganalisis keahlian, minat, dan merekomendasikan jalur karir terbaik untuk Anda.</p>
     </div>
 
     @if(session('error'))
@@ -40,9 +40,9 @@
                     <div class="w-20 h-20 mx-auto bg-slate-800 rounded-3xl flex items-center justify-center mb-4">
                         <i class="fas fa-cloud-arrow-up text-3xl" :class="isDragging ? 'text-blue-400' : 'text-slate-500'"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2">Drop your CV here</h3>
-                    <p class="text-slate-400 text-sm">or click to browse files</p>
-                    <p class="text-slate-600 text-xs mt-3">Supports PDF • Max 10MB</p>
+                    <h3 class="text-xl font-bold text-white mb-2">Taruh CV Anda di sini</h3>
+                    <p class="text-slate-400 text-sm">atau klik untuk memilih file</p>
+                    <p class="text-slate-600 text-xs mt-3">Mendukung PDF • Maks 10MB</p>
                 </div>
 
                 <!-- Selected File -->
@@ -51,8 +51,8 @@
                         <i class="fas fa-file-pdf text-3xl text-emerald-400"></i>
                     </div>
                     <h3 class="text-lg font-bold text-white mb-1" x-text="fileName"></h3>
-                    <p class="text-emerald-400 text-sm font-medium"><i class="fas fa-check-circle mr-1"></i> Ready to analyze</p>
-                    <button type="button" @click.stop="removeFile()" class="text-xs text-red-400 hover:text-red-300 mt-2 underline">Remove file</button>
+                    <p class="text-emerald-400 text-sm font-medium"><i class="fas fa-check-circle mr-1"></i> Siap dianalisis</p>
+                    <button type="button" @click.stop="removeFile()" class="text-xs text-red-400 hover:text-red-300 mt-2 underline">Hapus file</button>
                 </div>
             </div>
 
@@ -63,8 +63,8 @@
                         <i class="fas fa-magnifying-glass-chart"></i>
                     </div>
                     <div>
-                        <p class="text-xs font-bold text-white mb-1">Skill Extraction</p>
-                        <p class="text-[11px] text-slate-500 leading-relaxed">AI scans your CV to detect technical & soft skills.</p>
+                        <p class="text-xs font-bold text-white mb-1">Ekstraksi Keahlian</p>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">AI memindai CV Anda untuk mendeteksi keahlian teknis & soft skill.</p>
                     </div>
                 </div>
                 <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-900/50">
@@ -72,8 +72,8 @@
                         <i class="fas fa-brain"></i>
                     </div>
                     <div>
-                        <p class="text-xs font-bold text-white mb-1">CF Analysis</p>
-                        <p class="text-[11px] text-slate-500 leading-relaxed">Certainty Factor engine matches your profile to careers.</p>
+                        <p class="text-xs font-bold text-white mb-1">Analisis CF</p>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">Mesin Certainty Factor mencocokkan profil Anda dengan karir.</p>
                     </div>
                 </div>
                 <div class="flex items-start gap-3 p-4 rounded-xl bg-slate-900/50">
@@ -81,8 +81,8 @@
                         <i class="fas fa-trophy"></i>
                     </div>
                     <div>
-                        <p class="text-xs font-bold text-white mb-1">Smart Results</p>
-                        <p class="text-[11px] text-slate-500 leading-relaxed">Get personalized job recommendations ranked by fit.</p>
+                        <p class="text-xs font-bold text-white mb-1">Hasil Cerdas</p>
+                        <p class="text-[11px] text-slate-500 leading-relaxed">Dapatkan rekomendasi pekerjaan yang dipersonalisasi dan diranking berdasarkan kecocokan.</p>
                     </div>
                 </div>
             </div>
@@ -92,14 +92,14 @@
                 <button type="submit" :disabled="!fileName || isAnalyzing"
                         class="btn-premium px-10 py-4 text-base disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none">
                     <span x-show="!isAnalyzing">
-                        <i class="fas fa-wand-magic-sparkles mr-2"></i> Analyze My CV
+                        <i class="fas fa-wand-magic-sparkles mr-2"></i> Analisis CV Saya
                     </span>
                     <span x-show="isAnalyzing" class="flex items-center gap-3">
                         <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
                         </svg>
-                        Analyzing your CV...
+                        Menganalisis CV Anda...
                     </span>
                 </button>
             </div>
@@ -121,7 +121,7 @@ function cvUploader() {
                 this.$refs.fileInput.files = files;
                 this.fileName = files[0].name;
             } else {
-                Swal.fire({ icon: 'error', title: 'Invalid File', text: 'Only PDF files are supported.', background: '#1e293b', color: '#fff', confirmButtonColor: '#2563eb' });
+                Swal.fire({ icon: 'error', title: 'File Tidak Valid', text: 'Hanya file PDF yang didukung.', background: '#1e293b', color: '#fff', confirmButtonColor: '#2563eb' });
             }
         },
         handleFileSelect(e) {

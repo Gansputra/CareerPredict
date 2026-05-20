@@ -13,12 +13,12 @@ class QuestionnaireSeeder extends Seeder
     public function run(): void
     {
         $questions = [
-            ['question' => 'How comfortable are you with backend development?', 'category' => 'technical', 'options' => ['Very Uncomfortable', 'Uncomfortable', 'Neutral', 'Comfortable', 'Expert']],
-            ['question' => 'Do you enjoy designing user interfaces?', 'category' => 'technical', 'options' => ['Not at all', 'Slightly', 'Moderately', 'Very much', 'Extremely']],
-            ['question' => 'How would you rate your public speaking skills?', 'category' => 'soft_skills', 'options' => ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent']],
-            ['question' => 'How well do you work under tight deadlines?', 'category' => 'soft_skills', 'options' => ['Very Poorly', 'Poorly', 'Moderately', 'Well', 'Very Well']],
-            ['question' => 'Are you interested in working with Big Data?', 'category' => 'career_path', 'options' => ['No Interest', 'Slight Interest', 'Interested', 'Very Interested', 'Passionate']],
-            ['question' => 'Do you prefer leading teams or working independently?', 'category' => 'soft_skills', 'options' => ['Independently', 'Mostly Independently', 'Neutral', 'Mostly Leading', 'Leading']],
+            ['question' => 'Seberapa nyaman Anda dengan pengembangan backend?', 'category' => 'technical', 'options' => ['Sangat Tidak Nyaman', 'Tidak Nyaman', 'Netral', 'Nyaman', 'Sangat Mahir']],
+            ['question' => 'Apakah Anda menikmati mendesain antarmuka pengguna?', 'category' => 'technical', 'options' => ['Tidak Sama Sekali', 'Sedikit', 'Cukup', 'Sangat Suka', 'Sangat Antusias']],
+            ['question' => 'Bagaimana Anda menilai kemampuan berbicara di depan umum?', 'category' => 'soft_skills', 'options' => ['Buruk', 'Kurang', 'Cukup Baik', 'Baik', 'Sangat Baik']],
+            ['question' => 'Seberapa baik Anda bekerja di bawah tenggat waktu yang ketat?', 'category' => 'soft_skills', 'options' => ['Sangat Buruk', 'Buruk', 'Cukup', 'Baik', 'Sangat Baik']],
+            ['question' => 'Apakah Anda tertarik bekerja dengan Big Data?', 'category' => 'career_path', 'options' => ['Tidak Tertarik', 'Sedikit Tertarik', 'Tertarik', 'Sangat Tertarik', 'Sangat Antusias']],
+            ['question' => 'Apakah Anda lebih suka memimpin tim atau bekerja mandiri?', 'category' => 'soft_skills', 'options' => ['Mandiri', 'Lebih Suka Mandiri', 'Netral', 'Lebih Suka Memimpin', 'Memimpin']],
         ];
 
         foreach ($questions as $question) {

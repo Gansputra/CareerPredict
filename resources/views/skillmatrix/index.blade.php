@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Skill Matrix')
+@section('title', 'Matriks Keahlian')
 
 @section('content')
 <div class="max-w-7xl mx-auto space-y-8">
@@ -9,13 +9,13 @@
     <div data-aos="fade-up">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-xs font-bold tracking-widest uppercase mb-3 border border-purple-500/20">
             <i class="fas fa-layer-group"></i>
-            Skill Analysis
+            Analisis Keahlian
         </div>
         <h1 class="text-3xl font-bold text-white mb-2">
-            Skill <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400">Matrix</span>
+            Matriks <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400">Keahlian</span>
         </h1>
         <p class="text-slate-400 text-sm max-w-2xl">
-            Compare your current skill levels against what each career path requires. The green bar is <strong class="text-slate-300">you</strong>; the grey outline is the <strong class="text-slate-300">target level</strong>.
+            Bandingkan level keahlian Anda saat ini dengan yang dibutuhkan setiap jalur karir. Bar hijau adalah <strong class="text-slate-300">Anda</strong>; garis abu-abu adalah <strong class="text-slate-300">level target</strong>.
         </p>
     </div>
 
@@ -49,19 +49,19 @@
                     </div>
                     <div>
                         <h2 class="text-lg font-bold text-white">{{ $career['title'] }}</h2>
-                        <p class="text-xs text-slate-500">{{ count($career['skills']) }} core skills</p>
+                        <p class="text-xs text-slate-500">{{ count($career['skills']) }} keahlian inti</p>
                     </div>
                 </div>
                 <div class="text-right">
                     <span class="text-2xl font-extrabold {{ $c['text'] }}">{{ $overallPct }}%</span>
-                    <p class="text-[10px] uppercase tracking-widest text-slate-500">match</p>
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500">kecocokan</p>
                 </div>
             </div>
 
             {{-- Overall progress ring (simple bar) --}}
             <div class="mb-6">
                 <div class="flex justify-between text-xs text-slate-400 mb-1">
-                    <span>Overall Readiness</span>
+                    <span>Kesiapan Keseluruhan</span>
                     <span>{{ $overallPct }}%</span>
                 </div>
                 <div class="w-full h-3 bg-slate-800 rounded-full overflow-hidden">
@@ -86,7 +86,7 @@
                             @if($gap > 0)
                                 <span class="px-1.5 py-0.5 rounded bg-red-500/20 text-red-400 font-semibold">-{{ $gap }}%</span>
                             @else
-                                <span class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-semibold">✓ Ready</span>
+                                <span class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-semibold">✓ Siap</span>
                             @endif
                             <span class="text-slate-500">{{ $userLevel }}/{{ $required }}</span>
                         </div>
@@ -108,7 +108,7 @@
             <div class="mt-6 pt-4 border-t border-slate-700/50">
                 <a href="{{ route('roadmap.show', $slug) }}"
                    class="inline-flex items-center gap-2 text-xs font-semibold {{ $c['text'] }} hover:underline transition">
-                    View Roadmap to close the gap <i class="fas fa-arrow-right"></i>
+                    Lihat Peta Belajar untuk menutup gap <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>
@@ -119,19 +119,19 @@
     <div class="flex flex-wrap gap-6 text-xs text-slate-400" data-aos="fade-up">
         <div class="flex items-center gap-2">
             <div class="w-4 h-2 rounded-full bg-slate-600/50"></div>
-            <span>Required level</span>
+            <span>Level yang dibutuhkan</span>
         </div>
         <div class="flex items-center gap-2">
             <div class="w-4 h-2 rounded-full bg-blue-500/80"></div>
-            <span>Your current level</span>
+            <span>Level Anda saat ini</span>
         </div>
         <div class="flex items-center gap-2">
             <span class="px-1.5 py-0.5 rounded bg-red-500/20 text-red-400 font-semibold">-N%</span>
-            <span>Skill gap remaining</span>
+            <span>Gap keahlian tersisa</span>
         </div>
         <div class="flex items-center gap-2">
             <span class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-semibold">✓ Ready</span>
-            <span>Skill already met</span>
+            <span>Keahlian sudah terpenuhi</span>
         </div>
     </div>
 

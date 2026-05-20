@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', $cat['label'] . ' Interview Questions')
+@section('title', $cat['label'] . ' - Pertanyaan Interview')
 
 @section('content')
 <div class="max-w-3xl mx-auto pb-12 space-y-6">
 
     {{-- Back --}}
     <a href="{{ route('interview.index') }}" class="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm font-medium" data-aos="fade-down">
-        <i class="fas fa-arrow-left"></i> Back to Categories
+        <i class="fas fa-arrow-left"></i> Kembali ke Kategori
     </a>
 
     {{-- Header --}}
@@ -19,7 +19,7 @@
             </div>
             <div>
                 <h1 class="text-2xl font-bold text-white">{{ $cat['label'] }}</h1>
-                <p class="text-slate-400 text-sm">{{ count($cat['questions']) }} interview questions with expert tips</p>
+                <p class="text-slate-400 text-sm">{{ count($cat['questions']) }} pertanyaan interview dengan tips dari ahli</p>
             </div>
         </div>
     </div>
@@ -55,7 +55,7 @@
                 <div class="px-6 pb-5 pt-0">
                     <div class="ml-12 p-4 rounded-xl bg-slate-800/60 border border-slate-700/50">
                         <div class="flex items-center gap-2 mb-2 text-amber-400 text-xs font-bold uppercase tracking-widest">
-                            <i class="fas fa-lightbulb"></i> Expert Tip
+                            <i class="fas fa-lightbulb"></i> Tips Ahli
                         </div>
                         <p class="text-slate-300 text-sm leading-relaxed">{{ $item['tip'] }}</p>
                     </div>
@@ -68,10 +68,10 @@
 
     {{-- CTA --}}
     <div class="text-center pt-4" data-aos="fade-up">
-        <p class="text-slate-500 text-sm mb-4">Want to practice another category?</p>
+        <p class="text-slate-500 text-sm mb-4">Ingin berlatih kategori lain?</p>
         <a href="{{ route('interview.index') }}"
            class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-rose-500/20">
-            <i class="fas fa-arrow-left"></i> Back to All Categories
+            <i class="fas fa-arrow-left"></i> Kembali ke Semua Kategori
         </a>
     </div>
 

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Your Career Companion')
+@section('title', 'Partner Karir Anda')
 
 @section('content')
 <div class="space-y-8">
@@ -8,24 +8,24 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div class="lg:col-span-2 relative overflow-hidden glass p-8 sm:p-10 rounded-3xl animate-fade-in">
             <div class="relative z-10">
-                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white mb-4">Welcome back, {{ Auth::user()->name }}! 👋</h1>
+                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white mb-4">Selamat datang, {{ Auth::user()->name }}! 👋</h1>
                 <p class="text-slate-400 text-base sm:text-lg max-w-xl leading-relaxed">
-                    "The best way to predict your future is to create it." 
-                    <br>Let's discover your ideal career path today.
+                    "Cara terbaik memprediksi masa depan adalah menciptakannya." 
+                    <br>Mari temukan jalur karir idealmu hari ini.
                 </p>
                 
                 <div class="mt-8 flex flex-wrap gap-4">
                     @if($progress > 0)
                     <a href="{{ route('assessment.index') }}" class="btn-premium px-8 py-3">
-                        <i class="fas fa-wand-magic-sparkles mr-2"></i> Retake Assessment
+                        <i class="fas fa-wand-magic-sparkles mr-2"></i> Ulangi Asesmen
                     </a>
                     @else
                     <a href="{{ route('assessment.index') }}" class="btn-premium px-8 py-3">
-                        <i class="fas fa-dna mr-2"></i> Start Career DNA Test
+                        <i class="fas fa-dna mr-2"></i> Mulai Tes DNA Karir
                     </a>
                     @endif
                     <a href="{{ route('jobs.index') }}" class="px-8 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 transition-all text-white font-semibold">
-                        Explore Open Roles
+                        Jelajahi Lowongan
                     </a>
                 </div>
             </div>
@@ -37,11 +37,11 @@
 
         <!-- Top Match Card -->
         <div class="glass-dark p-8 border-t-4 {{ count($topMatches) > 0 ? 'border-emerald-500' : 'border-slate-700' }} shadow-2xl animate-fade-in" style="animation-delay: 100ms">
-            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">Top Career Match</h3>
+            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">Karir Paling Cocok</h3>
             @if(count($topMatches) > 0)
                 <div class="mb-6">
                     <h2 class="text-2xl font-bold text-white mb-1">{{ $topMatches[0]['job_title'] }}</h2>
-                    <p class="text-emerald-500 font-bold text-lg">{{ $topMatches[0]['confidence'] }}% Compatibility</p>
+                    <p class="text-emerald-500 font-bold text-lg">{{ $topMatches[0]['confidence'] }}% Kompatibilitas</p>
                 </div>
                 <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 mb-6">
                     <p class="text-sm text-slate-300 italic">"{{ $topMatches[0]['explanation'] }}"</p>
@@ -49,7 +49,7 @@
                 @php $topJob = \App\Models\JobListing::find($topMatches[0]['job_id']); @endphp
                 @if($topJob)
                 <a href="{{ route('jobs.show', $topJob->slug) }}" class="text-blue-500 font-bold text-sm hover:underline">
-                    View Role Requirements <i class="fas fa-arrow-right ml-1"></i>
+                    Lihat Persyaratan <i class="fas fa-arrow-right ml-1"></i>
                 </a>
                 @endif
             @else
@@ -57,9 +57,9 @@
                     <div class="w-16 h-16 mx-auto bg-slate-800 rounded-2xl flex items-center justify-center mb-4">
                         <i class="fas fa-compass text-slate-600 text-2xl"></i>
                     </div>
-                    <p class="text-slate-500 text-sm mb-4">Complete the Career DNA Test to see your top match.</p>
+                    <p class="text-slate-500 text-sm mb-4">Selesaikan Tes DNA Karir untuk melihat karir paling cocok.</p>
                     <a href="{{ route('assessment.index') }}" class="text-blue-500 text-sm font-bold hover:underline">
-                        Take the Test <i class="fas fa-arrow-right ml-1"></i>
+                        Mulai Tes <i class="fas fa-arrow-right ml-1"></i>
                     </a>
                 </div>
             @endif
@@ -203,8 +203,8 @@
         <div class="glass-dark p-8 animate-fade-in" style="animation-delay: 200ms">
             <div class="flex items-center justify-between mb-8">
                 <div>
-                    <h3 class="text-xl font-bold text-white">Personality Insights</h3>
-                    <p class="text-xs text-slate-500 mt-1">Based on your recent assessment scores</p>
+                    <h3 class="text-xl font-bold text-white">Insight Kepribadian</h3>
+                    <p class="text-xs text-slate-500 mt-1">Berdasarkan skor asesmen terbaru Anda</p>
                 </div>
                 <div class="w-10 h-10 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-500">
                     <i class="fas fa-chart-pie"></i>
@@ -219,7 +219,7 @@
                 <div class="w-16 h-16 mx-auto bg-slate-800 rounded-2xl flex items-center justify-center mb-4">
                     <i class="fas fa-chart-bar text-slate-600 text-2xl"></i>
                 </div>
-                <p class="text-slate-500 text-sm">No personality data yet. Take the Career DNA Test to see your chart.</p>
+                <p class="text-slate-500 text-sm">Belum ada data kepribadian. Ikuti Tes DNA Karir untuk melihat grafik Anda.</p>
             </div>
             @endif
         </div>
@@ -229,7 +229,7 @@
             <!-- Assessment Progress -->
             <div class="glass-dark p-8 animate-fade-in" style="animation-delay: 300ms">
                 <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-lg font-bold text-white">Profile Strength</h3>
+                    <h3 class="text-lg font-bold text-white">Kekuatan Profil</h3>
                     <span class="text-blue-500 font-bold text-sm">{{ round($progress) }}%</span>
                 </div>
                 <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden mb-6">
@@ -237,18 +237,18 @@
                 </div>
                 <p class="text-xs text-slate-500 leading-relaxed">
                     @if($progress == 0)
-                        Start the Career DNA Test to build your profile and unlock AI-driven insights.
+                        Mulai Tes DNA Karir untuk membangun profil dan membuka insight berbasis AI.
                     @elseif($progress < 100)
-                        Complete all modules to unlock deeper AI-driven career insights.
+                        Selesaikan semua modul untuk membuka insight karir berbasis AI yang lebih mendalam.
                     @else
-                        Your profile is fully optimized. Our AI is now delivering maximum precision matches.
+                        Profil Anda sudah optimal. AI kami kini memberikan rekomendasi dengan presisi maksimum.
                     @endif
                 </p>
             </div>
 
             <!-- Smart Suggestions -->
             <div class="glass-dark p-8 animate-fade-in" style="animation-delay: 400ms">
-                <h3 class="text-lg font-bold text-white mb-6">AI Career Suggestions</h3>
+                <h3 class="text-lg font-bold text-white mb-6">Saran Karir AI</h3>
                 <div class="space-y-4">
                     @if(count($topMatches) > 1)
                         @foreach(array_slice($topMatches, 1, 3) as $match)
@@ -257,15 +257,15 @@
                                 <i class="fas fa-lightbulb"></i>
                             </div>
                             <div>
-                                <p class="text-sm font-bold text-white">Consider {{ $match['job_title'] }}</p>
-                                <p class="text-[10px] text-slate-500 uppercase tracking-widest">{{ $match['confidence'] }}% Match Score</p>
+                                <p class="text-sm font-bold text-white">Pertimbangkan {{ $match['job_title'] }}</p>
+                                <p class="text-[10px] text-slate-500 uppercase tracking-widest">{{ $match['confidence'] }}% Skor Kecocokan</p>
                             </div>
                         </div>
                         @endforeach
                     @else
                         <div class="text-center py-6">
                             <i class="fas fa-lightbulb text-slate-700 text-2xl mb-3"></i>
-                            <p class="text-sm text-slate-500">Complete the Career DNA Test to get personalized suggestions.</p>
+                            <p class="text-sm text-slate-500">Selesaikan Tes DNA Karir untuk mendapatkan saran personal.</p>
                         </div>
                     @endif
                 </div>
@@ -276,7 +276,7 @@
     <!-- Recent Activity -->
     <div class="glass-dark p-8 animate-fade-in" style="animation-delay: 500ms">
         <div class="flex items-center justify-between mb-8">
-            <h3 class="text-xl font-bold text-white">Recent Recommendation History</h3>
+            <h3 class="text-xl font-bold text-white">Riwayat Rekomendasi Terbaru</h3>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             @forelse($recentRecommendations as $rec)
@@ -290,7 +290,7 @@
             </div>
             @empty
             <div class="col-span-full text-center py-12 text-slate-600">
-                <p>No recommendation history yet. Take the Career DNA Test or upload your CV to get started.</p>
+                <p>Belum ada riwayat rekomendasi. Ikuti Tes DNA Karir atau unggah CV untuk memulai.</p>
             </div>
             @endforelse
         </div>
@@ -310,7 +310,7 @@
         data: {
             labels: labels,
             datasets: [{
-                label: 'Personality Profile',
+                label: 'Profil Kepribadian',
                 data: scores,
                 backgroundColor: 'rgba(37, 99, 235, 0.2)',
                 borderColor: 'rgba(37, 99, 235, 1)',

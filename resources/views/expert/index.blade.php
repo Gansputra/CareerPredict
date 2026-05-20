@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Skill Assessment')
+@section('title', 'Asesmen Keahlian')
 
 @section('content')
 <div class="max-w-4xl mx-auto" x-data="{ step: 1 }">
@@ -23,8 +23,8 @@
         <!-- Step 1: Technical Skills -->
         <div x-show="step === 1" x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="opacity-0 translate-x-8" x-transition:enter-end="opacity-100 translate-x-0">
             <div class="glass p-8 mb-8">
-                <h2 class="text-2xl font-bold text-white mb-2">Technical Skills</h2>
-                <p class="text-slate-400 mb-8">Rate your proficiency in the following technical areas (1-5).</p>
+                <h2 class="text-2xl font-bold text-white mb-2">Keahlian Teknis</h2>
+                <p class="text-slate-400 mb-8">Nilai kemampuan Anda di bidang teknis berikut (1-5).</p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     @foreach($skills->where('type', 'technical') as $skill)
@@ -45,15 +45,15 @@
                 </div>
             </div>
             <div class="flex justify-end">
-                <button type="button" @click="step = 2" class="btn-premium">Continue <i class="fas fa-arrow-right ml-2"></i></button>
+                <button type="button" @click="step = 2" class="btn-premium">Lanjutkan <i class="fas fa-arrow-right ml-2"></i></button>
             </div>
         </div>
 
         <!-- Step 2: Interests -->
         <div x-show="step === 2" x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="opacity-0 translate-x-8" x-transition:enter-end="opacity-100 translate-x-0">
             <div class="glass p-8 mb-8">
-                <h2 class="text-2xl font-bold text-white mb-2">Career Interests</h2>
-                <p class="text-slate-400 mb-8">Select topics and fields that genuinely interest you.</p>
+                <h2 class="text-2xl font-bold text-white mb-2">Minat Karir</h2>
+                <p class="text-slate-400 mb-8">Pilih topik dan bidang yang benar-benar menarik bagi Anda.</p>
 
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                     @foreach($interests as $interest)
@@ -67,16 +67,16 @@
                 </div>
             </div>
             <div class="flex justify-between">
-                <button type="button" @click="step = 1" class="px-8 py-3 rounded-xl bg-slate-800 text-white font-semibold"><i class="fas fa-arrow-left mr-2"></i> Back</button>
-                <button type="button" @click="step = 3" class="btn-premium">Continue <i class="fas fa-arrow-right ml-2"></i></button>
+                <button type="button" @click="step = 1" class="px-8 py-3 rounded-xl bg-slate-800 text-white font-semibold"><i class="fas fa-arrow-left mr-2"></i> Kembali</button>
+                <button type="button" @click="step = 3" class="btn-premium">Lanjutkan <i class="fas fa-arrow-right ml-2"></i></button>
             </div>
         </div>
 
         <!-- Step 3: Behavioral Assessment -->
         <div x-show="step === 3" x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="opacity-0 translate-x-8" x-transition:enter-end="opacity-100 translate-x-0">
             <div class="glass p-8 mb-8">
-                <h2 class="text-2xl font-bold text-white mb-2">Expert Consultation</h2>
-                <p class="text-slate-400 mb-8">Please answer these final questions to help us refine your recommendations.</p>
+                <h2 class="text-2xl font-bold text-white mb-2">Konsultasi Ahli</h2>
+                <p class="text-slate-400 mb-8">Jawab pertanyaan terakhir ini untuk membantu kami menyempurnakan rekomendasi Anda.</p>
 
                 <div class="space-y-8">
                     @foreach($questions as $q)
@@ -97,8 +97,8 @@
                 </div>
             </div>
             <div class="flex justify-between">
-                <button type="button" @click="step = 2" class="px-8 py-3 rounded-xl bg-slate-800 text-white font-semibold"><i class="fas fa-arrow-left mr-2"></i> Back</button>
-                <button type="submit" class="btn-premium">Submit Assessment <i class="fas fa-check ml-2"></i></button>
+                <button type="button" @click="step = 2" class="px-8 py-3 rounded-xl bg-slate-800 text-white font-semibold"><i class="fas fa-arrow-left mr-2"></i> Kembali</button>
+                <button type="submit" class="btn-premium">Kirim Asesmen <i class="fas fa-check ml-2"></i></button>
             </div>
         </div>
     </form>

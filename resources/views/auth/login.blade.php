@@ -7,7 +7,7 @@
 
         <!-- Email Address -->
         <div>
-            <label for="email" class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Email Address</label>
+            <label for="email" class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Alamat Email</label>
             <div class="relative">
                 <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
                 <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username"
@@ -20,10 +20,10 @@
         <!-- Password -->
         <div>
             <div class="flex items-center justify-between mb-2">
-                <label for="password" class="block text-xs font-bold uppercase tracking-widest text-slate-500">Password</label>
+                <label for="password" class="block text-xs font-bold uppercase tracking-widest text-slate-500">Kata Sandi</label>
                 @if (Route::has('password.request'))
                     <a class="text-[10px] font-bold text-blue-500 hover:text-blue-400 uppercase tracking-widest" href="{{ route('password.request') }}">
-                        Forgot?
+                        Lupa?
                     </a>
                 @endif
             </div>
@@ -40,19 +40,19 @@
         <div class="flex items-center justify-between">
             <label for="remember_me" class="inline-flex items-center cursor-pointer group">
                 <input id="remember_me" type="checkbox" class="rounded-lg bg-slate-900 border-slate-700 text-blue-600 shadow-sm focus:ring-blue-500 focus:ring-offset-slate-900" name="remember">
-                <span class="ms-2 text-xs text-slate-500 group-hover:text-slate-300 transition-colors">{{ __('Remember me') }}</span>
+                <span class="ms-2 text-xs text-slate-500 group-hover:text-slate-300 transition-colors">Ingat saya</span>
             </label>
         </div>
 
         <div>
             <button type="submit" class="w-full btn-premium py-4">
-                {{ __('Sign In to CareerPredict') }}
+                Masuk ke CareerPredict
             </button>
         </div>
 
         <div class="text-center mt-6">
-            <p class="text-xs text-slate-500">Don't have an account? 
-                <a href="{{ route('register') }}" class="text-blue-500 font-bold hover:underline ml-1">Create Account</a>
+            <p class="text-xs text-slate-500">Belum punya akun? 
+                <a href="{{ route('register') }}" class="text-blue-500 font-bold hover:underline ml-1">Buat Akun</a>
             </p>
         </div>
     </form>

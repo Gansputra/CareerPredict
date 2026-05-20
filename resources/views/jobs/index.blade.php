@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Job Explorer')
+@section('title', 'Jelajahi Lowongan')
 
 @section('content')
 <div class="space-y-8">
@@ -8,11 +8,11 @@
     <div class="glass p-6">
         <form action="{{ route('jobs.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-5 gap-4">
             <div class="md:col-span-2">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by job title, company, or keyword..." class="w-full bg-slate-900 border-slate-700 rounded-xl px-4 py-3 text-white focus:ring-blue-500">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari berdasarkan judul, perusahaan, atau kata kunci..." class="w-full bg-slate-900 border-slate-700 rounded-xl px-4 py-3 text-white focus:ring-blue-500">
             </div>
             <div>
                 <select name="category" class="w-full bg-slate-900 border-slate-700 rounded-xl px-4 py-3 text-white focus:ring-blue-500">
-                    <option value="">All Categories</option>
+                    <option value="">Semua Kategori</option>
                     @foreach($categories as $cat)
                         <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
                     @endforeach
@@ -20,13 +20,13 @@
             </div>
             <div>
                 <select name="location" class="w-full bg-slate-900 border-slate-700 rounded-xl px-4 py-3 text-white focus:ring-blue-500">
-                    <option value="">All Locations</option>
+                    <option value="">Semua Lokasi</option>
                     @foreach($locations as $loc)
                         <option value="{{ $loc }}" {{ request('location') == $loc ? 'selected' : '' }}>{{ $loc }}</option>
                     @endforeach
                 </select>
             </div>
-            <button type="submit" class="btn-premium">Filter Results</button>
+            <button type="submit" class="btn-premium">Filter Hasil</button>
         </form>
     </div>
 
@@ -53,11 +53,11 @@
                     <span class="text-emerald-500 font-bold">{{ $job->salary_range }}</span>
                 </div>
                 <div class="flex gap-2">
-                    <a href="{{ route('jobs.show', $job->slug) }}" class="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-center text-sm font-bold transition-all">View Details</a>
+                    <a href="{{ route('jobs.show', $job->slug) }}" class="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-center text-sm font-bold transition-all">Lihat Detail</a>
                     <form action="{{ route('tracker.store') }}" method="POST">
                         @csrf
                         <input type="hidden" name="job_id" value="{{ $job->id }}">
-                        <button type="submit" class="w-11 h-11 rounded-xl bg-slate-800 hover:bg-blue-600 text-slate-400 hover:text-white transition-all flex items-center justify-center" title="Save to Tracker">
+                        <button type="submit" class="w-11 h-11 rounded-xl bg-slate-800 hover:bg-blue-600 text-slate-400 hover:text-white transition-all flex items-center justify-center" title="Simpan ke Pelacak">
                             <i class="fas fa-bookmark"></i>
                         </button>
                     </form>
