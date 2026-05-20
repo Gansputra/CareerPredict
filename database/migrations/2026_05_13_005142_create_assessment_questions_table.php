@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('category_id')->constrained('assessment_categories')->onDelete('cascade');
             $table->text('question');
-            $table->integer('weight')->default(1);
+            $table->decimal('weight', 3, 2)->default(1.00);
             $table->timestamps();
         });
     }

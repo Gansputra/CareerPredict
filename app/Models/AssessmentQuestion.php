@@ -8,6 +8,10 @@ class AssessmentQuestion extends Model
 {
     protected $fillable = ['category_id', 'question', 'weight'];
 
+    protected $casts = [
+        'weight' => 'float',
+    ];
+
     public function category()
     {
         return $this->belongsTo(AssessmentCategory::class, 'category_id');
