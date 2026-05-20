@@ -8,8 +8,8 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div class="lg:col-span-2 relative overflow-hidden glass p-8 sm:p-10 rounded-3xl animate-fade-in">
             <div class="relative z-10">
-                <h1 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Welcome back, {{ Auth::user()->name }}! 👋</h1>
-                <p class="text-slate-400 text-lg max-w-xl leading-relaxed">
+                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white mb-4">Welcome back, {{ Auth::user()->name }}! 👋</h1>
+                <p class="text-slate-400 text-base sm:text-lg max-w-xl leading-relaxed">
                     "The best way to predict your future is to create it." 
                     <br>Let's discover your ideal career path today.
                 </p>

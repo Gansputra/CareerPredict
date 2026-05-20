@@ -6,29 +6,29 @@
 <div class="max-w-full space-y-6">
 
     {{-- Header --}}
-    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 animate-fade-in">
+    <div class="flex flex-col gap-4 animate-fade-in">
         <div>
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-bold tracking-widest uppercase mb-3 border border-amber-500/20">
                 <i class="fas fa-clipboard-list"></i>
                 Kanban Board
             </div>
-            <h1 class="text-3xl font-bold text-white mb-1">
+            <h1 class="text-2xl sm:text-3xl font-bold text-white mb-1">
                 Application <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">Tracker</span>
             </h1>
             <p class="text-slate-400 text-sm">Drag & drop cards between columns to update status. Save jobs from Job Explorer!</p>
         </div>
 
         {{-- Stats --}}
-        <div class="flex flex-wrap gap-3">
+        <div class="flex flex-wrap gap-2 sm:gap-3">
             @php $total = 0; foreach ($columns as $col) { $total += $col['cards']->count(); } @endphp
-            <div class="glass-dark px-4 py-2 rounded-xl text-center">
-                <p class="text-xl font-extrabold text-white" id="stat-total">{{ $total }}</p>
-                <p class="text-[10px] uppercase tracking-widest text-slate-500">Total</p>
+            <div class="glass-dark px-3 sm:px-4 py-2 rounded-xl text-center">
+                <p class="text-lg sm:text-xl font-extrabold text-white" id="stat-total">{{ $total }}</p>
+                <p class="text-[9px] sm:text-[10px] uppercase tracking-widest text-slate-500">Total</p>
             </div>
             @foreach ($columns as $key => $col)
-            <div class="glass-dark px-4 py-2 rounded-xl text-center">
-                <p class="text-xl font-extrabold text-white" id="stat-{{ $key }}">{{ $col['cards']->count() }}</p>
-                <p class="text-[10px] uppercase tracking-widest text-slate-500">{{ $col['label'] }}</p>
+            <div class="glass-dark px-3 sm:px-4 py-2 rounded-xl text-center">
+                <p class="text-lg sm:text-xl font-extrabold text-white" id="stat-{{ $key }}">{{ $col['cards']->count() }}</p>
+                <p class="text-[9px] sm:text-[10px] uppercase tracking-widest text-slate-500">{{ $col['label'] }}</p>
             </div>
             @endforeach
         </div>

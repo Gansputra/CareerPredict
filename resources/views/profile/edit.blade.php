@@ -4,10 +4,10 @@
 
 @section('content')
 <div class="w-full space-y-8">
-    <div class="flex items-center justify-between" data-aos="fade-down">
+    <div class="flex flex-col sm:flex-row sm:items-center gap-4" data-aos="fade-down">
+        <!-- Profile Photo Mini -->
         <div class="flex items-center gap-4">
-            <!-- Profile Photo Mini -->
-            <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-slate-700 bg-slate-800 shrink-0 shadow-lg">
+            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2 border-slate-700 bg-slate-800 shrink-0 shadow-lg">
                 @if($user->profile?->avatar)
                     <img src="{{ asset('storage/' . $user->profile->avatar) }}" class="w-full h-full object-cover" alt="{{ $user->name }}">
                 @else
@@ -16,8 +16,8 @@
             </div>
 
             <div>
-                <h1 class="text-3xl font-extrabold text-white">Profile Settings</h1>
-                <p class="text-slate-400 mt-1">Manage your professional information and account security.</p>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-white">Profile Settings</h1>
+                <p class="text-slate-400 text-sm mt-1">Manage your professional information and account security.</p>
             </div>
         </div>
     </div>
@@ -32,8 +32,8 @@
 
         <!-- Skills & Interests Section -->
         <div class="glass p-8 animate-fade-in">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-bold text-white"><i class="fas fa-microchip text-blue-400 mr-2"></i> Your Detected Skills</h3>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+                <h3 class="text-lg sm:text-xl font-bold text-white"><i class="fas fa-microchip text-blue-400 mr-2"></i> Your Detected Skills</h3>
                 <div class="flex gap-2">
                     @if(Auth::user()->skills->count() > 0)
                     <form action="{{ route('cv.reset') }}" method="POST" class="inline" id="cvResetForm">

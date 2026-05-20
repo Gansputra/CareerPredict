@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+      x-data="{ theme: localStorage.getItem('theme') || 'dark' }"
+      :class="{ 'light-mode': theme === 'light' }">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,8 +15,8 @@
     </head>
     <body class="antialiased selection:bg-blue-500/30">
         <!-- Navigation -->
-        <nav class="fixed w-full z-50 top-0 px-6 py-4 transition-all duration-300" x-data="{ scrolled: false }" @scroll.window="scrolled = (window.pageYOffset > 20)">
-            <div class="max-w-7xl mx-auto flex items-center justify-between transition-all duration-300 px-6 py-3" :class="scrolled ? 'glass shadow-2xl py-2' : ''">
+        <nav class="fixed w-full z-50 top-0 px-4 sm:px-6 py-4 transition-all duration-300" x-data="{ scrolled: false, mobileMenu: false }" @scroll.window="scrolled = (window.pageYOffset > 20)">
+            <div class="max-w-7xl mx-auto flex items-center justify-between transition-all duration-300 px-4 sm:px-6 py-3" :class="scrolled ? 'glass shadow-2xl py-2' : ''">
                 <div class="flex items-center gap-2">
                     <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/40">
                         <i class="fas fa-brain text-white text-xl"></i>
@@ -28,17 +30,52 @@
                     <a href="{{ route('jobs.index') }}" class="hover:text-blue-400 transition-colors">Jobs</a>
                 </div>
 
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-3">
                     @if (Route::has('login'))
                         @auth
                             <a href="{{ url('/dashboard') }}" class="btn-premium py-2 px-5 text-sm">Dashboard</a>
                         @else
-                            <a href="{{ route('login') }}" class="text-sm font-medium hover:text-blue-400 transition-colors">Log in</a>
+                            <a href="{{ route('login') }}" class="text-sm font-medium hover:text-blue-400 transition-colors hidden sm:inline">Log in</a>
                             @if (Route::has('register'))
                                 <a href="{{ route('register') }}" class="btn-premium py-2 px-5 text-sm">Get Started</a>
                             @endif
                         @endauth
                     @endif
+
+                    <!-- Mobile Menu Button -->
+                    <button @click="mobileMenu = !mobileMenu" class="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors">
+                        <i class="fas text-xl text-slate-300" :class="mobileMenu ? 'fa-times' : 'fa-bars'"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Dropdown Menu -->
+            <div x-show="mobileMenu"
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 -translate-y-2"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 -translate-y-2"
+                 @click.away="mobileMenu = false"
+                 class="md:hidden mt-2 mx-4 sm:mx-6 glass rounded-2xl shadow-2xl overflow-hidden">
+                <div class="px-4 py-3 space-y-1">
+                    <a href="#features" @click="mobileMenu = false" class="block px-4 py-3 rounded-xl text-slate-300 hover:bg-white/10 hover:text-white transition-all font-medium text-sm">
+                        <i class="fas fa-sparkles mr-2 w-5 text-center"></i> Features
+                    </a>
+                    <a href="#how-it-works" @click="mobileMenu = false" class="block px-4 py-3 rounded-xl text-slate-300 hover:bg-white/10 hover:text-white transition-all font-medium text-sm">
+                        <i class="fas fa-flask mr-2 w-5 text-center"></i> Methodology
+                    </a>
+                    <a href="{{ route('jobs.index') }}" class="block px-4 py-3 rounded-xl text-slate-300 hover:bg-white/10 hover:text-white transition-all font-medium text-sm">
+                        <i class="fas fa-briefcase mr-2 w-5 text-center"></i> Jobs
+                    </a>
+                    @guest
+                    <div class="pt-2 mt-2 border-t border-white/10">
+                        <a href="{{ route('login') }}" class="block px-4 py-3 rounded-xl text-slate-300 hover:bg-white/10 hover:text-white transition-all font-medium text-sm">
+                            <i class="fas fa-sign-in-alt mr-2 w-5 text-center"></i> Log in
+                        </a>
+                    </div>
+                    @endguest
                 </div>
             </div>
         </nav>
@@ -118,7 +155,7 @@
 
         <!-- Footer -->
         <footer class="py-12 border-t border-slate-800">
-            <div class="container mx-auto px-6 flex flex-col md:row items-center justify-between gap-6">
+            <div class="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="flex items-center gap-2">
                     <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                         <i class="fas fa-brain text-white text-sm"></i>

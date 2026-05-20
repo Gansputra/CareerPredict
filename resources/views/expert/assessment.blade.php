@@ -93,20 +93,24 @@
                                         <p class="text-white font-medium" x-text="q.question"></p>
                                     </div>
 
-                                    <div class="flex items-center justify-between gap-2 max-w-xl mx-auto">
-                                        <span class="text-[9px] text-slate-500 font-bold uppercase tracking-widest w-16 text-center">Strongly Disagree</span>
-                                        <div class="flex items-center gap-3">
+                                    <div class="max-w-xl mx-auto">
+                                        <div class="flex items-center justify-between mb-1.5 sm:mb-0">
+                                            <span class="text-[9px] text-slate-500 font-bold uppercase tracking-widest hidden sm:block">Disagree</span>
+                                            <span class="text-[9px] text-slate-500 font-bold uppercase tracking-widest hidden sm:block">Agree</span>
+                                        </div>
+                                        <div class="flex items-center justify-center gap-2 sm:gap-3">
+                                            <span class="text-[8px] sm:hidden text-slate-500 font-bold uppercase shrink-0">No</span>
                                             <template x-for="val in [1, 2, 3, 4, 5]" :key="val">
                                                 <label class="cursor-pointer group" @click="setAnswer(q.id, val)">
                                                     <input type="radio" :name="'answers[' + q.id + ']'" :value="val"
                                                            required class="hidden peer">
-                                                    <div class="w-11 h-11 rounded-xl bg-slate-800 flex items-center justify-center text-slate-400 font-bold border-2 border-transparent transition-all duration-200 peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-400 peer-checked:shadow-lg peer-checked:shadow-blue-600/30 hover:border-slate-600 group-hover:scale-105">
+                                                    <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-800 flex items-center justify-center text-slate-400 font-bold text-sm sm:text-base border-2 border-transparent transition-all duration-200 peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-400 peer-checked:shadow-lg peer-checked:shadow-blue-600/30 hover:border-slate-600 group-hover:scale-105">
                                                         <span x-text="val"></span>
                                                     </div>
                                                 </label>
                                             </template>
+                                            <span class="text-[8px] sm:hidden text-slate-500 font-bold uppercase shrink-0">Yes</span>
                                         </div>
-                                        <span class="text-[9px] text-slate-500 font-bold uppercase tracking-widest w-16 text-center">Strongly Agree</span>
                                     </div>
                                 </div>
                             </template>

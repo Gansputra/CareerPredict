@@ -18,7 +18,7 @@
     </head>
     <body class="antialiased selection:bg-blue-500/30 transition-colors duration-300"
           x-data="{ sidebarOpen: false, theme: localStorage.getItem('theme') || 'dark' }" 
-          x-init="$watch('theme', val => localStorage.setItem('theme', val))"
+          x-init="$watch('theme', val => { localStorage.setItem('theme', val); document.documentElement.className = val === 'light' ? 'light-mode' : ''; }); if(theme === 'light') document.documentElement.className = 'light-mode';"
           :class="{ 'light-mode': theme === 'light' }">
         <div class="min-h-screen bg-[#0f172a]" 
              @keydown.escape.window="sidebarOpen = false">
@@ -157,15 +157,15 @@
                                 @yield('title', 'Dashboard')
                             </h2>
                         </div>
-                        <div class="flex items-center gap-3 sm:gap-6">
+                        <div class="flex items-center gap-2 sm:gap-4 lg:gap-6">
                             <div class="relative hidden md:block">
                                 <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
                                 <input type="text" placeholder="Search anything..." class="bg-slate-900 border-slate-700 rounded-xl pl-10 pr-4 py-2 text-sm focus:ring-blue-500 focus:border-blue-500 text-slate-300 w-48 lg:w-64">
                             </div>
 
                             <!-- Theme Toggle -->
-                            <button @click="theme = theme === 'dark' ? 'light' : 'dark'" class="relative w-10 h-10 flex items-center justify-center rounded-lg hover:bg-slate-800 transition-colors ignore-invert bg-slate-800/50">
-                                <i class="fas text-lg" :class="theme === 'dark' ? 'fa-sun text-amber-400' : 'fa-moon text-slate-400'"></i>
+                            <button @click="theme = theme === 'dark' ? 'light' : 'dark'" class="relative w-10 h-10 flex items-center justify-center rounded-lg hover:bg-slate-800 transition-all duration-300 bg-slate-800/50" title="Toggle theme">
+                                <i class="fas text-lg transition-transform duration-300" :class="theme === 'dark' ? 'fa-sun text-amber-400 rotate-0' : 'fa-moon text-indigo-500 rotate-12'"></i>
                             </button>
 
                             <button class="relative p-2 rounded-lg hover:bg-slate-800 transition-colors">

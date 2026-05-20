@@ -23,7 +23,7 @@
                 </div>
                 <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Highest Avg</span>
             </div>
-            <p class="text-2xl font-extrabold text-white">{{ $overallStats['highest_avg'] > 0 ? 'Rp ' . number_format($overallStats['highest_avg'], 0, ',', '.') : '-' }}</p>
+            <p class="text-xl sm:text-2xl font-extrabold text-white truncate">{{ $overallStats['highest_avg'] > 0 ? 'Rp ' . number_format($overallStats['highest_avg'], 0, ',', '.') : '-' }}</p>
         </div>
         <div class="glass-dark p-5 animate-fade-in" style="animation-delay: 60ms">
             <div class="flex items-center gap-3 mb-3">
@@ -32,7 +32,7 @@
                 </div>
                 <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Lowest Avg</span>
             </div>
-            <p class="text-2xl font-extrabold text-white">{{ $overallStats['lowest_avg'] > 0 ? 'Rp ' . number_format($overallStats['lowest_avg'], 0, ',', '.') : '-' }}</p>
+            <p class="text-xl sm:text-2xl font-extrabold text-white truncate">{{ $overallStats['lowest_avg'] > 0 ? 'Rp ' . number_format($overallStats['lowest_avg'], 0, ',', '.') : '-' }}</p>
         </div>
         <div class="glass-dark p-5 animate-fade-in" style="animation-delay: 120ms">
             <div class="flex items-center gap-3 mb-3">
@@ -85,7 +85,7 @@
                 <div class="space-y-2">
                     <div class="flex justify-between text-xs">
                         <span class="text-slate-500">Avg Salary</span>
-                        <span class="text-white font-bold">Rp {{ number_format($cat['avg'], 0, ',', '.') }}</span>
+                        <span class="text-white font-bold text-xs sm:text-sm truncate">Rp {{ number_format($cat['avg'], 0, ',', '.') }}</span>
                     </div>
                     <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
                         @php $maxAvg = $salaryByCategory[0]['avg']; @endphp

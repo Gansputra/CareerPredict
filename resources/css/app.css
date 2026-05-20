@@ -1,19 +1,92 @@
 @import "tailwindcss";
 
+/* ── Design Token System ──────────────────────────────────────────────── */
+:root {
+    /* Dark Mode (default) */
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-card: rgba(255, 255, 255, 0.1);
+    --bg-card-dark: rgba(15, 23, 42, 0.5);
+    --bg-card-solid: #1e293b;
+    --bg-input: #0f172a;
+    --bg-hover: #1e293b;
+    --bg-badge: #1e293b;
+
+    --text-primary: #ffffff;
+    --text-secondary: #e2e8f0;
+    --text-muted: #94a3b8;
+    --text-faint: #64748b;
+    --text-dimmed: #475569;
+
+    --border-primary: #334155;
+    --border-subtle: rgba(255, 255, 255, 0.2);
+    --border-card: rgba(71, 85, 105, 0.5);
+
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-dark-bg: rgba(15, 23, 42, 0.5);
+    --glass-dark-border: rgba(71, 85, 105, 0.5);
+
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --overlay-bg: rgba(0, 0, 0, 0.6);
+}
+
+.light-mode,
+html.light-mode {
+    --bg-primary: #f1f5f9;
+    --bg-secondary: #ffffff;
+    --bg-card: rgba(255, 255, 255, 0.85);
+    --bg-card-dark: rgba(255, 255, 255, 0.9);
+    --bg-card-solid: #ffffff;
+    --bg-input: #f8fafc;
+    --bg-hover: #f1f5f9;
+    --bg-badge: #e2e8f0;
+
+    --text-primary: #0f172a;
+    --text-secondary: #1e293b;
+    --text-muted: #475569;
+    --text-faint: #64748b;
+    --text-dimmed: #94a3b8;
+
+    --border-primary: #e2e8f0;
+    --border-subtle: rgba(0, 0, 0, 0.1);
+    --border-card: rgba(0, 0, 0, 0.08);
+
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(0, 0, 0, 0.08);
+    --glass-dark-bg: rgba(255, 255, 255, 0.85);
+    --glass-dark-border: rgba(0, 0, 0, 0.06);
+
+    --shadow-color: rgba(0, 0, 0, 0.08);
+    --overlay-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* ── Base Styles ──────────────────────────────────────────────────────── */
 @layer base {
     body {
-        @apply bg-[#0f172a] text-slate-200;
+        background-color: var(--bg-primary);
+        color: var(--text-secondary);
         font-family: 'Inter', sans-serif;
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
 }
 
+/* ── Component Styles ─────────────────────────────────────────────────── */
 @layer components {
     .glass {
-        @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+        border-radius: 1rem;
     }
-    
+
     .glass-dark {
-        @apply bg-slate-900/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl;
+        background: var(--glass-dark-bg);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--glass-dark-border);
+        border-radius: 1rem;
     }
 
     .btn-premium {
@@ -21,7 +94,11 @@
     }
 
     .card-hover {
-        @apply transition-all duration-300 hover:transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-indigo-500/10;
+        @apply transition-all duration-300 hover:transform hover:-translate-y-2;
+        box-shadow: 0 4px 6px -1px var(--shadow-color);
+    }
+    .card-hover:hover {
+        box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.1);
     }
 
     .text-gradient {
@@ -29,7 +106,7 @@
     }
 }
 
-/* Animations */
+/* ── Animations ───────────────────────────────────────────────────────── */
 @keyframes float {
     0% { transform: translateY(0px); }
     50% { transform: translateY(-20px); }
@@ -41,7 +118,7 @@
 }
 
 .gradient-bg {
-    background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.1) 0%, rgba(15, 23, 42, 1) 100%);
+    background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.1) 0%, var(--bg-primary) 100%);
 }
 
 @keyframes fadeIn {
@@ -53,14 +130,609 @@
     animation: fadeIn 0.4s ease-out both;
 }
 
-/* Light Mode Optical Inversion */
-.light-mode {
-    filter: invert(1) hue-rotate(180deg);
+
+/* ══════════════════════════════════════════════════════════════════════
+   LIGHT MODE — Global Overrides
+   All selectors are global (.light-mode) so they apply everywhere:
+   sidebar, header, main, welcome page, guest layout, modals, etc.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Core Backgrounds ─────────────────────────────────────────────── */
+.light-mode .bg-\[\#0f172a\],
+.light-mode .min-h-screen.bg-\[\#0f172a\] {
+    background-color: var(--bg-primary) !important;
 }
 
-/* Re-invert images, media, and specific elements so they look normal */
-.light-mode img,
-.light-mode video,
-.light-mode .ignore-invert {
-    filter: invert(1) hue-rotate(180deg);
+.light-mode .bg-\[\#0f172a\]\/80 {
+    background-color: rgba(241, 245, 249, 0.92) !important;
+}
+
+.light-mode .bg-\[\#1e293b\] {
+    background-color: var(--bg-secondary) !important;
+}
+
+.light-mode .bg-slate-900 {
+    background-color: #f1f5f9 !important;
+}
+
+.light-mode .bg-slate-900\/50 {
+    background-color: #f8fafc !important;
+}
+
+.light-mode .bg-slate-800 {
+    background-color: #e2e8f0 !important;
+}
+
+.light-mode .bg-slate-800\/50 {
+    background-color: rgba(226, 232, 240, 0.5) !important;
+}
+
+.light-mode .bg-slate-800\/30 {
+    background-color: rgba(226, 232, 240, 0.35) !important;
+}
+
+.light-mode .bg-slate-800\/80 {
+    background-color: rgba(226, 232, 240, 0.8) !important;
+}
+
+.light-mode .bg-slate-700 {
+    background-color: #cbd5e1 !important;
+}
+
+/* ── 2. Text Colors ──────────────────────────────────────────────────── */
+.light-mode .text-white {
+    color: #0f172a !important;
+}
+
+.light-mode .text-slate-200 {
+    color: #1e293b !important;
+}
+
+.light-mode .text-slate-300 {
+    color: #334155 !important;
+}
+
+.light-mode .text-slate-400 {
+    color: #475569 !important;
+}
+
+.light-mode .text-slate-500 {
+    color: #64748b !important;
+}
+
+.light-mode .text-slate-600 {
+    color: #475569 !important;
+}
+
+.light-mode .text-slate-700 {
+    color: #334155 !important;
+}
+
+/* ── 3. Border Colors ────────────────────────────────────────────────── */
+.light-mode .border-slate-800 {
+    border-color: #e2e8f0 !important;
+}
+
+.light-mode .border-slate-700 {
+    border-color: #e2e8f0 !important;
+}
+
+.light-mode .border-slate-700\/50 {
+    border-color: rgba(226, 232, 240, 0.7) !important;
+}
+
+.light-mode .border-slate-700\/60 {
+    border-color: rgba(226, 232, 240, 0.8) !important;
+}
+
+.light-mode .border-white\/10 {
+    border-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+.light-mode .border-white\/20 {
+    border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+.light-mode .border-dashed {
+    border-color: #cbd5e1 !important;
+}
+
+/* ── 4. Ring Utilities ───────────────────────────────────────────────── */
+.light-mode .ring-slate-700\/50 {
+    --tw-ring-color: rgba(226, 232, 240, 0.7) !important;
+}
+
+/* ── 5. Hover & Interactive States ───────────────────────────────────── */
+.light-mode .hover\:bg-slate-800:hover {
+    background-color: #e2e8f0 !important;
+}
+
+.light-mode .hover\:bg-slate-700:hover {
+    background-color: #cbd5e1 !important;
+}
+
+.light-mode .hover\:bg-slate-800\/30:hover {
+    background-color: rgba(226, 232, 240, 0.3) !important;
+}
+
+.light-mode .hover\:bg-white\/10:hover {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.light-mode .hover\:border-slate-500:hover,
+.light-mode .hover\:border-slate-600:hover {
+    border-color: #94a3b8 !important;
+}
+
+.light-mode .hover\:bg-red-500\/10:hover {
+    background-color: rgba(239, 68, 68, 0.08) !important;
+}
+
+/* ── 6. Sidebar specific ─────────────────────────────────────────────── */
+.light-mode aside {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+}
+
+/* Keep active nav items vivid — text-white is ON the same element */
+.light-mode aside .bg-blue-600 { background-color: #2563eb !important; }
+.light-mode aside .bg-blue-600.text-white { color: #ffffff !important; }
+.light-mode aside .bg-blue-600 span { color: #ffffff !important; }
+.light-mode aside .bg-blue-600 i { color: #ffffff !important; }
+
+.light-mode aside .bg-purple-600 { background-color: #9333ea !important; }
+.light-mode aside .bg-purple-600.text-white { color: #ffffff !important; }
+.light-mode aside .bg-purple-600 span { color: #ffffff !important; }
+.light-mode aside .bg-purple-600 i { color: #ffffff !important; }
+
+/* Active states with bg-slate-700 (profile, job importer) */
+.light-mode aside .bg-slate-700.text-white { color: #0f172a !important; }
+
+/* ── 7. Header bar ───────────────────────────────────────────────────── */
+.light-mode header {
+    background-color: rgba(241, 245, 249, 0.92) !important;
+    border-color: #e2e8f0 !important;
+    backdrop-filter: blur(12px) !important;
+}
+
+/* ── 8. Form Inputs ──────────────────────────────────────────────────── */
+.light-mode input,
+.light-mode select,
+.light-mode textarea {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    color: #0f172a !important;
+}
+
+.light-mode input::placeholder,
+.light-mode textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+.light-mode input:focus,
+.light-mode select:focus,
+.light-mode textarea:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12) !important;
+}
+
+/* ── 9. Glass Components ─────────────────────────────────────────────── */
+.light-mode .glass {
+    background: rgba(255, 255, 255, 0.78) !important;
+    border-color: rgba(0, 0, 0, 0.06) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+}
+
+.light-mode .glass-dark {
+    background: rgba(255, 255, 255, 0.92) !important;
+    border-color: rgba(0, 0, 0, 0.06) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* ── 10. Modals & Overlays ───────────────────────────────────────────── */
+.light-mode .bg-black\/60 {
+    background-color: rgba(0, 0, 0, 0.25) !important;
+}
+
+.light-mode .bg-black\/30 {
+    background-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+.light-mode .swal2-popup {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+.light-mode .swal2-title {
+    color: #0f172a !important;
+}
+
+.light-mode .swal2-html-container {
+    color: #475569 !important;
+}
+
+/* ── 11. Kanban / Tracker ────────────────────────────────────────────── */
+.light-mode .kanban-card {
+    background: #ffffff !important;
+}
+
+.light-mode .kanban-empty {
+    border-color: #cbd5e1 !important;
+    color: #94a3b8 !important;
+}
+
+/* ── 11b. Tracker Kanban Column Colors ───────────────────────────────── */
+/* Column header backgrounds — boost opacity for light bg */
+.light-mode .bg-blue-600\/20 {
+    background-color: rgba(37, 99, 235, 0.12) !important;
+}
+.light-mode .bg-amber-500\/20 {
+    background-color: rgba(245, 158, 11, 0.12) !important;
+}
+.light-mode .bg-emerald-500\/20 {
+    background-color: rgba(16, 185, 129, 0.12) !important;
+}
+.light-mode .bg-red-500\/20 {
+    background-color: rgba(239, 68, 68, 0.12) !important;
+}
+.light-mode .bg-slate-700\/50 {
+    background-color: rgba(100, 116, 139, 0.12) !important;
+}
+
+/* Column header text — switch from -300 (pale) to -700 (dark) */
+.light-mode .text-blue-300 { color: #1d4ed8 !important; }
+.light-mode .text-amber-300 { color: #b45309 !important; }
+.light-mode .text-emerald-300 { color: #047857 !important; }
+.light-mode .text-red-300 { color: #b91c1c !important; }
+.light-mode .text-slate-300 { color: #334155 !important; }
+
+/* Badge backgrounds — boost opacity */
+.light-mode .bg-blue-600\/30 {
+    background-color: rgba(37, 99, 235, 0.15) !important;
+}
+.light-mode .bg-amber-500\/30 {
+    background-color: rgba(245, 158, 11, 0.15) !important;
+}
+.light-mode .bg-emerald-500\/30 {
+    background-color: rgba(16, 185, 129, 0.15) !important;
+}
+.light-mode .bg-red-500\/30 {
+    background-color: rgba(239, 68, 68, 0.15) !important;
+}
+.light-mode .bg-slate-600 {
+    background-color: rgba(100, 116, 139, 0.15) !important;
+}
+
+/* Kanban ring borders */
+.light-mode .ring-blue-500\/20 {
+    --tw-ring-color: rgba(59, 130, 246, 0.15) !important;
+}
+.light-mode .ring-amber-500\/20 {
+    --tw-ring-color: rgba(245, 158, 11, 0.15) !important;
+}
+.light-mode .ring-emerald-500\/20 {
+    --tw-ring-color: rgba(16, 185, 129, 0.15) !important;
+}
+.light-mode .ring-red-500\/20 {
+    --tw-ring-color: rgba(239, 68, 68, 0.15) !important;
+}
+
+/* Kanban card text overrides — already handled by global .text-white and .text-slate-* */
+
+/* Purple/Sky/Orange -300 text (used elsewhere too) */
+.light-mode .text-purple-300 { color: #7e22ce !important; }
+.light-mode .text-sky-300 { color: #0369a1 !important; }
+.light-mode .text-orange-300 { color: #c2410c !important; }
+.light-mode .text-rose-300 { color: #be123c !important; }
+.light-mode .text-pink-300 { color: #be185d !important; }
+
+/* bg-slate-800/60 used in interview tips */
+.light-mode .bg-slate-800\/60 {
+    background-color: rgba(226, 232, 240, 0.6) !important;
+}
+
+/* rose/pink borders */
+.light-mode .border-rose-500\/20 { border-color: rgba(244, 63, 94, 0.2) !important; }
+.light-mode .border-rose-500\/30 { border-color: rgba(244, 63, 94, 0.3) !important; }
+.light-mode .bg-rose-500\/10 { background-color: rgba(244, 63, 94, 0.08) !important; }
+.light-mode .bg-rose-500\/20 { background-color: rgba(244, 63, 94, 0.12) !important; }
+.light-mode .ring-rose-500\/30 { --tw-ring-color: rgba(244, 63, 94, 0.2) !important; }
+
+/* ── 12. Dropdown menus ──────────────────────────────────────────────── */
+.light-mode div[x-show] .bg-\[\#1e293b\] {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* ── 13. Sponsored Ads Slider (inline bg gradient) ───────────────────── */
+.light-mode [style*="linear-gradient(135deg"] {
+    filter: brightness(1.15) saturate(0.85);
+}
+/* Keep text white in ads slider */
+.light-mode [style*="linear-gradient(135deg"] .text-white {
+    color: #ffffff !important;
+}
+.light-mode [style*="linear-gradient(135deg"] span,
+.light-mode [style*="linear-gradient(135deg"] h3,
+.light-mode [style*="linear-gradient(135deg"] p {
+    color: inherit !important;
+}
+
+/* ── 14. Gradient BG ─────────────────────────────────────────────────── */
+.light-mode .gradient-bg {
+    background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.04) 0%, #f1f5f9 100%) !important;
+}
+
+/* ── 14b. Gradient BUTTONS — text must stay white ────────────────────── */
+.light-mode a[class*="bg-gradient-to-r"][class*="text-white"],
+.light-mode button[class*="bg-gradient-to-r"][class*="text-white"] {
+    color: #ffffff !important;
+}
+.light-mode a[class*="bg-gradient-to-r"][class*="text-white"] i,
+.light-mode button[class*="bg-gradient-to-r"][class*="text-white"] i {
+    color: #ffffff !important;
+}
+
+/* ── 15. Branded Accent Colors — adjust opacity for light bg ─────────── */
+.light-mode .bg-blue-500\/10,
+.light-mode .bg-blue-600\/10 {
+    background-color: rgba(59, 130, 246, 0.08) !important;
+}
+.light-mode .bg-blue-500\/20,
+.light-mode .bg-blue-600\/20 {
+    background-color: rgba(59, 130, 246, 0.12) !important;
+}
+
+.light-mode .bg-purple-500\/10,
+.light-mode .bg-purple-600\/10 {
+    background-color: rgba(168, 85, 247, 0.08) !important;
+}
+.light-mode .bg-purple-500\/20,
+.light-mode .bg-purple-600\/20 {
+    background-color: rgba(168, 85, 247, 0.12) !important;
+}
+
+.light-mode .bg-emerald-500\/10,
+.light-mode .bg-emerald-600\/10 {
+    background-color: rgba(16, 185, 129, 0.08) !important;
+}
+.light-mode .bg-emerald-500\/20,
+.light-mode .bg-emerald-600\/20 {
+    background-color: rgba(16, 185, 129, 0.12) !important;
+}
+
+.light-mode .bg-amber-500\/10,
+.light-mode .bg-amber-600\/10 {
+    background-color: rgba(245, 158, 11, 0.08) !important;
+}
+.light-mode .bg-amber-500\/20,
+.light-mode .bg-amber-600\/20 {
+    background-color: rgba(245, 158, 11, 0.12) !important;
+}
+
+.light-mode .bg-rose-500\/10,
+.light-mode .bg-red-500\/10 {
+    background-color: rgba(244, 63, 94, 0.06) !important;
+}
+
+.light-mode .bg-sky-500\/10,
+.light-mode .bg-sky-600\/10 {
+    background-color: rgba(14, 165, 233, 0.08) !important;
+}
+
+.light-mode .bg-indigo-500\/10,
+.light-mode .bg-indigo-600\/10,
+.light-mode .bg-indigo-500\/20,
+.light-mode .bg-indigo-600\/20 {
+    background-color: rgba(99, 102, 241, 0.1) !important;
+}
+
+/* ── 15b. Colored elements that must stay vivid ──────────────────────── */
+/* Progress bar fills */
+.light-mode .bg-emerald-400 { background-color: #34d399 !important; }
+.light-mode .bg-blue-400 { background-color: #60a5fa !important; }
+.light-mode .bg-amber-400 { background-color: #fbbf24 !important; }
+.light-mode .bg-emerald-500 { background-color: #10b981 !important; }
+.light-mode .bg-blue-500 { background-color: #3b82f6 !important; }
+.light-mode .bg-amber-500 { background-color: #f59e0b !important; }
+.light-mode .bg-red-500 { background-color: #ef4444 !important; }
+
+/* Colored dots */
+.light-mode .bg-emerald-400.rounded-full { background-color: #34d399 !important; }
+.light-mode .bg-blue-400.rounded-full { background-color: #60a5fa !important; }
+.light-mode .bg-amber-400.rounded-full { background-color: #fbbf24 !important; }
+
+/* Top border on job cards */
+.light-mode .border-blue-600 { border-color: #2563eb !important; }
+.light-mode .border-indigo-500\/50 { border-color: rgba(99, 102, 241, 0.5) !important; }
+.light-mode .border-emerald-500 { border-color: #10b981 !important; }
+.light-mode .border-emerald-500\/20 { border-color: rgba(16, 185, 129, 0.2) !important; }
+
+/* ── 16. Assessment radio/rating buttons ─────────────────────────────── */
+/* Keep blue on selected state */
+.light-mode .peer-checked\:bg-blue-600 {
+    background-color: #2563eb !important;
+}
+.light-mode .peer-checked\:text-white {
+    color: #ffffff !important;
+}
+.light-mode .peer-checked\:bg-slate-700 {
+    background-color: #cbd5e1 !important;
+}
+
+/* Interest checkbox selected */
+.light-mode .peer-checked\:bg-purple-600\/10 {
+    background-color: rgba(168, 85, 247, 0.1) !important;
+}
+.light-mode .peer-checked\:border-purple-500 {
+    border-color: #a855f7 !important;
+}
+
+/* ── 17. Guest layout (login/register) ───────────────────────────────── */
+.light-mode .min-h-screen.flex.items-center {
+    background-color: #f1f5f9 !important;
+}
+
+/* ── 18. Misc visual polish ──────────────────────────────────────────── */
+
+/* Blur orbs — tone down */
+.light-mode .blur-\[120px\] {
+    opacity: 0.35 !important;
+}
+.light-mode .blur-3xl {
+    opacity: 0.4 !important;
+}
+
+/* Watermark icons */
+.light-mode .opacity-\[0\.03\] {
+    opacity: 0.015 !important;
+}
+
+/* White text on opacity backgrounds (e.g. sponsored badge) */
+.light-mode .text-white\/60 {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+.light-mode .text-white\/80 {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* Keep btn-premium text white always */
+.light-mode .btn-premium,
+.light-mode .btn-premium:hover {
+    color: #ffffff !important;
+}
+
+/* All colored CTA buttons should keep white text */
+.light-mode .bg-purple-600,
+.light-mode .bg-sky-600,
+.light-mode .bg-emerald-600,
+.light-mode .bg-red-600,
+.light-mode .bg-amber-600 {
+    color: #ffffff !important;
+}
+.light-mode .bg-purple-600 .text-white,
+.light-mode .bg-sky-600 .text-white,
+.light-mode .bg-emerald-600 .text-white,
+.light-mode .bg-red-600 .text-white {
+    color: #ffffff !important;
+}
+
+/* Any element with vivid bg-*-600 must keep child text white */
+.light-mode .bg-blue-600 .text-white,
+.light-mode .bg-blue-600.text-white,
+.light-mode .bg-blue-600 i.text-white,
+.light-mode .bg-indigo-600 .text-white,
+.light-mode .bg-purple-600 i,
+.light-mode .bg-emerald-600 i,
+.light-mode .bg-sky-600 i,
+.light-mode .bg-red-600 i {
+    color: #ffffff !important;
+}
+
+/* Gradient backgrounds with white text */
+.light-mode .bg-gradient-to-r.from-blue-600 .text-white,
+.light-mode .bg-gradient-to-r.from-blue-600 span,
+.light-mode .bg-gradient-to-r.from-indigo-600 .text-white,
+.light-mode .bg-gradient-to-r.from-indigo-600\/50 span {
+    color: #ffffff !important;
+}
+
+/* Badge text on colored pills */
+.light-mode .bg-emerald-500\/10 .text-emerald-400 { color: #059669 !important; }
+.light-mode .bg-blue-500\/10 .text-blue-400,
+.light-mode .bg-blue-600\/10 .text-blue-400 { color: #2563eb !important; }
+.light-mode .bg-blue-600\/10 .text-blue-500 { color: #2563eb !important; }
+.light-mode .bg-purple-500\/10 .text-purple-400 { color: #9333ea !important; }
+.light-mode .bg-amber-500\/10 .text-amber-400 { color: #d97706 !important; }
+.light-mode .bg-amber-600\/10 .text-amber-400 { color: #d97706 !important; }
+.light-mode .bg-rose-500\/10 .text-rose-400 { color: #e11d48 !important; }
+.light-mode .bg-sky-500\/10 .text-sky-400 { color: #0284c7 !important; }
+
+/* Accent text colors in general — deeper tones for readability */
+.light-mode .text-blue-400 { color: #2563eb !important; }
+.light-mode .text-purple-400 { color: #9333ea !important; }
+.light-mode .text-emerald-400 { color: #059669 !important; }
+.light-mode .text-amber-400 { color: #d97706 !important; }
+.light-mode .text-red-400 { color: #dc2626 !important; }
+.light-mode .text-sky-400 { color: #0284c7 !important; }
+.light-mode .text-indigo-400 { color: #4f46e5 !important; }
+.light-mode .text-rose-400 { color: #e11d48 !important; }
+.light-mode .text-teal-400 { color: #0d9488 !important; }
+.light-mode .text-cyan-400 { color: #0891b2 !important; }
+.light-mode .text-orange-400 { color: #ea580c !important; }
+
+/* Accent text 500 — keep vibrant */
+.light-mode .text-blue-500 { color: #2563eb !important; }
+.light-mode .text-emerald-500 { color: #059669 !important; }
+.light-mode .text-purple-500 { color: #9333ea !important; }
+.light-mode .text-red-500 { color: #dc2626 !important; }
+.light-mode .text-amber-500 { color: #d97706 !important; }
+
+/* Footer */
+.light-mode footer {
+    border-color: #e2e8f0 !important;
+}
+
+/* Scrollbar in light mode */
+.light-mode .overflow-x-auto::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+}
+
+/* Toast — keep vivid */
+.light-mode #toast .bg-emerald-500 {
+    background-color: #10b981 !important;
+    color: #ffffff !important;
+}
+
+/* Shadow adjustments for cards */
+.light-mode .shadow-lg {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+}
+.light-mode .shadow-2xl {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Keep colored shadow subtle */
+.light-mode [class*="shadow-blue-"],
+.light-mode [class*="shadow-indigo-"],
+.light-mode [class*="shadow-purple-"],
+.light-mode [class*="shadow-emerald-"],
+.light-mode [class*="shadow-amber-"],
+.light-mode [class*="shadow-red-"],
+.light-mode [class*="shadow-sky-"] {
+    --tw-shadow-color: transparent !important;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   ── Responsive Utilities ───────────────────────────────────────────
+   ══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 640px) {
+    .btn-premium {
+        @apply px-5 py-3 text-sm;
+    }
+
+    .overflow-x-auto {
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .overflow-x-auto::-webkit-scrollbar {
+        height: 4px;
+    }
+    .overflow-x-auto::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .overflow-x-auto::-webkit-scrollbar-thumb {
+        background: #334155;
+        border-radius: 999px;
+    }
+}
+
+/* Fix body overflow */
+html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
 }

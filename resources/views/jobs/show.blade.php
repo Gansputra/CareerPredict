@@ -7,7 +7,7 @@
     <div class="lg:col-span-2 space-y-8">
         <!-- Main Job Info -->
         <div class="glass p-8" data-aos="fade-up">
-            <div class="flex flex-col md:row items-start justify-between gap-6 mb-8 pb-8 border-b border-slate-800">
+            <div class="flex flex-col md:flex-row items-start justify-between gap-6 mb-8 pb-8 border-b border-slate-800">
                 <div class="flex items-center gap-6">
                     <div class="w-20 h-20 bg-slate-800 rounded-3xl flex items-center justify-center">
                         <i class="fas fa-building text-slate-500 text-3xl"></i>
