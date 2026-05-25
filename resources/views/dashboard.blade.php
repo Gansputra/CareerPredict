@@ -211,7 +211,7 @@
                 </div>
             </div>
             @if($personalityScores->count() > 0)
-            <div class="h-80">
+            <div class="relative w-full h-[360px] sm:h-[400px] md:h-[440px] mx-auto">
                 <canvas id="personalityRadar"></canvas>
             </div>
             @else
@@ -328,7 +328,7 @@
                     grid: { color: 'rgba(255, 255, 255, 0.1)' },
                     pointLabels: { 
                         color: '#94a3b8', 
-                        font: { size: 12, weight: '600' } 
+                        font: { size: 11, weight: '600' } 
                     },
                     ticks: { display: false, stepSize: 1 },
                     min: 0,
@@ -337,7 +337,9 @@
             },
             plugins: {
                 legend: { display: false }
-            }
+            },
+            responsive: true,
+            maintainAspectRatio: false
         }
     });
     @endif

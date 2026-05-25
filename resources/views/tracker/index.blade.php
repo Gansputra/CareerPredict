@@ -106,13 +106,13 @@
                                      class="absolute right-0 top-8 z-20 w-44 bg-[#1e293b] border border-slate-700 rounded-xl shadow-2xl p-2 space-y-1">
 
                                     <a href="{{ route('jobs.show', $app->job->slug) }}" class="block px-3 py-2 rounded-lg text-xs text-slate-300 hover:bg-slate-800 hover:text-white transition-colors">
-                                        <i class="fas fa-external-link-alt text-[10px] mr-2"></i> View Job
+                                        <i class="fas fa-external-link-alt text-[10px] mr-2"></i> Lihat Lowongan
                                     </a>
 
                                     <form action="{{ route('tracker.destroy', $app) }}" method="POST">
                                         @csrf @method('DELETE')
                                         <button type="submit" class="w-full text-left px-3 py-2 rounded-lg text-xs text-red-400 hover:bg-red-500/10 transition-colors">
-                                            <i class="fas fa-trash text-[10px] mr-2"></i> Remove
+                                            <i class="fas fa-trash text-[10px] mr-2"></i> Hapus
                                         </button>
                                     </form>
                                 </div>
@@ -122,10 +122,10 @@
                         {{-- Meta --}}
                         <div class="flex flex-wrap gap-2">
                             <span class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-slate-800 text-slate-400 text-[10px]">
-                                <i class="fas fa-map-marker-alt"></i> {{ $app->job->location ?? 'Remote' }}
+                                <i class="fas fa-map-marker-alt"></i> {{ $app->job->location ?? 'Jarak Jauh (Remote)' }}
                             </span>
                             <span class="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-slate-800 text-slate-400 text-[10px]">
-                                <i class="fas fa-tag"></i> {{ $app->job->category->name ?? 'General' }}
+                                <i class="fas fa-tag"></i> {{ $app->job->category->name ?? 'Umum' }}
                             </span>
                         </div>
 
@@ -230,11 +230,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-                        showToast('Moved to ' + newStatus.charAt(0).toUpperCase() + newStatus.slice(1) + '!');
+                        const statusNames = {
+                            'wishlist': 'Minat',
+                            'applied': 'Dilamar',
+                            'interview': 'Wawancara',
+                            'offered': 'Ditawarkan',
+                            'rejected': 'Ditolak'
+                        };
+                        const displayName = statusNames[newStatus] || newStatus;
+                        showToast('Dipindahkan ke ' + displayName + '!');
                     }
                 })
                 .catch(() => {
-                    showToast('Error updating status', true);
+                    showToast('Gagal memperbarui status', true);
                 });
             }
         });

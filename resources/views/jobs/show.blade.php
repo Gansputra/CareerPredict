@@ -25,7 +25,7 @@
                     @php $isTracked = \App\Models\Application::where('user_id', Auth::id())->where('job_id', $job->id)->exists(); @endphp
                     @if($isTracked)
                         <span class="px-5 py-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 text-sm font-bold">
-                            <i class="fas fa-check-circle mr-1"></i> Already Tracked
+                            <i class="fas fa-check-circle mr-1"></i> Sudah Dilacak
                         </span>
                     @else
                         <form action="{{ route('tracker.store') }}" method="POST">
@@ -63,7 +63,7 @@
 
         <!-- Related Jobs -->
         <div data-aos="fade-up">
-            <h3 class="text-xl font-bold text-white mb-6">Similar Opportunities</h3>
+            <h3 class="text-xl font-bold text-white mb-6">Peluang Serupa</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 @foreach($relatedJobs as $rJob)
                 <a href="{{ route('jobs.show', $rJob->slug) }}" class="glass-dark p-6 card-hover flex items-center justify-between">

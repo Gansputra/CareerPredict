@@ -130,7 +130,7 @@
             <span>Gap keahlian tersisa</span>
         </div>
         <div class="flex items-center gap-2">
-            <span class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-semibold">✓ Ready</span>
+            <span class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-semibold">✓ Siap</span>
             <span>Keahlian sudah terpenuhi</span>
         </div>
     </div>

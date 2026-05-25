@@ -13,16 +13,16 @@ class JobCategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Technology', 'slug' => 'technology'],
-            ['name' => 'Healthcare', 'slug' => 'healthcare'],
-            ['name' => 'Finance', 'slug' => 'finance'],
-            ['name' => 'Education', 'slug' => 'education'],
-            ['name' => 'Marketing', 'slug' => 'marketing'],
-            ['name' => 'Creative & Design', 'slug' => 'creative-design'],
-            ['name' => 'Engineering', 'slug' => 'engineering'],
-            ['name' => 'Sales', 'slug' => 'sales'],
-            ['name' => 'Human Resources', 'slug' => 'human-resources'],
-            ['name' => 'Management', 'slug' => 'management'],
+            ['name' => 'Teknologi', 'slug' => 'teknologi'],
+            ['name' => 'Kesehatan', 'slug' => 'kesehatan'],
+            ['name' => 'Keuangan', 'slug' => 'keuangan'],
+            ['name' => 'Pendidikan', 'slug' => 'pendidikan'],
+            ['name' => 'Pemasaran', 'slug' => 'pemasaran'],
+            ['name' => 'Desain & Kreatif', 'slug' => 'desain-kreatif'],
+            ['name' => 'Rekayasa & Teknik', 'slug' => 'rekayasa-teknik'],
+            ['name' => 'Penjualan', 'slug' => 'penjualan'],
+            ['name' => 'Sumber Daya Manusia', 'slug' => 'sumber-daya-manusia'],
+            ['name' => 'Manajemen', 'slug' => 'manajemen'],
         ];
 
         foreach ($categories as $category) {

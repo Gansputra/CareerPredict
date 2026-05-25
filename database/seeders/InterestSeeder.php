@@ -13,16 +13,16 @@ class InterestSeeder extends Seeder
     public function run(): void
     {
         $interests = [
-            ['name' => 'Artificial Intelligence'],
-            ['name' => 'Web Development'],
-            ['name' => 'Mobile Apps'],
-            ['name' => 'Data Science'],
-            ['name' => 'Digital Marketing'],
-            ['name' => 'Entrepreneurship'],
-            ['name' => 'Creative Writing'],
-            ['name' => 'Environmental Sustainability'],
-            ['name' => 'Social Work'],
-            ['name' => 'Finance & Investment'],
+            ['name' => 'Kecerdasan Buatan (AI)'],
+            ['name' => 'Pengembangan Web'],
+            ['name' => 'Aplikasi Mobile'],
+            ['name' => 'Sains Data'],
+            ['name' => 'Pemasaran Digital'],
+            ['name' => 'Kewirausahaan'],
+            ['name' => 'Penulisan Kreatif'],
+            ['name' => 'Keberlanjutan Lingkungan'],
+            ['name' => 'Pekerjaan Sosial'],
+            ['name' => 'Keuangan & Investasi'],
         ];
 
         foreach ($interests as $interest) {

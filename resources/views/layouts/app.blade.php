@@ -6,6 +6,9 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>{{ config('app.name', 'CareerPredict') }}</title>
         
+        <!-- Favicon / Web App Icon -->
+        <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}?v=2">
+        
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -104,7 +107,7 @@
                     <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 mt-8 mb-4">Panel Admin</p>
                     <a href="{{ route('admin.dashboard') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.dashboard') ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-chart-line text-lg w-6"></i>
-                        <span class="font-medium">Admin Dashboard</span>
+                        <span class="font-medium">Dashboard Admin</span>
                     </a>
                     <a href="{{ route('admin.jobs.import') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.jobs.import') ? 'bg-slate-700 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-file-import text-lg w-6"></i>
@@ -158,20 +161,12 @@
                             </h2>
                         </div>
                         <div class="flex items-center gap-2 sm:gap-4 lg:gap-6">
-                            <div class="relative hidden md:block">
-                                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
-                                <input type="text" placeholder="Cari sesuatu..." class="bg-slate-900 border-slate-700 rounded-xl pl-10 pr-4 py-2 text-sm focus:ring-blue-500 focus:border-blue-500 text-slate-300 w-48 lg:w-64">
-                            </div>
 
                             <!-- Theme Toggle -->
                             <button @click="theme = theme === 'dark' ? 'light' : 'dark'" class="relative w-10 h-10 flex items-center justify-center rounded-lg hover:bg-slate-800 transition-all duration-300 bg-slate-800/50" title="Ganti tema">
                                 <i class="fas text-lg transition-transform duration-300" :class="theme === 'dark' ? 'fa-sun text-amber-400 rotate-0' : 'fa-moon text-indigo-500 rotate-12'"></i>
                             </button>
 
-                            <button class="relative p-2 rounded-lg hover:bg-slate-800 transition-colors">
-                                <i class="fas fa-bell text-slate-400"></i>
-                                <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
-                            </button>
                             <!-- Mobile avatar -->
                             <div class="w-8 h-8 rounded-full bg-slate-700 overflow-hidden lg:hidden">
                                 @if(Auth::user()->profile?->avatar)

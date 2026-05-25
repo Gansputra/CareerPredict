@@ -6,6 +6,10 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>CareerPredict | AI-Powered Job Recommendations</title>
+        
+        <!-- Favicon / Web App Icon -->
+        <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}?v=2">
+        
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,12 +20,12 @@
     <body class="antialiased selection:bg-blue-500/30">
         <!-- Navigation -->
         <nav class="fixed w-full z-50 top-0 px-4 sm:px-6 py-4 transition-all duration-300" x-data="{ scrolled: false, mobileMenu: false }" @scroll.window="scrolled = (window.pageYOffset > 20)">
-            <div class="max-w-7xl mx-auto flex items-center justify-between transition-all duration-300 px-4 sm:px-6 py-3" :class="scrolled ? 'glass shadow-2xl py-2' : ''">
-                <div class="flex items-center gap-2">
-                    <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/40">
-                        <i class="fas fa-brain text-white text-xl"></i>
+            <div class="max-w-7xl mx-auto flex items-center justify-between transition-all duration-300 px-3 sm:px-6 py-3 rounded-2xl overflow-hidden" :class="scrolled ? 'glass shadow-2xl py-2' : ''">
+                <div class="flex items-center gap-2 shrink-0">
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/40">
+                        <i class="fas fa-brain text-white text-base sm:text-xl"></i>
                     </div>
-                    <span class="text-2xl font-bold tracking-tight text-white">Career<span class="text-blue-500">Predict</span></span>
+                    <span class="text-lg sm:text-2xl font-bold tracking-tight text-white">Career<span class="text-blue-500">Predict</span></span>
                 </div>
                 
                 <div class="hidden md:flex items-center gap-8 text-sm font-medium">
@@ -30,21 +34,21 @@
                     <a href="{{ route('jobs.index') }}" class="hover:text-blue-400 transition-colors">Lowongan</a>
                 </div>
 
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-2 sm:gap-3 shrink-0">
                     @if (Route::has('login'))
                         @auth
-                            <a href="{{ url('/dashboard') }}" class="btn-premium py-2 px-5 text-sm">Dashboard</a>
+                            <a href="{{ url('/dashboard') }}" class="btn-premium py-1.5 px-3 sm:py-2 sm:px-5 text-xs sm:text-sm">Dashboard</a>
                         @else
-                            <a href="{{ route('login') }}" class="text-sm font-medium hover:text-blue-400 transition-colors hidden sm:inline">Masuk</a>
+                            <a href="{{ route('login') }}" class="text-xs sm:text-sm font-medium hover:text-blue-400 transition-colors hidden sm:inline">Masuk</a>
                             @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="btn-premium py-2 px-5 text-sm">Mulai Sekarang</a>
+                                <a href="{{ route('register') }}" class="btn-premium py-1.5 px-3 sm:py-2 sm:px-5 text-xs sm:text-sm whitespace-nowrap hidden sm:inline-block">Mulai Sekarang</a>
                             @endif
                         @endauth
                     @endif
 
                     <!-- Mobile Menu Button -->
-                    <button @click="mobileMenu = !mobileMenu" class="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors">
-                        <i class="fas text-xl text-slate-300" :class="mobileMenu ? 'fa-times' : 'fa-bars'"></i>
+                    <button @click="mobileMenu = !mobileMenu" class="md:hidden p-1.5 sm:p-2 rounded-lg hover:bg-white/10 transition-colors">
+                        <i class="fas text-lg sm:text-xl text-slate-300" :class="mobileMenu ? 'fa-times' : 'fa-bars'"></i>
                     </button>
                 </div>
             </div>

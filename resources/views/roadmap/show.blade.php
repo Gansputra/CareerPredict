@@ -8,7 +8,7 @@
     <!-- Back Button & Header -->
     <div class="mb-8" data-aos="fade-down">
         <a href="{{ route('roadmap.index') }}" class="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-6 text-sm font-medium">
-            <i class="fas fa-arrow-left"></i> Back to Roadmaps
+            <i class="fas fa-arrow-left"></i> Kembali ke Peta Belajar
         </a>
         
         <div class="glass p-6 sm:p-8 rounded-3xl relative overflow-hidden">
@@ -20,7 +20,7 @@
                 </div>
                 
                 <div class="flex-1">
-                    <h1 class="text-2xl sm:text-3xl font-bold text-white mb-2">{{ $roadmap['title'] }} Roadmap</h1>
+                    <h1 class="text-2xl sm:text-3xl font-bold text-white mb-2">Peta Belajar {{ $roadmap['title'] }}</h1>
                     <p class="text-slate-400 text-sm sm:text-base leading-relaxed">{{ $roadmap['description'] }}</p>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                         <i class="fas fa-clock text-sm"></i>
                     </div>
                     <div>
-                        <p class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Estimated Time</p>
+                        <p class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Estimasi Waktu</p>
                         <p class="text-sm font-semibold text-white">{{ $roadmap['estimated_time'] }}</p>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                         <i class="fas fa-layer-group text-sm"></i>
                     </div>
                     <div>
-                        <p class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Difficulty</p>
+                        <p class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Tingkat Kesulitan</p>
                         <p class="text-sm font-semibold text-white">{{ $roadmap['difficulty'] }}</p>
                     </div>
                 </div>
@@ -49,8 +49,8 @@
                         <i class="fas fa-list-ol text-sm"></i>
                     </div>
                     <div>
-                        <p class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Total Milestones</p>
-                        <p class="text-sm font-semibold text-white">{{ count($roadmap['steps']) }} Steps</p>
+                        <p class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Total Langkah</p>
+                        <p class="text-sm font-semibold text-white">{{ count($roadmap['steps']) }} Langkah</p>
                     </div>
                 </div>
             </div>

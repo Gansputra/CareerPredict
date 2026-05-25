@@ -123,7 +123,7 @@
                 </div>
                 <div class="text-right shrink-0">
                     <p class="text-sm font-bold text-emerald-400">Rp {{ number_format($job['avg'], 0, ',', '.') }}</p>
-                    <a href="{{ route('jobs.show', $job['slug']) }}" class="text-[10px] text-blue-500 hover:underline">View <i class="fas fa-arrow-right"></i></a>
+                    <a href="{{ route('jobs.show', $job['slug']) }}" class="text-[10px] text-blue-500 hover:underline">Lihat <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
             @endforeach
@@ -136,9 +136,9 @@
         <div class="w-20 h-20 mx-auto bg-slate-800 rounded-3xl flex items-center justify-center mb-6">
             <i class="fas fa-chart-bar text-slate-600 text-3xl"></i>
         </div>
-        <h3 class="text-xl font-bold text-white mb-3">No Salary Data Available</h3>
-        <p class="text-slate-400 max-w-md mx-auto mb-6">Salary insights will appear once job listings with salary information are imported.</p>
-        <a href="{{ route('jobs.index') }}" class="btn-premium px-8">Browse Jobs</a>
+        <h3 class="text-xl font-bold text-white mb-3">Data Gaji Tidak Tersedia</h3>
+        <p class="text-slate-400 max-w-md mx-auto mb-6">Insight gaji akan muncul setelah lowongan pekerjaan dengan informasi gaji diimpor.</p>
+        <a href="{{ route('jobs.index') }}" class="btn-premium px-8">Lihat Lowongan</a>
     </div>
     @endif
 </div>
@@ -158,7 +158,7 @@ new Chart(ctx, {
         labels: labels,
         datasets: [
             {
-                label: 'Average (Juta)',
+                label: 'Rata-rata (Juta)',
                 data: avgData,
                 backgroundColor: 'rgba(37, 99, 235, 0.7)',
                 borderColor: 'rgba(37, 99, 235, 1)',
