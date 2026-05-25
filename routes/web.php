@@ -15,6 +15,20 @@ use App\Http\Controllers\Admin\JobImportController;
 
 Route::get('/', [LandingController::class, 'index'])->name('home');
 
+Route::get('/debug-db', function () {
+    $mysql = config('database.connections.mysql');
+    if (isset($mysql['password'])) {
+        $mysql['password'] = '******';
+    }
+    return [
+        'default_connection' => config('database.default'),
+        'mysql_config' => $mysql,
+        'env_db_database' => env('DB_DATABASE'),
+        'env_db_host' => env('DB_HOST'),
+        'env_keys' => array_keys($_ENV),
+    ];
+});
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
