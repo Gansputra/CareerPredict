@@ -8,7 +8,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div class="lg:col-span-2 relative overflow-hidden glass p-8 sm:p-10 rounded-3xl animate-fade-in">
             <div class="relative z-10">
-                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white mb-4">Selamat datang, {{ Auth::user()->name }}! 👋</h1>
+                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white mb-4">Selamat datang, {{ Auth::user()->name }}!</h1>
                 <p class="text-slate-400 text-base sm:text-lg max-w-xl leading-relaxed">
                     "Cara terbaik memprediksi masa depan adalah menciptakannya." 
                     <br>Mari temukan jalur karir idealmu hari ini.
@@ -26,6 +26,9 @@
                     @endif
                     <a href="{{ route('jobs.index') }}" class="px-8 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 transition-all text-white font-semibold">
                         Jelajahi Lowongan
+                    </a>
+                    <a href="{{ route('docs.index') }}" class="px-8 py-3 rounded-xl bg-slate-800/50 hover:bg-slate-750 hover:bg-slate-700 border border-slate-700/50 hover:border-slate-500 transition-all text-slate-300 hover:text-white font-semibold flex items-center gap-2">
+                        <i class="fas fa-book-open text-white-500"></i> Baca Dokumentasi
                     </a>
                 </div>
             </div>

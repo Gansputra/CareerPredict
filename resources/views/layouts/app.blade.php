@@ -101,6 +101,13 @@
                         <i class="fas fa-microphone-lines text-lg w-6"></i>
                         <span class="font-medium">Simulasi Interview</span>
                     </a>
+
+                    <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 mt-8 mb-4">Bantuan</p>
+
+                    <a href="{{ route('docs.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('docs.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
+                        <i class="fas fa-book text-lg w-6"></i>
+                        <span class="font-medium">Dokumentasi</span>
+                    </a>
                     @endif
 
                     @if(Auth::user()->isAdmin())

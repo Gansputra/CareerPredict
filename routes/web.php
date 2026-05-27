@@ -62,6 +62,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Interview Simulator
     Route::get('/interview', [App\Http\Controllers\InterviewSimulatorController::class, 'index'])->name('interview.index');
     Route::get('/interview/{category}', [App\Http\Controllers\InterviewSimulatorController::class, 'show'])->name('interview.show');
+
+    // Dokumentasi
+    Route::get('/docs', fn() => view('docs.index'))->name('docs.index');
 });
 
 // Admin Routes
