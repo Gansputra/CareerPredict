@@ -21,7 +21,7 @@ class CertaintyFactorService
         $userInterests = $user->interests->pluck('name')->toArray();
         $personalityScores = $user->personalityScores->load('category');
         
-        $jobs = JobListing::with('category')->where('is_active', true)->get();
+        $jobs = JobListing::with('category')->active()->get();
         $recommendations = [];
 
         foreach ($jobs as $job) {

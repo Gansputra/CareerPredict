@@ -11,7 +11,7 @@ class JobController extends Controller
 {
     public function index(Request $request)
     {
-        $query = JobListing::with('category')->where('is_active', true);
+        $query = JobListing::with('category')->active();
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -36,7 +36,7 @@ class JobController extends Controller
 
         $jobs = $query->latest()->paginate(12)->withQueryString();
         $categories = JobCategory::all();
-        $locations = JobListing::where('is_active', true)
+        $locations = JobListing::active()
             ->select('location')
             ->distinct()
             ->orderBy('location')

@@ -37,9 +37,9 @@
                         </form>
                     @endif
                     @if($job->url)
-                    <a href="{{ $job->url }}" target="_blank" class="btn-premium px-10">Lamar Sekarang <i class="fas fa-external-link-alt ml-2 text-xs"></i></a>
+                    <a href="{{ $job->url }}" target="_blank" class="btn-premium px-10 flex items-center justify-center gap-2">Lamar Sekarang <i class="fas fa-external-link-alt text-xs"></i></a>
                     @else
-                    <button class="btn-premium px-10">Lamar Sekarang</button>
+                    <a href="https://www.google.com/search?q={{ urlencode('Lowongan Kerja ' . $job->title . ' ' . $job->company_name) }}" target="_blank" class="btn-premium px-10 flex items-center justify-center gap-2">Cari Lowongan Asli <i class="fas fa-search text-xs"></i></a>
                     @endif
                 </div>
             </div>
@@ -118,7 +118,7 @@
         <div class="glass-dark p-6" data-aos="fade-left" data-aos-delay="100">
             <h3 class="text-lg font-bold text-white mb-4">Tentang Perusahaan</h3>
             <p class="text-sm text-slate-400 mb-6 leading-relaxed">Perusahaan ini adalah pemain terkemuka di sektor {{ $job->category->name }}, dikenal dengan inovasi dan komitmennya terhadap pengembangan karyawan.</p>
-            <a href="#" class="text-blue-500 text-sm font-bold hover:underline">Kunjungi Website <i class="fas fa-external-link-alt ml-1 text-[10px]"></i></a>
+            <a href="https://www.google.com/search?q={{ urlencode($job->company_name . ' official website') }}" target="_blank" class="text-blue-500 text-sm font-bold hover:underline">Kunjungi Website <i class="fas fa-external-link-alt ml-1 text-[10px]"></i></a>
         </div>
     </div>
 </div>

@@ -8,7 +8,7 @@ class JobListing extends Model
 {
     protected $fillable = [
         'category_id', 'title', 'slug', 'description', 'requirements',
-        'location', 'salary_range', 'type', 'company_name', 'company_logo', 'is_active'
+        'location', 'salary_range', 'type', 'company_name', 'company_logo', 'url', 'is_active', 'is_dummy'
     ];
 
     public function category()
@@ -24,5 +24,14 @@ class JobListing extends Model
     public function recommendations()
     {
         return $this->hasMany(Recommendation::class, 'job_id');
+    }
+
+    public function scopeActive($query)
+    {
+        $query->where('is_active', true);
+        if (env('HIDE_DUMMY_JOBS', app()->environment('production'))) {
+            $query->where('is_dummy', false);
+        }
+        return $query;
     }
 }

@@ -338,7 +338,7 @@ class CvAnalyzerController extends Controller
 
     private function calculateRecommendations(array $skills, array $interests, string $cvText): array
     {
-        $jobs = JobListing::with('category')->where('is_active', true)->get();
+        $jobs = JobListing::with('category')->active()->get();
         $recommendations = [];
 
         foreach ($jobs as $job) {

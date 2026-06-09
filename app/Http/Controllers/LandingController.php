@@ -13,13 +13,13 @@ class LandingController extends Controller
     public function index()
     {
         $stats = [
-            'jobs' => JobListing::count(),
+            'jobs' => JobListing::active()->count(),
             'users' => User::count(),
             'categories' => JobCategory::count(),
             'placements' => 1250, // Dummy stat
         ];
 
-        $featuredJobs = JobListing::with('category')->latest()->limit(6)->get();
+        $featuredJobs = JobListing::with('category')->active()->latest()->limit(6)->get();
 
         return view('welcome', compact('stats', 'featuredJobs'));
     }

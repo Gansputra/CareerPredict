@@ -49,7 +49,9 @@ class JobListingSeeder extends Seeder
                 'salary_range' => $salary_range,
                 'type' => $faker->randomElement(['Penuh Waktu', 'Paruh Waktu', 'Kontrak', 'Jarak Jauh (Remote)']),
                 'company_name' => $company,
+                'url' => 'https://www.google.com/search?q=' . urlencode('Lowongan Kerja ' . $title . ' ' . $company),
                 'is_active' => true,
+                'is_dummy' => true,
             ]);
         }
     }
