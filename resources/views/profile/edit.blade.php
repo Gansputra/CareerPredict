@@ -71,6 +71,61 @@
                 </div>
             </div>
             @endif
+
+            @if($user->profile?->cv_career_category)
+            <div class="pt-5 border-t border-slate-800">
+                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">
+                    <i class="fas fa-brain text-purple-400 mr-1"></i> Klasifikasi Karir Deep AI
+                </h4>
+                <div class="flex flex-col sm:flex-row sm:items-center gap-4 bg-purple-500/5 border border-purple-500/10 rounded-xl p-4">
+                    <div>
+                        <span class="text-xs text-slate-400">Prediksi Kategori Utama:</span>
+                        <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2 mt-1">
+                            <span class="text-base font-extrabold text-white">{{ $user->profile->cv_career_category }}</span>
+                            @php
+                                $labelFriendlyNames = [
+                                    "ACCOUNTANT" => "Akuntan / Keuangan",
+                                    "ADVOCATE" => "Advokat / Hukum",
+                                    "AGRICULTURE" => "Pertanian & Agronomi",
+                                    "APPAREL" => "Mode & Pakaian",
+                                    "ARTS" => "Seni & Industri Kreatif",
+                                    "AUTOMOBILE" => "Teknik Otomotif",
+                                    "AVIATION" => "Penerbangan / Dirgantara",
+                                    "BANKING" => "Perbankan / Layanan Finansial",
+                                    "BPO" => "BPO & Customer Service",
+                                    "BUSINESS-DEVELOPMENT" => "Pengembangan Bisnis",
+                                    "CHEF" => "Kulinari & Tata Boga",
+                                    "CONSTRUCTION" => "Konstruksi / Sipil",
+                                    "CONSULTANT" => "Konsultan Bisnis",
+                                    "DESIGNER" => "Desain Grafis / UI/UX",
+                                    "DIGITAL-MEDIA" => "Media Digital & Periklanan",
+                                    "ENGINEERING" => "Rekayasa & Teknik Umum",
+                                    "FINANCE" => "Keuangan & Analis Finansial",
+                                    "FITNESS" => "Kebugaran & Kesehatan",
+                                    "HEALTHCARE" => "Layanan Kesehatan & Medis",
+                                    "HR" => "Sumber Daya Manusia (HRD)",
+                                    "INFORMATION-TECHNOLOGY" => "Teknologi Informasi & Software",
+                                    "PUBLIC-RELATIONS" => "Hubungan Masyarakat (PR)",
+                                    "SALES" => "Penjualan & Pemasaran",
+                                    "TEACHER" => "Pendidik & Guru"
+                                ];
+                                $friendly = $labelFriendlyNames[$user->profile->cv_career_category] ?? $user->profile->cv_career_category;
+                            @endphp
+                            <span class="text-xs text-purple-400 font-medium">({{ $friendly }})</span>
+                        </div>
+                    </div>
+                    <div class="sm:ml-auto w-full sm:w-48 shrink-0">
+                        <div class="flex justify-between items-baseline mb-1">
+                            <span class="text-[9px] text-slate-500 uppercase font-bold">Confidence</span>
+                            <span class="text-xs font-extrabold text-purple-400">{{ $user->profile->cv_career_confidence }}%</span>
+                        </div>
+                        <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-purple-500 to-blue-500" style="width: {{ $user->profile->cv_career_confidence }}%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
             @else
             <div class="text-center py-8 border-2 border-dashed border-slate-800 rounded-2xl">
                 <div class="w-16 h-16 mx-auto bg-slate-800 rounded-2xl flex items-center justify-center mb-4">

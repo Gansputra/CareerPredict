@@ -32,6 +32,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/cv-analyzer', [App\Http\Controllers\CvAnalyzerController::class, 'index'])->name('cv.index');
     Route::post('/cv-analyzer/analyze', [App\Http\Controllers\CvAnalyzerController::class, 'analyze'])->name('cv.analyze');
     Route::post('/cv-analyzer/reset', [App\Http\Controllers\CvAnalyzerController::class, 'reset'])->name('cv.reset');
+    Route::post('/cv-analyzer/save-category', [App\Http\Controllers\CvAnalyzerController::class, 'saveCategory'])->name('cv.saveCategory');
 
     // Jobs
     Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');

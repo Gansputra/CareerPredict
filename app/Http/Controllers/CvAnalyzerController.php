@@ -199,8 +199,37 @@ class CvAnalyzerController extends Controller
         $user->skills()->wherePivot('source', 'cv')->detach();
         $user->interests()->detach();
 
+        // Reset AI career prediction on profile
+        if ($user->profile) {
+            $user->profile->update([
+                'cv_career_category' => null,
+                'cv_career_confidence' => null,
+            ]);
+        }
+
         return redirect()->route('cv.index')
-            ->with('success', 'Your CV data has been reset. Upload a new CV to re-analyze.');
+            ->with('success', 'Data CV Anda telah di-reset. Silakan unggah CV baru untuk menganalisis kembali.');
+    }
+
+    public function saveCategory(Request $request)
+    {
+        $request->validate([
+            'category' => 'required|string',
+            'confidence' => 'required|numeric|min:0|max:100',
+        ]);
+
+        $user = Auth::user();
+
+        // Save classification category and confidence to profile
+        $user->profile()->updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'cv_career_category' => $request->category,
+                'cv_career_confidence' => $request->confidence,
+            ]
+        );
+
+        return response()->json(['success' => true]);
     }
 
     private function saveToProfile(array $skills, array $interests): void

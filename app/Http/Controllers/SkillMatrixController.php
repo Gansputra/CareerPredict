@@ -80,15 +80,20 @@ class SkillMatrixController extends Controller
             $userSkills[$skill->name] = ($skill->pivot->level / 5) * 100;
         }
 
-        // Also map common aliases so they match career requirement names
+        // Also map common aliases (both English and Indonesian) so they match career requirement names
         $aliases = [
             'PHP' => 'PHP/Node', 'Laravel' => 'PHP/Node', 'Node.js' => 'PHP/Node',
             'React' => 'React/Vue', 'Vue.js' => 'React/Vue', 'Angular' => 'React/Vue',
             'HTML/CSS' => 'HTML/CSS', 'Tailwind CSS' => 'CSS', 'Bootstrap' => 'CSS',
-            'UI Design' => 'Figma', 'UX Research' => 'User Research',
-            'Data Analysis' => 'Data Analysis', 'Data Science' => 'Statistics',
+            'UI Design' => 'Figma', 'Desain UI' => 'Figma',
+            'UX Research' => 'User Research', 'Riset UX' => 'User Research',
+            'Data Analysis' => 'Data Analysis', 'Analisis Data' => 'Data Analysis',
+            'Data Science' => 'Statistics', 'Statistika' => 'Statistics',
             'Machine Learning' => 'Machine Learning', 'Deep Learning' => 'Deep Learning',
-            'Project Management' => 'Agile/Scrum',
+            'Project Management' => 'Agile/Scrum', 'Manajemen Proyek' => 'Agile/Scrum',
+            'Communication' => 'Communication', 'Komunikasi' => 'Communication',
+            'Leadership' => 'Leadership', 'Kepemimpinan' => 'Leadership',
+            'Data Viz' => 'Data Viz', 'Visualisasi Data' => 'Data Viz',
         ];
 
         foreach ($dbSkills as $skill) {

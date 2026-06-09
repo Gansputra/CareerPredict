@@ -249,6 +249,59 @@
                 </p>
             </div>
 
+            @if(Auth::user()->profile?->cv_career_category)
+            <!-- AI CV Classification Card -->
+            <div class="glass-dark p-8 border-l-4 border-purple-500 animate-fade-in" style="animation-delay: 350ms">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-white"><i class="fas fa-brain text-purple-400 mr-2"></i> Prediksi Karir AI (CV)</h3>
+                    <span class="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded bg-purple-500/20 text-purple-400 border border-purple-500/30">
+                        Deep Learning
+                    </span>
+                </div>
+                <p class="text-xs text-slate-500 mb-3">Berdasarkan struktur teks dan keahlian di CV Anda:</p>
+                <div class="p-4 rounded-xl bg-purple-500/5 border border-purple-500/10 flex items-center justify-between">
+                    <div>
+                        <span class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">Kategori Terdeteksi</span>
+                        <p class="text-base font-extrabold text-white mt-0.5">{{ Auth::user()->profile->cv_career_category }}</p>
+                        @php
+                            $labelFriendlyNames = [
+                                "ACCOUNTANT" => "Akuntan / Keuangan",
+                                "ADVOCATE" => "Advokat / Hukum",
+                                "AGRICULTURE" => "Pertanian & Agronomi",
+                                "APPAREL" => "Mode & Pakaian",
+                                "ARTS" => "Seni & Industri Kreatif",
+                                "AUTOMOBILE" => "Teknik Otomotif",
+                                "AVIATION" => "Penerbangan / Dirgantara",
+                                "BANKING" => "Perbankan / Layanan Finansial",
+                                "BPO" => "BPO & Customer Service",
+                                "BUSINESS-DEVELOPMENT" => "Pengembangan Bisnis",
+                                "CHEF" => "Kulinari & Tata Boga",
+                                "CONSTRUCTION" => "Konstruksi / Sipil",
+                                "CONSULTANT" => "Konsultan Bisnis",
+                                "DESIGNER" => "Desain Grafis / UI/UX",
+                                "DIGITAL-MEDIA" => "Media Digital & Periklanan",
+                                "ENGINEERING" => "Rekayasa & Teknik Umum",
+                                "FINANCE" => "Keuangan & Analis Finansial",
+                                "FITNESS" => "Kebugaran & Kesehatan",
+                                "HEALTHCARE" => "Layanan Kesehatan & Medis",
+                                "HR" => "Sumber Daya Manusia (HRD)",
+                                "INFORMATION-TECHNOLOGY" => "Teknologi Informasi & Software",
+                                "PUBLIC-RELATIONS" => "Hubungan Masyarakat (PR)",
+                                "SALES" => "Penjualan & Pemasaran",
+                                "TEACHER" => "Pendidik & Guru"
+                            ];
+                            $friendly = $labelFriendlyNames[Auth::user()->profile->cv_career_category] ?? Auth::user()->profile->cv_career_category;
+                        @endphp
+                        <span class="text-xs text-purple-400 font-medium">{{ $friendly }}</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">Confidence</span>
+                        <p class="text-xl font-black text-purple-400 mt-0.5">{{ Auth::user()->profile->cv_career_confidence }}%</p>
+                    </div>
+                </div>
+            </div>
+            @endif
+
             <!-- Smart Suggestions -->
             <div class="glass-dark p-8 animate-fade-in" style="animation-delay: 400ms">
                 <h3 class="text-lg font-bold text-white mb-6">Saran Karir AI</h3>
