@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class FetchJobsCommand extends Command
 {
     protected $signature = 'jobs:fetch 
-                            {--source=all : Source to fetch from (remotive, arbeitnow, all)}
+                            {--source=all : Source to fetch from (remotive, arbeitnow, jsearch, all)}
                             {--limit=50 : Maximum number of jobs to fetch per source}
                             {--clear : Clear existing jobs before fetching}';
 
@@ -46,8 +46,9 @@ class FetchJobsCommand extends Command
         $sources = match ($source) {
             'remotive' => ['remotive'],
             'arbeitnow' => ['arbeitnow'],
-            'all' => ['remotive', 'arbeitnow'],
-            default => ['remotive', 'arbeitnow'],
+            'jsearch' => ['jsearch'],
+            'all' => ['remotive', 'arbeitnow', 'jsearch'],
+            default => ['remotive', 'arbeitnow', 'jsearch'],
         };
 
         foreach ($sources as $src) {
@@ -57,6 +58,7 @@ class FetchJobsCommand extends Command
             match ($src) {
                 'remotive' => $this->fetchRemotive($limit),
                 'arbeitnow' => $this->fetchArbeitnow($limit),
+                'jsearch' => $this->fetchJSearch($limit),
             };
         }
 
@@ -204,6 +206,7 @@ class FetchJobsCommand extends Command
             'salary_range' => $data['salary_range'] ?: 'Competitive',
             'type' => $data['type'],
             'company_name' => Str::limit($data['company_name'], 250),
+            'url' => $data['url'] ?? null,
             'is_active' => true,
         ]);
 
@@ -341,5 +344,114 @@ class FetchJobsCommand extends Command
             return 'Competitive';
         }
         return $salary;
+    }
+
+    /**
+     * Fetch jobs from JSearch API (via RapidAPI)
+     */
+    private function fetchJSearch(int $limit): void
+    {
+        $apiKey = env('RAPIDAPI_KEY');
+        if (empty($apiKey)) {
+            $this->error("  ❌ JSearch API Key (RAPIDAPI_KEY) is not configured in your .env file!");
+            return;
+        }
+
+        try {
+            $allJobs = [];
+            $page = 1;
+            $itemsPerPage = 10;
+            $maxPages = ceil($limit / $itemsPerPage);
+
+            $this->info("  🔍 Querying JSearch for Indonesian jobs...");
+            
+            while (count($allJobs) < $limit && $page <= $maxPages) {
+                if ($page > 1) {
+                    sleep(2);
+                }
+
+                $response = Http::withHeaders([
+                    'X-API-Key' => $apiKey,
+                ])->withOptions([
+                    'curl' => [
+                        CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+                    ]
+                ])->timeout(30)->get('https://api.openwebninja.com/jsearch/search-v2', [
+                    'query' => 'developer jobs in new york',
+                    'page' => $page,
+                    'num_pages' => 1,
+                ]);
+
+                if (!$response->successful()) {
+                    $this->error("  ❌ JSearch API returned status: {$response->status()} - " . $response->body());
+                    break;
+                }
+
+                $data = $response->json();
+                $jobs = $data['data']['jobs'] ?? $data['data'] ?? [];
+
+                if (empty($jobs)) break;
+
+                $allJobs = array_merge($allJobs, $jobs);
+                $page++;
+            }
+
+            $allJobs = array_slice($allJobs, 0, $limit);
+
+            $bar = $this->output->createProgressBar(count($allJobs));
+            $bar->start();
+
+            foreach ($allJobs as $job) {
+                // Map employment type
+                $type = 'Full-time';
+                if (isset($job['job_employment_type'])) {
+                    $type = match (strtoupper($job['job_employment_type'])) {
+                        'FULLTIME' => 'Full-time',
+                        'PARTTIME' => 'Part-time',
+                        'CONTRACT' => 'Contract',
+                        'INTERN' => 'Part-time',
+                        default => 'Full-time',
+                    };
+                }
+
+                // Format salary range
+                $salary_range = 'Competitive';
+                if (!empty($job['job_min_salary']) && !empty($job['job_max_salary'])) {
+                    $currency = $job['job_salary_currency'] ?? 'IDR';
+                    if ($currency === 'IDR') {
+                        $salary_range = 'Rp ' . number_format($job['job_min_salary'], 0, ',', '.') . ' - Rp ' . number_format($job['job_max_salary'], 0, ',', '.');
+                    } else {
+                        $salary_range = $currency . ' ' . number_format($job['job_min_salary']) . ' - ' . number_format($job['job_max_salary']);
+                    }
+                }
+
+                $location = ($job['job_city'] && $job['job_state']) ? $job['job_city'] . ', ' . $job['job_state'] : ($job['job_city'] ?: ($job['job_location'] ?? ''));
+                $country = $job['job_country'] ?? '';
+                if (!empty($country)) {
+                    $location = !empty($location) ? $location . ', ' . $country : $country;
+                }
+
+                $this->saveJob([
+                    'title' => $job['job_title'] ?? 'Untitled',
+                    'company_name' => $job['employer_name'] ?? 'Unknown Company',
+                    'category' => $this->mapCategory($this->guessCategory([], $job['job_title'] ?? '')),
+                    'location' => $location,
+                    'type' => $type,
+                    'salary_range' => $salary_range,
+                    'description' => $job['job_description'] ?? '',
+                    'requirements' => $this->extractRequirements($job['job_description'] ?? ''),
+                    'url' => $job['job_apply_link'] ?? null,
+                ]);
+
+                $bar->advance();
+            }
+
+            $bar->finish();
+            $this->newLine();
+            $this->info("  ✓ Processed " . count($allJobs) . " jobs from JSearch");
+
+        } catch (\Exception $e) {
+            $this->error("  ❌ JSearch error: " . $e->getMessage());
+        }
     }
 }

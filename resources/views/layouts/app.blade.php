@@ -54,9 +54,9 @@
                 </div>
 
                 <nav class="px-4 space-y-2 pb-6 flex-1 overflow-y-auto">
+                    @if(!Auth::user()->isAdmin())
                     <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-4">Menu Utama</p>
                     
-                    @if(!Auth::user()->isAdmin())
                     <a href="{{ route('dashboard') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('dashboard') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-house text-lg w-6"></i>
                         <span class="font-medium">Dashboard</span>
@@ -119,6 +119,10 @@
                     <a href="{{ route('admin.jobs.import') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.jobs.import') ? 'bg-slate-700 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-file-import text-lg w-6"></i>
                         <span class="font-medium">Impor Lowongan</span>
+                    </a>
+                    <a href="{{ route('admin.users.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.users.*') ? 'bg-slate-700 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
+                        <i class="fas fa-users-cog text-lg w-6"></i>
+                        <span class="font-medium">Kelola User</span>
                     </a>
                     @endif
 

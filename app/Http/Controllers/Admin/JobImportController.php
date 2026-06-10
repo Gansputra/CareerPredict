@@ -172,6 +172,131 @@ class JobImportController extends Controller
             }
         }
 
+        // Fetch from JSearch (Indonesia)
+        if ($source === 'all' || $source === 'jsearch') {
+            $apiKey = env('RAPIDAPI_KEY');
+            if (empty($apiKey)) {
+                $errors[] = 'JSearch: RAPIDAPI_KEY is not configured in .env';
+            } else {
+                try {
+                    $allJobs = [];
+                    $page = 1;
+                    $itemsPerPage = 10;
+                    $maxPages = ceil($limit / $itemsPerPage);
+
+                    while (count($allJobs) < $limit && $page <= $maxPages) {
+                        if ($page > 1) {
+                            sleep(2);
+                        }
+
+                        $response = Http::withHeaders([
+                            'X-API-Key' => $apiKey,
+                        ])->withOptions([
+                            'curl' => [
+                                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+                            ]
+                        ])->timeout(30)->get('https://api.openwebninja.com/jsearch/search-v2', [
+                            'query' => 'developer jobs in new york',
+                            'page' => $page,
+                            'num_pages' => 1,
+                        ]);
+
+                        if ($response->successful()) {
+                            $jobs = $response->json('data.jobs') ?? $response->json('data') ?? [];
+                            if (empty($jobs)) break;
+                            $allJobs = array_merge($allJobs, $jobs);
+                            $page++;
+                        } else {
+                            $errors[] = 'JSearch response failed with status: ' . $response->status();
+                            break;
+                        }
+                    }
+
+                    $allJobs = array_slice($allJobs, 0, $limit);
+
+                    foreach ($allJobs as $job) {
+                        // Guess category
+                        $title = $job['job_title'] ?? 'Untitled';
+                        $catName = 'Technology'; // default
+                        $combined = strtolower($title);
+                        $categoryKeywords = [
+                            'Technology' => ['software', 'developer', 'engineer', 'programming', 'backend', 'frontend', 'fullstack', 'devops', 'cloud', 'data', 'ai', 'python', 'javascript', 'php'],
+                            'Creative & Design' => ['design', 'ux', 'ui', 'graphic', 'creative', 'art', 'figma'],
+                            'Marketing' => ['marketing', 'seo', 'content', 'social media', 'brand'],
+                            'Finance' => ['finance', 'accounting', 'financial', 'tax', 'audit', 'banking'],
+                            'Sales' => ['sales', 'account executive', 'business development', 'customer'],
+                            'Healthcare' => ['health', 'medical', 'nurse', 'doctor'],
+                            'Education' => ['education', 'teacher', 'tutor', 'training'],
+                            'Human Resources' => ['hr', 'human resources', 'recruiter', 'talent'],
+                            'Engineering' => ['mechanical', 'electrical', 'civil', 'structural'],
+                            'Management' => ['manager', 'director', 'lead', 'head of', 'product', 'project'],
+                        ];
+
+                        foreach ($categoryKeywords as $cat => $keywords) {
+                            foreach ($keywords as $keyword) {
+                                if (str_contains($combined, $keyword)) {
+                                    $catName = $cat;
+                                    break 2;
+                                }
+                            }
+                        }
+
+                        $cat = JobCategory::firstOrCreate(
+                            ['slug' => Str::slug($catName)],
+                            ['name' => $catName]
+                        );
+
+                        // Map employment type
+                        $type = 'Full-time';
+                        if (isset($job['job_employment_type'])) {
+                            $type = match (strtoupper($job['job_employment_type'])) {
+                                'FULLTIME' => 'Full-time',
+                                'PARTTIME' => 'Part-time',
+                                'CONTRACT' => 'Contract',
+                                'INTERN' => 'Part-time',
+                                default => 'Full-time',
+                            };
+                        }
+
+                        // Format salary range
+                        $salary_range = 'Negotiable';
+                        if (!empty($job['job_min_salary']) && !empty($job['job_max_salary'])) {
+                            $currency = $job['job_salary_currency'] ?? 'IDR';
+                            if ($currency === 'IDR') {
+                                $salary_range = 'Rp ' . number_format($job['job_min_salary'], 0, ',', '.') . ' - Rp ' . number_format($job['job_max_salary'], 0, ',', '.');
+                            } else {
+                                $salary_range = $currency . ' ' . number_format($job['job_min_salary']) . ' - ' . number_format($job['job_max_salary']);
+                            }
+                        }
+
+                        $location = ($job['job_city'] && $job['job_state']) ? $job['job_city'] . ', ' . $job['job_state'] : ($job['job_city'] ?: ($job['job_location'] ?? ''));
+                        $country = $job['job_country'] ?? '';
+                        if (!empty($country)) {
+                            $location = !empty($location) ? $location . ', ' . $country : $country;
+                        }
+
+                        JobListing::updateOrCreate(
+                            ['title' => $title, 'company_name' => $job['employer_name'] ?? 'Unknown'],
+                            [
+                                'category_id' => $cat->id,
+                                'location' => $location,
+                                'salary_range' => $salary_range,
+                                'description' => strip_tags($job['job_description'] ?? '-'),
+                                'requirements' => strip_tags($job['job_description'] ?? '-'),
+                                'slug' => Str::slug($title . '-' . Str::random(5)),
+                                'type' => $type,
+                                'url' => $job['job_apply_link'] ?? null,
+                                'is_active' => true,
+                            ]
+                        );
+                        $imported++;
+                    }
+                } catch (\Exception $e) {
+                    $errors[] = 'JSearch: ' . $e->getMessage();
+                }
+            }
+        }
+
         $message = "✅ API Fetch complete! $imported jobs imported.";
         if (!empty($errors)) {
             $message .= ' ⚠️ Errors: ' . implode(', ', $errors);
