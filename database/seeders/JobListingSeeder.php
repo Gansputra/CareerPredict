@@ -37,7 +37,7 @@ class JobListingSeeder extends Seeder
             
             $minVal = $faker->numberBetween(4, 15);
             $maxVal = $faker->numberBetween($minVal + 2, $minVal + 20);
-            $salary_range = 'Rp ' . $minVal . '.000.000 - Rp ' . $maxVal . '.000.000';
+            $salary_range = $minVal . '.000.000 - ' . $maxVal . '.000.000';
 
             \App\Models\JobListing::create([
                 'category_id' => $categories->random()->id,

@@ -419,7 +419,7 @@ class FetchJobsCommand extends Command
                 if (!empty($job['job_min_salary']) && !empty($job['job_max_salary'])) {
                     $currency = $job['job_salary_currency'] ?? 'IDR';
                     if ($currency === 'IDR') {
-                        $salary_range = 'Rp ' . number_format($job['job_min_salary'], 0, ',', '.') . ' - Rp ' . number_format($job['job_max_salary'], 0, ',', '.');
+                        $salary_range = number_format($job['job_min_salary'], 0, ',', '.') . ' - ' . number_format($job['job_max_salary'], 0, ',', '.');
                     } else {
                         $salary_range = $currency . ' ' . number_format($job['job_min_salary']) . ' - ' . number_format($job['job_max_salary']);
                     }

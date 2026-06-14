@@ -34,4 +34,20 @@ class JobListing extends Model
         }
         return $query;
     }
+
+    /**
+     * Get the job's salary range, removing the "Rp" prefix dynamically.
+     *
+     * @param  string|null  $value
+     * @return string|null
+     */
+    public function getSalaryRangeAttribute($value)
+    {
+        if (empty($value)) {
+            return $value;
+        }
+
+        // Remove "Rp" and any following spaces (case-insensitive)
+        return preg_replace('/Rp\s*/i', '', $value);
+    }
 }
