@@ -13,20 +13,20 @@
         @method('put')
 
         <div>
-            <label for="update_password_current_password" class="block text-sm font-bold uppercase tracking-widest text-slate-500 mb-2">Kata Sandi Saat Ini</label>
-            <x-text-input id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full bg-slate-900/50 border-slate-700 text-white py-4 px-6 text-lg rounded-2xl" autocomplete="current-password" />
+            <label for="update_password_current_password" class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Kata Sandi Saat Ini</label>
+            <x-text-input id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full bg-slate-900/50 border-slate-700 text-white py-2.5 px-4 text-sm rounded-xl" autocomplete="current-password" />
             <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
         </div>
 
         <div>
-            <label for="update_password_password" class="block text-sm font-bold uppercase tracking-widest text-slate-500 mb-2">Kata Sandi Baru</label>
-            <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full bg-slate-900/50 border-slate-700 text-white py-4 px-6 text-lg rounded-2xl" autocomplete="new-password" />
+            <label for="update_password_password" class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Kata Sandi Baru</label>
+            <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full bg-slate-900/50 border-slate-700 text-white py-2.5 px-4 text-sm rounded-xl" autocomplete="new-password" />
             <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
         </div>
 
         <div>
-            <label for="update_password_password_confirmation" class="block text-sm font-bold uppercase tracking-widest text-slate-500 mb-2">Konfirmasi Kata Sandi</label>
-            <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full bg-slate-900/50 border-slate-700 text-white py-4 px-6 text-lg rounded-2xl" autocomplete="new-password" />
+            <label for="update_password_password_confirmation" class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Konfirmasi Kata Sandi</label>
+            <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full bg-slate-900/50 border-slate-700 text-white py-2.5 px-4 text-sm rounded-xl" autocomplete="new-password" />
             <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
         </div>
 

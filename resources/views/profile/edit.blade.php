@@ -22,134 +22,138 @@
         </div>
     </div>
 
-    <div class="space-y-8">
-        <!-- Profile Info -->
-        <div class="glass p-8" data-aos="fade-up">
-            <div class="w-full">
-                @include('profile.partials.update-profile-information-form')
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Left Column: Main Profile Info -->
+        <div class="lg:col-span-2 space-y-8">
+            <div class="glass p-6 animate-fade-in">
+                <div class="w-full">
+                    @include('profile.partials.update-profile-information-form')
+                </div>
             </div>
         </div>
 
-        <!-- Skills & Interests Section -->
-        <div class="glass p-8 animate-fade-in">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-                <h3 class="text-lg sm:text-xl font-bold text-white"><i class="fas fa-microchip text-blue-400 mr-2"></i> Keahlian Terdeteksi</h3>
-                <div class="flex gap-2">
-                    @if(Auth::user()->skills->count() > 0)
-                    <form action="{{ route('cv.reset') }}" method="POST" class="inline" id="cvResetForm">
-                        @csrf
-                        <button type="button" onclick="confirmCvReset()" class="px-3 py-1.5 rounded-lg bg-red-500/10 text-red-400 text-xs font-bold hover:bg-red-500/20 transition-all">
-                            <i class="fas fa-trash-alt mr-1"></i> Reset
-                        </button>
-                    </form>
-                    @endif
-                    <a href="{{ route('cv.index') }}" class="px-3 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 text-xs font-bold hover:bg-blue-600/20 transition-all">
-                        <i class="fas fa-upload mr-1"></i> {{ Auth::user()->skills->count() > 0 ? 'Unggah Ulang CV' : 'Unggah CV' }}
-                    </a>
+        <!-- Right Column: Skills, Security, Danger Zone -->
+        <div class="space-y-8">
+            <!-- Skills & Interests Section -->
+            <div class="glass p-6 animate-fade-in">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+                    <h3 class="text-lg sm:text-xl font-bold text-white"><i class="fas fa-microchip text-blue-400 mr-2"></i> Keahlian Terdeteksi</h3>
+                    <div class="flex gap-2">
+                        @if(Auth::user()->skills->count() > 0)
+                        <form action="{{ route('cv.reset') }}" method="POST" class="inline" id="cvResetForm">
+                            @csrf
+                            <button type="button" onclick="confirmCvReset()" class="px-3 py-1.5 rounded-lg bg-red-500/10 text-red-400 text-xs font-bold hover:bg-red-500/20 transition-all">
+                                <i class="fas fa-trash-alt mr-1"></i> Reset
+                            </button>
+                        </form>
+                        @endif
+                        <a href="{{ route('cv.index') }}" class="px-3 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 text-xs font-bold hover:bg-blue-600/20 transition-all">
+                            <i class="fas fa-upload mr-1"></i> {{ Auth::user()->skills->count() > 0 ? 'Unggah Ulang' : 'Unggah CV' }}
+                        </a>
+                    </div>
                 </div>
-            </div>
 
-            @if(Auth::user()->skills->count() > 0)
-            <div class="flex flex-wrap gap-3 mb-6">
-                @foreach(Auth::user()->skills as $skill)
-                <div class="px-4 py-2 rounded-xl {{ $skill->pivot->source === 'cv' ? 'bg-blue-600/10 border-blue-500/20' : 'bg-emerald-600/10 border-emerald-500/20' }} border text-sm font-bold flex items-center gap-2">
-                    <i class="fas fa-check-circle {{ $skill->pivot->source === 'cv' ? 'text-blue-400' : 'text-emerald-400' }}"></i>
-                    <span class="text-white">{{ $skill->name }}</span>
-                    <span class="text-[9px] {{ $skill->pivot->source === 'cv' ? 'bg-blue-500' : 'bg-emerald-500' }} text-white px-1.5 py-0.5 rounded-full ml-1">Lvl {{ $skill->pivot->level }}</span>
-                    <span class="text-[8px] {{ $skill->pivot->source === 'cv' ? 'text-blue-500' : 'text-emerald-500' }} uppercase font-bold tracking-wider">{{ $skill->pivot->source }}</span>
-                </div>
-                @endforeach
-            </div>
-
-            @if(Auth::user()->interests->count() > 0)
-            <div class="pt-5 border-t border-slate-800">
-                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3"><i class="fas fa-heart text-purple-400 mr-1"></i> Minat Terdeteksi</h4>
-                <div class="flex flex-wrap gap-2">
-                    @foreach(Auth::user()->interests as $interest)
-                    <span class="px-3 py-1.5 rounded-full bg-purple-500/10 text-purple-400 text-xs font-bold">{{ $interest->name }}</span>
+                @if(Auth::user()->skills->count() > 0)
+                <div class="flex flex-wrap gap-2 mb-6">
+                    @foreach(Auth::user()->skills as $skill)
+                    <div class="px-3 py-1.5 rounded-xl {{ $skill->pivot->source === 'cv' ? 'bg-blue-600/10 border-blue-500/20' : 'bg-emerald-600/10 border-emerald-500/20' }} border text-xs font-bold flex items-center gap-1.5">
+                        <i class="fas fa-check-circle {{ $skill->pivot->source === 'cv' ? 'text-blue-400' : 'text-emerald-400' }}"></i>
+                        <span class="text-white">{{ $skill->name }}</span>
+                        <span class="text-[9px] {{ $skill->pivot->source === 'cv' ? 'bg-blue-500' : 'bg-emerald-500' }} text-white px-1.5 py-0.5 rounded-full">Lvl {{ $skill->pivot->level }}</span>
+                    </div>
                     @endforeach
                 </div>
-            </div>
-            @endif
 
-            @if($user->profile?->cv_career_category)
-            <div class="pt-5 border-t border-slate-800">
-                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">
-                    <i class="fas fa-brain text-purple-400 mr-1"></i> Klasifikasi Karir Deep AI
-                </h4>
-                <div class="flex flex-col sm:flex-row sm:items-center gap-4 bg-purple-500/5 border border-purple-500/10 rounded-xl p-4">
-                    <div>
-                        <span class="text-xs text-slate-400">Prediksi Kategori Utama:</span>
-                        <div class="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2 mt-1">
-                            <span class="text-base font-extrabold text-white">{{ $user->profile->cv_career_category }}</span>
-                            @php
-                                $labelFriendlyNames = [
-                                    "ACCOUNTANT" => "Akuntan / Keuangan",
-                                    "ADVOCATE" => "Advokat / Hukum",
-                                    "AGRICULTURE" => "Pertanian & Agronomi",
-                                    "APPAREL" => "Mode & Pakaian",
-                                    "ARTS" => "Seni & Industri Kreatif",
-                                    "AUTOMOBILE" => "Teknik Otomotif",
-                                    "AVIATION" => "Penerbangan / Dirgantara",
-                                    "BANKING" => "Perbankan / Layanan Finansial",
-                                    "BPO" => "BPO & Customer Service",
-                                    "BUSINESS-DEVELOPMENT" => "Pengembangan Bisnis",
-                                    "CHEF" => "Kulinari & Tata Boga",
-                                    "CONSTRUCTION" => "Konstruksi / Sipil",
-                                    "CONSULTANT" => "Konsultan Bisnis",
-                                    "DESIGNER" => "Desain Grafis / UI/UX",
-                                    "DIGITAL-MEDIA" => "Media Digital & Periklanan",
-                                    "ENGINEERING" => "Rekayasa & Teknik Umum",
-                                    "FINANCE" => "Keuangan & Analis Finansial",
-                                    "FITNESS" => "Kebugaran & Kesehatan",
-                                    "HEALTHCARE" => "Layanan Kesehatan & Medis",
-                                    "HR" => "Sumber Daya Manusia (HRD)",
-                                    "INFORMATION-TECHNOLOGY" => "Teknologi Informasi & Software",
-                                    "PUBLIC-RELATIONS" => "Hubungan Masyarakat (PR)",
-                                    "SALES" => "Penjualan & Pemasaran",
-                                    "TEACHER" => "Pendidik & Guru"
-                                ];
-                                $friendly = $labelFriendlyNames[$user->profile->cv_career_category] ?? $user->profile->cv_career_category;
-                            @endphp
-                            <span class="text-xs text-purple-400 font-medium">({{ $friendly }})</span>
-                        </div>
+                @if(Auth::user()->interests->count() > 0)
+                <div class="pt-5 border-t border-slate-800">
+                    <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3"><i class="fas fa-heart text-purple-400 mr-1"></i> Minat Terdeteksi</h4>
+                    <div class="flex flex-wrap gap-1.5">
+                        @foreach(Auth::user()->interests as $interest)
+                        <span class="px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-400 text-[11px] font-bold">{{ $interest->name }}</span>
+                        @endforeach
                     </div>
-                    <div class="sm:ml-auto w-full sm:w-48 shrink-0">
-                        <div class="flex justify-between items-baseline mb-1">
-                            <span class="text-[9px] text-slate-500 uppercase font-bold">Confidence</span>
-                            <span class="text-xs font-extrabold text-purple-400">{{ $user->profile->cv_career_confidence }}%</span>
+                </div>
+                @endif
+
+                @if($user->profile?->cv_career_category)
+                <div class="pt-5 border-t border-slate-800">
+                    <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">
+                        <i class="fas fa-brain text-purple-400 mr-1"></i> Klasifikasi Karir Deep AI
+                    </h4>
+                    <div class="bg-purple-500/5 border border-purple-500/10 rounded-xl p-3 space-y-3">
+                        <div>
+                            <span class="text-[10px] text-slate-400">Kategori Utama:</span>
+                            <div class="flex flex-wrap items-baseline gap-1 mt-0.5">
+                                <span class="text-sm font-extrabold text-white">{{ $user->profile->cv_career_category }}</span>
+                                @php
+                                    $labelFriendlyNames = [
+                                        "ACCOUNTANT" => "Akuntan / Keuangan",
+                                        "ADVOCATE" => "Advokat / Hukum",
+                                        "AGRICULTURE" => "Pertanian & Agronomi",
+                                        "APPAREL" => "Mode & Pakaian",
+                                        "ARTS" => "Seni & Industri Kreatif",
+                                        "AUTOMOBILE" => "Teknik Otomotif",
+                                        "AVIATION" => "Penerbangan / Dirgantara",
+                                        "BANKING" => "Perbankan / Layanan Finansial",
+                                        "BPO" => "BPO & Customer Service",
+                                        "BUSINESS-DEVELOPMENT" => "Pengembangan Bisnis",
+                                        "CHEF" => "Kulinari & Tata Boga",
+                                        "CONSTRUCTION" => "Konstruksi / Sipil",
+                                        "CONSULTANT" => "Konsultan Bisnis",
+                                        "DESIGNER" => "Desain Grafis / UI/UX",
+                                        "DIGITAL-MEDIA" => "Media Digital & Periklanan",
+                                        "ENGINEERING" => "Rekayasa & Teknik Umum",
+                                        "FINANCE" => "Keuangan & Analis Finansial",
+                                        "FITNESS" => "Kebugaran & Kesehatan",
+                                        "HEALTHCARE" => "Layanan Kesehatan & Medis",
+                                        "HR" => "Sumber Daya Manusia (HRD)",
+                                        "INFORMATION-TECHNOLOGY" => "Teknologi Informasi & Software",
+                                        "PUBLIC-RELATIONS" => "Hubungan Masyarakat (PR)",
+                                        "SALES" => "Penjualan & Pemasaran",
+                                        "TEACHER" => "Pendidik & Guru"
+                                    ];
+                                    $friendly = $labelFriendlyNames[$user->profile->cv_career_category] ?? $user->profile->cv_career_category;
+                                @endphp
+                                <span class="text-[11px] text-purple-400 font-medium">({{ $friendly }})</span>
+                            </div>
                         </div>
-                        <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                            <div class="h-full bg-gradient-to-r from-purple-500 to-blue-500" style="width: {{ $user->profile->cv_career_confidence }}%"></div>
+                        <div class="w-full">
+                            <div class="flex justify-between items-baseline mb-1">
+                                <span class="text-[8px] text-slate-500 uppercase font-bold">Confidence</span>
+                                <span class="text-[11px] font-extrabold text-purple-400">{{ $user->profile->cv_career_confidence }}%</span>
+                            </div>
+                            <div class="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-purple-500 to-blue-500" style="width: {{ $user->profile->cv_career_confidence }}%"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            @endif
-            @else
-            <div class="text-center py-8 border-2 border-dashed border-slate-800 rounded-2xl">
-                <div class="w-16 h-16 mx-auto bg-slate-800 rounded-2xl flex items-center justify-center mb-4">
-                    <i class="fas fa-file-pdf text-slate-600 text-2xl"></i>
+                @endif
+                @else
+                <div class="text-center py-6 border border-dashed border-slate-800 rounded-xl">
+                    <div class="w-12 h-12 mx-auto bg-slate-800 rounded-xl flex items-center justify-center mb-3">
+                        <i class="fas fa-file-pdf text-slate-600 text-xl"></i>
+                    </div>
+                    <p class="text-slate-500 text-xs mb-3 px-2">Belum ada keahlian terdeteksi. Unggah CV Anda untuk mendeteksi keahlian otomatis!</p>
+                    <a href="{{ route('cv.index') }}" class="btn-premium px-4 py-2 text-xs">
+                        <i class="fas fa-wand-magic-sparkles mr-1.5"></i> Analisis CV
+                    </a>
                 </div>
-                <p class="text-slate-500 text-sm mb-4">Belum ada keahlian terdeteksi. Unggah CV Anda untuk mengidentifikasi keahlian secara otomatis!</p>
-                <a href="{{ route('cv.index') }}" class="btn-premium px-6 py-2 text-sm">
-                    <i class="fas fa-wand-magic-sparkles mr-2"></i> Analisis CV Saya
-                </a>
+                @endif
             </div>
-            @endif
-        </div>
 
-        <!-- Password Update -->
-        <div class="glass p-8" data-aos="fade-up" data-aos-delay="100">
-            <div class="w-full">
-                @include('profile.partials.update-password-form')
+            <!-- Password Update -->
+            <div class="glass p-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-full">
+                    @include('profile.partials.update-password-form')
+                </div>
             </div>
-        </div>
 
-        <!-- Danger Zone -->
-        <div class="glass p-8 border-l-4 border-rose-500" data-aos="fade-up" data-aos-delay="200">
-            <div class="w-full">
-                @include('profile.partials.delete-user-form')
+            <!-- Danger Zone -->
+            <div class="glass p-6 border-l-4 border-rose-500" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-full">
+                    @include('profile.partials.delete-user-form')
+                </div>
             </div>
         </div>
     </div>
