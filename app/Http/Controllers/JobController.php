@@ -53,6 +53,88 @@ class JobController extends Controller
             ->limit(3)
             ->get();
 
-        return view('jobs.show', compact('job', 'relatedJobs'));
+        $user = auth()->user();
+        $requiredSkills = $job->getRequiredSkills();
+        
+        $matchedSkills = [];
+        $missingSkills = [];
+        
+        if ($user && !empty($requiredSkills)) {
+            $userSkills = $user->skills->pluck('name')->toArray();
+            
+            // Skill Aliases and translations to unify matching
+            $aliases = [
+                'PHP' => ['php', 'node.js', 'php/node', 'laravel'],
+                'Laravel' => ['php', 'laravel', 'php/node'],
+                'JavaScript' => ['javascript', 'typescript', 'js', 'react/vue'],
+                'React' => ['react', 'reactjs', 'react/vue'],
+                'Python' => ['python', 'statistics', 'machine learning'],
+                'SQL' => ['sql', 'mysql', 'postgresql', 'database'],
+                'Desain UI' => ['ui design', 'figma', 'desain ui', 'ui/ux', 'ux research', 'user research', 'riset ux'],
+                'Riset UX' => ['ux research', 'user research', 'riset ux', 'ui/ux', 'desain ui', 'ui design', 'figma'],
+                'Analisis Data' => ['data analysis', 'analisis data', 'statistics', 'pandas', 'numpy'],
+                'Manajemen Proyek' => ['project management', 'manajemen proyek', 'agile', 'scrum', 'agile/scrum'],
+                'Komunikasi' => ['communication', 'komunikasi'],
+                'Kepemimpinan' => ['leadership', 'kepemimpinan'],
+                'Pemecahan Masalah' => ['problem solving', 'pemecahan masalah'],
+                'Desain Grafis' => ['graphic design', 'desain grafis', 'photoshop', 'illustrator'],
+                'SEO' => ['seo', 'sem', 'google analytics', 'digital marketing', 'pemasaran'],
+                'Copywriting' => ['copywriting', 'content writing'],
+                'Public Speaking' => ['public speaking', 'presentasi'],
+                'Berpikir Kritis' => ['critical thinking', 'berpikir kritis'],
+                'Kerja Sama Tim' => ['teamwork', 'kerja sama tim', 'kolaborasi'],
+                'Literasi Keuangan' => ['financial literacy', 'accounting', 'keuangan', 'literasi keuangan'],
+            ];
+
+            // Normalize strings to lowercase for comparison
+            $normalize = fn($str) => strtolower(trim($str));
+
+            foreach ($requiredSkills as $reqName) {
+                $isMatched = false;
+                $normalizedReq = $normalize($reqName);
+
+                foreach ($userSkills as $userSkill) {
+                    $normalizedUser = $normalize($userSkill);
+
+                    // Direct match
+                    if ($normalizedReq === $normalizedUser) {
+                        $isMatched = true;
+                        break;
+                    }
+
+                    // Check if they are aliases/synonyms
+                    if (isset($aliases[$userSkill])) {
+                        $userAliases = array_map($normalize, $aliases[$userSkill]);
+                        if (in_array($normalizedReq, $userAliases)) {
+                            $isMatched = true;
+                            break;
+                        }
+                    }
+                    if (isset($aliases[$reqName])) {
+                        $reqAliases = array_map($normalize, $aliases[$reqName]);
+                        if (in_array($normalizedUser, $reqAliases)) {
+                            $isMatched = true;
+                            break;
+                        }
+                    }
+                }
+
+                if ($isMatched) {
+                    $matchedSkills[] = $reqName;
+                } else {
+                    $missingSkills[] = $reqName;
+                }
+            }
+        } else {
+            $missingSkills = $requiredSkills;
+        }
+
+        $matchPercent = count($requiredSkills) > 0 
+            ? round((count($matchedSkills) / count($requiredSkills)) * 100) 
+            : 0;
+
+        $hasCvOrAssessment = $user && ($user->skills()->count() > 0);
+
+        return view('jobs.show', compact('job', 'relatedJobs', 'requiredSkills', 'matchedSkills', 'missingSkills', 'matchPercent', 'hasCvOrAssessment'));
     }
 }

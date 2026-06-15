@@ -45,6 +45,127 @@
             </div>
 
             <div class="space-y-8">
+                {{-- Skill Compatibility Widget --}}
+                <div class="glass-dark p-6 rounded-2xl border border-slate-700/60 shadow-xl" data-aos="fade-up">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                        <div>
+                            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                                <i class="fas fa-brain text-purple-400"></i> Kecocokan Skill Anda (AI Match)
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-1">Berdasarkan data keahlian dari CV/Asesmen Anda</p>
+                        </div>
+                        
+                        @if($hasCvOrAssessment && count($requiredSkills) > 0)
+                            <div class="flex items-center gap-3">
+                                <div class="text-right">
+                                    <p class="text-xs text-slate-400 font-medium">Skor Kecocokan</p>
+                                    <p class="text-xl font-black text-blue-400">{{ $matchPercent }}%</p>
+                                </div>
+                                <div class="relative w-12 h-12 flex items-center justify-center">
+                                    <!-- Progress Circle SVG -->
+                                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                        <path class="text-slate-800" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        <path class="text-blue-500 transition-all duration-1000" stroke-dasharray="{{ $matchPercent }}, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    </svg>
+                                    <span class="absolute text-[10px] font-bold text-white">{{ $matchPercent }}%</span>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+
+                    @if(!$hasCvOrAssessment)
+                        {{-- No Skill Data State --}}
+                        <div class="p-5 rounded-xl bg-slate-800/40 border border-slate-700/50 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+                            <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 shrink-0 text-xl">
+                                <i class="fas fa-file-invoice"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-semibold text-white">Skill Anda belum terdeteksi</p>
+                                <p class="text-xs text-slate-400 leading-relaxed mt-0.5">Unggah CV/Resume Anda atau ikuti Tes DNA Karir untuk menganalisis kecocokan skill dengan lowongan ini secara instan.</p>
+                            </div>
+                            <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto shrink-0">
+                                <a href="{{ route('cv.index') }}" class="px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 rounded-lg transition-all text-center">
+                                    <i class="fas fa-file-pdf mr-1"></i> Unggah CV
+                                </a>
+                                <a href="{{ route('assessment.index') }}" class="px-4 py-2 text-xs font-bold text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-lg transition-all text-center">
+                                    <i class="fas fa-wand-magic-sparkles mr-1"></i> Tes DNA
+                                </a>
+                            </div>
+                        </div>
+                    @elseif(count($requiredSkills) === 0)
+                        {{-- No Required Skills Found --}}
+                        <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700/50 flex items-center gap-3">
+                            <i class="fas fa-info-circle text-blue-400 text-lg"></i>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Lowongan ini tidak mencantumkan spesifikasi skill teknis khusus di deskripsinya. Silakan baca kualifikasi dan persyaratan di bawah untuk detail selengkapnya.
+                            </p>
+                        </div>
+                    @else
+                        {{-- Has Skill Data --}}
+                        <div class="space-y-4">
+                            <!-- Match Alert Message -->
+                            @if($matchPercent === 100)
+                                <div class="px-4 py-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium flex items-center gap-2">
+                                    <i class="fas fa-circle-check"></i> Luar biasa! Seluruh skill Anda memenuhi kualifikasi lowongan ini.
+                                </div>
+                            @elseif($matchPercent >= 70)
+                                <div class="px-4 py-2.5 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-medium flex items-center gap-2">
+                                    <i class="fas fa-thumbs-up"></i> Kesiapan Anda tinggi! Anda memenuhi sebagian besar kualifikasi yang dicari.
+                                </div>
+                            @else
+                                <div class="px-4 py-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-medium flex items-center gap-2">
+                                    <i class="fas fa-triangle-exclamation"></i> Ada beberapa skill yang belum terdeteksi. Pelajari di Peta Belajar untuk meningkatkan peluang Anda!
+                                </div>
+                            @endif
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {{-- Matched Skills --}}
+                                <div class="p-4 rounded-xl bg-slate-800/20 border border-slate-800/60">
+                                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        Skill yang Kamu Miliki ({{ count($matchedSkills) }})
+                                    </h4>
+                                    @if(count($matchedSkills) > 0)
+                                        <div class="flex flex-wrap gap-2">
+                                            @foreach($matchedSkills as $mSkill)
+                                                <span class="px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-xs font-semibold border border-emerald-500/20 flex items-center gap-1.5 shadow-sm">
+                                                    <i class="fas fa-check text-[10px]"></i> {{ $mSkill }}
+                                                </span>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <p class="text-xs text-slate-600 italic">Tidak ada kecocokan skill.</p>
+                                    @endif
+                                </div>
+
+                                {{-- Missing Skills --}}
+                                <div class="p-4 rounded-xl bg-slate-800/20 border border-slate-800/60">
+                                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                                        Skill yang Masih Kurang ({{ count($missingSkills) }})
+                                    </h4>
+                                    @if(count($missingSkills) > 0)
+                                        <div class="flex flex-wrap gap-2 mb-3">
+                                            @foreach($missingSkills as $missSkill)
+                                                <span class="px-3 py-1.5 rounded-lg bg-amber-500/10 text-amber-400 text-xs font-semibold border border-amber-500/20 flex items-center gap-1.5 shadow-sm">
+                                                    <i class="fas fa-xmark text-[10px] text-amber-500/70"></i> {{ $missSkill }}
+                                                </span>
+                                            @endforeach
+                                        </div>
+                                        <div class="text-right">
+                                            <a href="{{ route('roadmap.index') }}" class="text-[10px] font-bold text-blue-400 hover:text-blue-300 hover:underline transition-all flex items-center justify-end gap-1">
+                                                <i class="fas fa-map-signs"></i> Buka Peta Belajar untuk menguasai skill ini <i class="fas fa-chevron-right text-[8px]"></i>
+                                            </a>
+                                        </div>
+                                    @else
+                                        <p class="text-xs text-slate-600 italic">Tidak ada kekurangan skill! Kualifikasi Anda lengkap.</p>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+
                 <div>
                     <h3 class="text-xl font-bold text-white mb-4">Deskripsi</h3>
                     <div class="text-slate-400 leading-relaxed space-y-4">
