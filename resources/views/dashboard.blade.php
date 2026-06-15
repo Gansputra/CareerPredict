@@ -70,15 +70,16 @@
     </div>
 
     {{-- ── Sponsored / Featured Partners Slider ──────────────────────────────── --}}
+    @if($activeSponsors->count() > 0)
     <div class="relative overflow-hidden rounded-2xl animate-fade-in" style="animation-delay: 150ms;"
          x-data="{
             current: 0,
-            total: 5,
+            total: {{ $activeSponsors->count() }},
             autoplay: null,
             next() { this.current = (this.current + 1) % this.total; },
             prev() { this.current = (this.current - 1 + this.total) % this.total; },
             goto(i) { this.current = i; },
-            startAutoplay() { this.autoplay = setInterval(() => this.next(), 4000); },
+            startAutoplay() { this.autoplay = setInterval(() => this.next(), 5000); },
             stopAutoplay()  { clearInterval(this.autoplay); }
          }"
          x-init="startAutoplay()"
@@ -87,117 +88,86 @@
 
         {{-- Sponsored badge --}}
         <div class="absolute top-3 left-4 z-20">
-            <span class="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-black/30 text-white/60 backdrop-blur-sm border border-white/10">
+            <span class="text-[9px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full bg-slate-950/85 text-white backdrop-blur-md border border-white/20 shadow-lg" style="text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);">
                 Sponsored
             </span>
         </div>
 
         {{-- Arrows --}}
-        <button @click="prev()" class="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm text-white flex items-center justify-center transition-all border border-white/10 hover:scale-110">
+        @if($activeSponsors->count() > 1)
+        <button @click="prev()" class="absolute left-3 top-1/2 -translate-y-1/2 z-25 w-9 h-9 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm text-white flex items-center justify-center transition-all border border-white/10 hover:scale-110">
             <i class="fas fa-chevron-left text-xs"></i>
         </button>
-        <button @click="next()" class="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm text-white flex items-center justify-center transition-all border border-white/10 hover:scale-110">
+        <button @click="next()" class="absolute right-3 top-1/2 -translate-y-1/2 z-25 w-9 h-9 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm text-white flex items-center justify-center transition-all border border-white/10 hover:scale-110">
             <i class="fas fa-chevron-right text-xs"></i>
         </button>
+        @endif
 
         {{-- Slides --}}
-        <div class="relative h-36 sm:h-44">
+        <div class="relative h-36 sm:h-44 md:h-52 w-full bg-slate-950">
+            @foreach($activeSponsors as $idx => $sponsor)
+            <div x-show="current==={{ $idx }}" 
+                 x-transition:enter="transition ease-out duration-500" 
+                 x-transition:enter-start="opacity-0 translate-x-8" 
+                 x-transition:enter-end="opacity-100 translate-x-0" 
+                 x-transition:leave="transition ease-in duration-300" 
+                 x-transition:leave-start="opacity-100 translate-x-0" 
+                 x-transition:leave-end="opacity-0 -translate-x-8"
+                 class="absolute inset-0 w-full h-full"
+                 style="display: {{ $idx === 0 ? 'block' : 'none' }}">
+                
+                {{-- Banner Link --}}
+                <a href="{{ $sponsor->link_url }}" target="_blank" class="block w-full h-full relative group">
+                    {{-- Banner Image --}}
+                    <img src="{{ asset('storage/' . $sponsor->image_path) }}" alt="{{ $sponsor->title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.01]">
+                    
+                    {{-- Soft Overlay --}}
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-85 group-hover:opacity-75 transition-opacity"></div>
+                    
+                    {{-- Sponsor Info --}}
+                    <div class="absolute bottom-4 left-4 sm:left-8 z-20">
+                        <span class="text-[10px] uppercase tracking-widest text-white font-extrabold mb-0.5 block" style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);">{{ $sponsor->title }}</span>
+                    </div>
 
-            {{-- 1: Ganesha Operation --}}
-            <div x-show="current===0" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-x-8" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 -translate-x-8"
-                 class="absolute inset-0 flex items-center px-8 sm:px-14" style="background: linear-gradient(135deg,#1a1035,#2d1b6b 50%,#1a1035);">
-                <div class="absolute inset-0 opacity-20" style="background:radial-gradient(circle at 20% 50%,#7c3aed,transparent 50%),radial-gradient(circle at 80% 50%,#4f46e5,transparent 50%)"></div>
-                <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 w-full">
-                    <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-purple-500/30 border border-purple-400/40 flex items-center justify-center shrink-0 shadow-lg shadow-purple-500/20">
-                        <i class="fas fa-graduation-cap text-purple-300 text-2xl"></i>
+                    {{-- CTA Button --}}
+                    <div class="absolute bottom-3 right-4 sm:bottom-4 sm:right-8 z-20">
+                        <span class="px-5 py-2.5 rounded-xl bg-blue-600 group-hover:bg-blue-500 text-white text-xs sm:text-sm font-bold transition-all shadow-lg flex items-center gap-2 border border-blue-500/30">
+                            {{ $sponsor->cta_text }} <i class="fas fa-arrow-right text-[10px]"></i>
+                        </span>
                     </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="text-[10px] uppercase tracking-widest text-purple-300 font-bold mb-1">Kursus Terbaik • Ganesha Operation</p>
-                        <h3 class="text-lg sm:text-2xl font-extrabold text-white leading-tight mb-1">Raih Nilai A+ dengan Bimbel GO!</h3>
-                        <p class="text-slate-300 text-xs sm:text-sm hidden sm:block">Program intensif SD, SMP, SMA & SBMPTN. Lebih dari 1 juta siswa telah sukses bersama kami.</p>
-                    </div>
-                    <a href="#" class="shrink-0 px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-sm font-bold transition-all shadow-lg whitespace-nowrap">Daftar Sekarang <i class="fas fa-arrow-right ml-1 text-xs"></i></a>
-                </div>
+                </a>
+
             </div>
-
-            {{-- 2: Gramedia --}}
-            <div x-show="current===1" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-x-8" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 -translate-x-8"
-                 class="absolute inset-0 flex items-center px-8 sm:px-14" style="background: linear-gradient(135deg,#0c2340,#083d77 50%,#0c2340); display:none">
-                <div class="absolute inset-0 opacity-20" style="background:radial-gradient(circle at 20% 50%,#0ea5e9,transparent 50%),radial-gradient(circle at 80% 50%,#06b6d4,transparent 50%)"></div>
-                <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 w-full">
-                    <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-sky-500/30 border border-sky-400/40 flex items-center justify-center shrink-0 shadow-lg shadow-sky-500/20">
-                        <i class="fas fa-book-open text-sky-300 text-2xl"></i>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="text-[10px] uppercase tracking-widest text-sky-300 font-bold mb-1">Toko Buku • Gramedia</p>
-                        <h3 class="text-lg sm:text-2xl font-extrabold text-white leading-tight mb-1">Buku-Buku Terlaris untuk Karir Impianmu</h3>
-                        <p class="text-slate-300 text-xs sm:text-sm hidden sm:block">Diskon hingga 40% untuk buku IT, Bisnis, dan Pengembangan Diri. Gratis ongkir se-Indonesia!</p>
-                    </div>
-                    <a href="#" class="shrink-0 px-5 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-sm font-bold transition-all shadow-lg whitespace-nowrap">Belanja Sekarang <i class="fas fa-arrow-right ml-1 text-xs"></i></a>
-                </div>
-            </div>
-
-            {{-- 3: Dicoding --}}
-            <div x-show="current===2" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-x-8" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 -translate-x-8"
-                 class="absolute inset-0 flex items-center px-8 sm:px-14" style="background: linear-gradient(135deg,#0d2b1f,#064e3b 50%,#0d2b1f); display:none">
-                <div class="absolute inset-0 opacity-20" style="background:radial-gradient(circle at 20% 50%,#10b981,transparent 50%),radial-gradient(circle at 80% 50%,#059669,transparent 50%)"></div>
-                <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 w-full">
-                    <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-emerald-500/30 border border-emerald-400/40 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
-                        <i class="fas fa-laptop-code text-emerald-300 text-2xl"></i>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="text-[10px] uppercase tracking-widest text-emerald-300 font-bold mb-1">Kursus Online • Dicoding Indonesia</p>
-                        <h3 class="text-lg sm:text-2xl font-extrabold text-white leading-tight mb-1">Kuasai Coding & Dapatkan Sertifikat!</h3>
-                        <p class="text-slate-300 text-xs sm:text-sm hidden sm:block">Belajar Web, Android, Machine Learning, dan Cloud dari nol. Diakui oleh Google & AWS.</p>
-                    </div>
-                    <a href="#" class="shrink-0 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold transition-all shadow-lg whitespace-nowrap">Mulai Gratis <i class="fas fa-arrow-right ml-1 text-xs"></i></a>
-                </div>
-            </div>
-
-            {{-- 4: Ruangguru --}}
-            <div x-show="current===3" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-x-8" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 -translate-x-8"
-                 class="absolute inset-0 flex items-center px-8 sm:px-14" style="background: linear-gradient(135deg,#2d0a0a,#7f1d1d 50%,#2d0a0a); display:none">
-                <div class="absolute inset-0 opacity-20" style="background:radial-gradient(circle at 20% 50%,#ef4444,transparent 50%),radial-gradient(circle at 80% 50%,#f97316,transparent 50%)"></div>
-                <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 w-full">
-                    <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-red-500/30 border border-red-400/40 flex items-center justify-center shrink-0 shadow-lg shadow-red-500/20">
-                        <i class="fas fa-school text-red-300 text-2xl"></i>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="text-[10px] uppercase tracking-widest text-red-300 font-bold mb-1">Platform Belajar • Ruangguru</p>
-                        <h3 class="text-lg sm:text-2xl font-extrabold text-white leading-tight mb-1">Belajar Lebih Cerdas bersama AI Tutor!</h3>
-                        <p class="text-slate-300 text-xs sm:text-sm hidden sm:block">Ribuan video pelajaran, soal latihan, dan bimbingan langsung dari guru terbaik Indonesia.</p>
-                    </div>
-                    <a href="#" class="shrink-0 px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white text-sm font-bold transition-all shadow-lg whitespace-nowrap">Coba Gratis <i class="fas fa-arrow-right ml-1 text-xs"></i></a>
-                </div>
-            </div>
-
-            {{-- 5: Udemy --}}
-            <div x-show="current===4" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-x-8" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 -translate-x-8"
-                 class="absolute inset-0 flex items-center px-8 sm:px-14" style="background: linear-gradient(135deg,#1c1200,#78350f 50%,#1c1200); display:none">
-                <div class="absolute inset-0 opacity-20" style="background:radial-gradient(circle at 20% 50%,#f59e0b,transparent 50%),radial-gradient(circle at 80% 50%,#d97706,transparent 50%)"></div>
-                <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 w-full">
-                    <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-amber-500/30 border border-amber-400/40 flex items-center justify-center shrink-0 shadow-lg shadow-amber-500/20">
-                        <i class="fas fa-certificate text-amber-300 text-2xl"></i>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="text-[10px] uppercase tracking-widest text-amber-300 font-bold mb-1">Kursus Global • Udemy</p>
-                        <h3 class="text-lg sm:text-2xl font-extrabold text-white leading-tight mb-1">210.000+ Kursus. Belajar Apa Saja!</h3>
-                        <p class="text-slate-300 text-xs sm:text-sm hidden sm:block">Data Science, UI/UX, Business, Programming — pilih kursusmu dan mulai karir impian hari ini.</p>
-                    </div>
-                    <a href="#" class="shrink-0 px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-sm font-bold transition-all shadow-lg whitespace-nowrap">Lihat Kursus <i class="fas fa-arrow-right ml-1 text-xs"></i></a>
-                </div>
-            </div>
-
+            @endforeach
         </div>
 
         {{-- Dot indicators --}}
+        @if($activeSponsors->count() > 1)
         <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-20">
-            @for($i = 0; $i < 5; $i++)
-            <button @click="goto({{ $i }})" class="rounded-full transition-all duration-300" :class="current === {{ $i }} ? 'w-5 h-1.5 bg-white' : 'w-1.5 h-1.5 bg-white/30 hover:bg-white/60'"></button>
-            @endfor
+            @foreach($activeSponsors as $idx => $sponsor)
+            <button @click="goto({{ $idx }})" class="rounded-full transition-all duration-300" :class="current === {{ $idx }} ? 'w-5 h-1.5 bg-white' : 'w-1.5 h-1.5 bg-white/30 hover:bg-white/60'"></button>
+            @endforeach
         </div>
+        @endif
 
     </div>
+    @else
+    {{-- Fallback Premium Banner --}}
+    <div class="relative overflow-hidden rounded-2xl glass p-8 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6 border-l-4 border-blue-500 animate-fade-in" style="animation-delay: 150ms;">
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/5 to-indigo-600/5 pointer-events-none"></div>
+        <div class="relative z-10 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+            <div class="w-14 h-14 rounded-2xl bg-blue-500/15 border border-blue-500/30 flex items-center justify-center shrink-0 shadow-lg shadow-blue-500/5">
+                <i class="fas fa-dna text-blue-400 text-2xl animate-pulse"></i>
+            </div>
+            <div class="text-center sm:text-left">
+                <span class="text-[9px] uppercase tracking-widest text-blue-400 font-black mb-1 block">Fitur Unggulan • CareerPredict</span>
+                <h3 class="text-lg sm:text-xl font-bold text-white mb-1">Rekomendasi Karir Berbasis Certainty Factor & AI</h3>
+                <p class="text-slate-400 text-xs sm:text-sm max-w-xl">Uji kompatibilitas minat Anda dan analisis CV Anda dengan kecerdasan buatan untuk hasil yang sangat presisi.</p>
+            </div>
+        </div>
+        <a href="{{ route('assessment.index') }}" class="shrink-0 btn-premium px-6 py-3 text-sm font-bold shadow-lg shadow-blue-600/20 whitespace-nowrap z-10">Mulai Asesmen Sekarang <i class="fas fa-arrow-right ml-1 text-xs"></i></a>
+    </div>
+    @endif
     {{-- ── End Ads Slider ──────────────────────────────────────────────────────── --}}
 
     <!-- Analytics Section -->

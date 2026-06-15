@@ -135,6 +135,10 @@
                         <i class="fas fa-users-cog text-lg w-6"></i>
                         <span class="font-medium">Kelola User</span>
                     </a>
+                    <a href="{{ route('admin.sponsors.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.sponsors.*') ? 'bg-slate-700 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
+                        <i class="fas fa-ad text-lg w-6"></i>
+                        <span class="font-medium">Kelola Sponsor</span>
+                    </a>
                     @endif
 
                     <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 mt-8 mb-4">Akun</p>

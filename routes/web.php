@@ -78,6 +78,7 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     Route::post('/jobs/import', [JobImportController::class, 'importCsv'])->name('jobs.import.post');
     Route::resource('jobs', JobManagementController::class);
     Route::resource('users', UserManagementController::class);
+    Route::resource('sponsors', \App\Http\Controllers\Admin\SponsorBannerController::class);
 });
 
 require __DIR__.'/auth.php';
