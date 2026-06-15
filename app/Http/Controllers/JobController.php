@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\JobListing;
 use App\Models\JobCategory;
+use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
 {
@@ -105,7 +106,213 @@ class JobController extends Controller
             })
             ->toArray();
 
-        return view('jobs.index', compact('jobs', 'categories', 'allLocations', 'categoryLocationMap'));
+        // --- Smart Filter Suggestions ---
+        $smartSuggestions = $this->buildSmartSuggestions(Auth::user(), $categories);
+
+        return view('jobs.index', compact('jobs', 'categories', 'allLocations', 'categoryLocationMap', 'smartSuggestions'));
+    }
+
+    /**
+     * AJAX endpoint: returns jobs as JSON for live filtering (no page reload).
+     */
+    public function search(Request $request)
+    {
+        $query = JobListing::with('category')->active();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', '%' . $search . '%')
+                  ->orWhere('description', 'like', '%' . $search . '%')
+                  ->orWhere('company_name', 'like', '%' . $search . '%');
+            });
+        }
+
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
+
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        if ($request->filled('location')) {
+            $query->where('location', $request->location);
+        }
+
+        $jobsCollection = $query->get();
+
+        $sort = $request->input('sort', 'date_desc');
+        switch ($sort) {
+            case 'date_asc':
+                $jobsCollection = $jobsCollection->sortBy('created_at');
+                break;
+            case 'salary_desc':
+                $jobsCollection = $jobsCollection->sort(function($a, $b) {
+                    $aEmpty = empty($a->salary_range) ? 1 : 0;
+                    $bEmpty = empty($b->salary_range) ? 1 : 0;
+                    if ($aEmpty !== $bEmpty) return $aEmpty <=> $bEmpty;
+                    return $this->parseSalary($b->salary_range, true) <=> $this->parseSalary($a->salary_range, true);
+                });
+                break;
+            case 'salary_asc':
+                $jobsCollection = $jobsCollection->sort(function($a, $b) {
+                    $aEmpty = empty($a->salary_range) ? 1 : 0;
+                    $bEmpty = empty($b->salary_range) ? 1 : 0;
+                    if ($aEmpty !== $bEmpty) return $aEmpty <=> $bEmpty;
+                    return $this->parseSalary($a->salary_range, false) <=> $this->parseSalary($b->salary_range, false);
+                });
+                break;
+            case 'company_asc':
+                $jobsCollection = $jobsCollection->sortBy('company_name', SORT_NATURAL | SORT_FLAG_CASE);
+                break;
+            case 'company_desc':
+                $jobsCollection = $jobsCollection->sortByDesc('company_name', SORT_NATURAL | SORT_FLAG_CASE);
+                break;
+            default:
+                $jobsCollection = $jobsCollection->sortByDesc('created_at');
+        }
+
+        $perPage = 12;
+        $page    = max(1, (int) $request->input('page', 1));
+        $total   = $jobsCollection->count();
+        $items   = $jobsCollection->slice(($page - 1) * $perPage, $perPage)->values();
+
+        $jobs = $items->map(function ($job) {
+            return [
+                'id'           => $job->id,
+                'title'        => $job->title,
+                'slug'         => $job->slug,
+                'company_name' => $job->company_name,
+                'description'  => $job->description,
+                'location'     => $job->location,
+                'salary_range' => $job->salary_range,
+                'type'         => $job->type,
+                'category'     => $job->category?->name,
+            ];
+        });
+
+        return response()->json([
+            'jobs'       => $jobs,
+            'total'      => $total,
+            'per_page'   => $perPage,
+            'page'       => $page,
+            'last_page'  => (int) ceil($total / $perPage),
+        ]);
+    }
+
+    /**
+     * Build smart filter suggestions based on user's profile data.
+     * Returns an array of suggestion chips with label, icon, and filter params.
+     */
+    private function buildSmartSuggestions($user, $categories): array
+    {
+        if (!$user) return [];
+
+        $suggestions = [];
+
+        // Map skills to relevant search keywords
+        $skillToKeyword = [
+            'PHP' => 'PHP', 'Laravel' => 'Laravel', 'JavaScript' => 'JavaScript',
+            'Python' => 'Python', 'React' => 'React', 'Vue.js' => 'Vue',
+            'Node.js' => 'Node', 'SQL' => 'SQL', 'Data Analysis' => 'Data Analyst',
+            'Machine Learning' => 'Machine Learning', 'UI Design' => 'UI/UX',
+            'UX Research' => 'UX Research', 'Graphic Design' => 'Desain Grafis',
+            'SEO' => 'SEO', 'Digital Marketing' => 'Digital Marketing',
+            'Copywriting' => 'Copywriting', 'Project Management' => 'Project Manager',
+            'Leadership' => 'Manajer', 'Communication' => 'Marketing',
+            'Docker' => 'DevOps', 'AWS' => 'Cloud', 'Flutter' => 'Flutter',
+            'Android Development' => 'Android', 'iOS Development' => 'iOS',
+        ];
+
+        // Map interests/skills to category names (partial match)
+        $skillToCategoryKeyword = [
+            'PHP' => 'teknologi', 'Laravel' => 'teknologi', 'JavaScript' => 'teknologi',
+            'Python' => 'teknologi', 'React' => 'teknologi', 'Machine Learning' => 'teknologi',
+            'Data Analysis' => 'teknologi', 'UI Design' => 'desain', 'UX Research' => 'desain',
+            'Graphic Design' => 'desain', 'SEO' => 'pemasaran', 'Digital Marketing' => 'pemasaran',
+            'Copywriting' => 'pemasaran', 'Project Management' => 'manajemen',
+            'Leadership' => 'manajemen', 'Financial Literacy' => 'keuangan',
+            'Flutter' => 'teknologi', 'Android Development' => 'teknologi',
+        ];
+
+        $userSkills = $user->skills()->pluck('name')->toArray();
+        $userInterests = $user->interests()->pluck('name')->toArray();
+        $topRecommendations = $user->recommendations()->with('job.category')->orderByDesc('score')->take(3)->get();
+
+        $addedCategories = [];
+        $addedKeywords = [];
+
+        // 1. Suggest categories based on top CF recommendations
+        foreach ($topRecommendations as $rec) {
+            if ($rec->job && $rec->job->category) {
+                $catId = $rec->job->category_id;
+                $catName = $rec->job->category->name;
+                if (!in_array($catId, $addedCategories)) {
+                    $suggestions[] = [
+                        'type'    => 'category',
+                        'label'   => $catName,
+                        'icon'    => 'fa-star',
+                        'color'   => 'amber',
+                        'tooltip' => 'Berdasarkan hasil Tes DNA Karir kamu',
+                        'params'  => ['category' => $catId],
+                    ];
+                    $addedCategories[] = $catId;
+                }
+            }
+        }
+
+        // 2. Suggest categories based on user skills
+        foreach ($userSkills as $skill) {
+            if (isset($skillToCategoryKeyword[$skill])) {
+                $keyword = $skillToCategoryKeyword[$skill];
+                $matchedCat = $categories->first(fn($c) => str_contains(strtolower($c->name), $keyword));
+                if ($matchedCat && !in_array($matchedCat->id, $addedCategories)) {
+                    $suggestions[] = [
+                        'type'    => 'category',
+                        'label'   => $matchedCat->name,
+                        'icon'    => 'fa-layer-group',
+                        'color'   => 'blue',
+                        'tooltip' => "Cocok dengan skill {$skill} kamu",
+                        'params'  => ['category' => $matchedCat->id],
+                    ];
+                    $addedCategories[] = $matchedCat->id;
+                }
+            }
+        }
+
+        // 3. Suggest keyword searches based on top skills
+        $prioritySkills = array_slice($userSkills, 0, 4);
+        foreach ($prioritySkills as $skill) {
+            if (isset($skillToKeyword[$skill])) {
+                $kw = $skillToKeyword[$skill];
+                if (!in_array($kw, $addedKeywords)) {
+                    $suggestions[] = [
+                        'type'    => 'search',
+                        'label'   => $kw,
+                        'icon'    => 'fa-magnifying-glass',
+                        'color'   => 'violet',
+                        'tooltip' => "Cari lowongan yang butuh skill {$skill}",
+                        'params'  => ['search' => $kw],
+                    ];
+                    $addedKeywords[] = $kw;
+                }
+            }
+        }
+
+        // 4. Add salary-sorted suggestion if user has skills
+        if (!empty($userSkills)) {
+            $suggestions[] = [
+                'type'    => 'sort',
+                'label'   => 'Gaji Tertinggi',
+                'icon'    => 'fa-arrow-trend-up',
+                'color'   => 'emerald',
+                'tooltip' => 'Tampilkan lowongan dengan gaji terbaik',
+                'params'  => ['sort' => 'salary_desc'],
+            ];
+        }
+
+        return array_slice($suggestions, 0, 7); // max 7 chips
     }
 
     public function show($slug)

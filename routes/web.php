@@ -36,6 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Jobs
     Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
+    Route::get('/jobs/search/json', [JobController::class, 'search'])->name('jobs.search');
     Route::get('/jobs/{slug}', [JobController::class, 'show'])->name('jobs.show');
 
     // Profile
