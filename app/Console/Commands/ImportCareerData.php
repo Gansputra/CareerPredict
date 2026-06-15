@@ -34,10 +34,7 @@ class ImportCareerData extends Command
 
             // 1. Get or Create Category (Specialization)
             $categoryName = $data['Specialization'] ?? 'General';
-            $category = JobCategory::firstOrCreate(
-                ['slug' => Str::slug($categoryName)],
-                ['name' => $categoryName]
-            );
+            $category = \App\Helpers\CategoryResolver::resolve($categoryName, $data['Recommended Career']);
 
             // 2. Create Job Listing (Recommended Career)
             $jobTitle = $data['Recommended Career'];
@@ -62,7 +59,7 @@ class ImportCareerData extends Command
                 if (!empty($skillName)) {
                     Skill::firstOrCreate(
                         ['name' => $skillName],
-                        ['category' => $categoryName]
+                        ['category' => $category->name]
                     );
                 }
             }

@@ -28,6 +28,7 @@ class JobImportController extends Controller
      */
     public function importCsv(Request $request)
     {
+        set_time_limit(180);
         $request->validate([
             'csv_file' => 'required|mimes:csv,txt|max:10240',
         ]);
@@ -65,10 +66,7 @@ class JobImportController extends Controller
                 continue;
             }
 
-            $cat = JobCategory::firstOrCreate(
-                ['slug' => Str::slug($category)],
-                ['name' => $category]
-            );
+            $cat = \App\Helpers\CategoryResolver::resolve($category, $title);
 
             JobListing::updateOrCreate(
                 ['title' => $title, 'company_name' => $company],
@@ -96,6 +94,7 @@ class JobImportController extends Controller
      */
     public function importApi(Request $request)
     {
+        set_time_limit(180);
         $source = $request->input('source', 'all');
         $limit = (int) $request->input('limit', 30);
 
@@ -105,15 +104,21 @@ class JobImportController extends Controller
         // Fetch from Remotive
         if ($source === 'all' || $source === 'remotive') {
             try {
-                $response = Http::withoutVerifying()->timeout(30)->get('https://remotive.com/api/remote-jobs', ['limit' => $limit]);
+                $response = Http::withoutVerifying()
+                    ->withHeaders([
+                        'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                    ])
+                    ->withOptions([
+                        'curl' => [
+                            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+                        ]
+                    ])
+                    ->timeout(30)
+                    ->get('https://remotive.com/api/remote-jobs', ['limit' => $limit]);
                 if ($response->successful()) {
                     $jobs = $response->json('jobs') ?? [];
                     foreach (array_slice($jobs, 0, $limit) as $job) {
-                        $catName = $job['category'] ?? 'Technology';
-                        $cat = JobCategory::firstOrCreate(
-                            ['slug' => Str::slug($catName)],
-                            ['name' => $catName]
-                        );
+                        $cat = \App\Helpers\CategoryResolver::resolve($job['category'] ?? 'Technology', $job['title']);
 
                         JobListing::updateOrCreate(
                             ['title' => $job['title'], 'company_name' => $job['company_name'] ?? 'Unknown'],
@@ -140,15 +145,22 @@ class JobImportController extends Controller
         // Fetch from Arbeitnow
         if ($source === 'all' || $source === 'arbeitnow') {
             try {
-                $response = Http::withoutVerifying()->timeout(30)->get('https://www.arbeitnow.com/api/job-board-api');
+                $response = Http::withoutVerifying()
+                    ->withHeaders([
+                        'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                    ])
+                    ->withOptions([
+                        'curl' => [
+                            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+                        ]
+                    ])
+                    ->timeout(30)
+                    ->get('https://www.arbeitnow.com/api/job-board-api');
                 if ($response->successful()) {
                     $jobs = $response->json('data') ?? [];
                     foreach (array_slice($jobs, 0, $limit) as $job) {
                         $catName = !empty($job['tags']) ? $job['tags'][0] : 'Technology';
-                        $cat = JobCategory::firstOrCreate(
-                            ['slug' => Str::slug($catName)],
-                            ['name' => $catName]
-                        );
+                        $cat = \App\Helpers\CategoryResolver::resolve($catName, $job['title']);
 
                         JobListing::updateOrCreate(
                             ['title' => $job['title'], 'company_name' => $job['company_name'] ?? 'Unknown'],
@@ -189,10 +201,19 @@ class JobImportController extends Controller
                             sleep(2);
                         }
 
-                        $response = Http::withoutVerifying()->withHeaders([
-                            'X-RapidAPI-Key' => $apiKey,
-                            'X-RapidAPI-Host' => 'jsearch.p.rapidapi.com'
-                        ])->timeout(30)->get('https://jsearch.p.rapidapi.com/search', [
+                        $response = Http::withoutVerifying()
+                            ->withHeaders([
+                                'X-RapidAPI-Key' => $apiKey,
+                                'X-RapidAPI-Host' => 'jsearch.p.rapidapi.com',
+                                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                            ])
+                            ->withOptions([
+                                'curl' => [
+                                    CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+                                ]
+                            ])
+                            ->timeout(30)
+                            ->get('https://jsearch.p.rapidapi.com/search', [
                             'query' => 'jobs in new york',
                             'page' => $page,
                             'num_pages' => 1,
@@ -214,36 +235,8 @@ class JobImportController extends Controller
                     $allJobs = array_slice($allJobs, 0, $limit);
 
                     foreach ($allJobs as $job) {
-                        // Guess category
                         $title = $job['job_title'] ?? 'Untitled';
-                        $catName = 'Technology'; // default
-                        $combined = strtolower($title);
-                        $categoryKeywords = [
-                            'Technology' => ['software', 'developer', 'engineer', 'programming', 'backend', 'frontend', 'fullstack', 'devops', 'cloud', 'data', 'ai', 'python', 'javascript', 'php'],
-                            'Creative & Design' => ['design', 'ux', 'ui', 'graphic', 'creative', 'art', 'figma'],
-                            'Marketing' => ['marketing', 'seo', 'content', 'social media', 'brand'],
-                            'Finance' => ['finance', 'accounting', 'financial', 'tax', 'audit', 'banking'],
-                            'Sales' => ['sales', 'account executive', 'business development', 'customer'],
-                            'Healthcare' => ['health', 'medical', 'nurse', 'doctor'],
-                            'Education' => ['education', 'teacher', 'tutor', 'training'],
-                            'Human Resources' => ['hr', 'human resources', 'recruiter', 'talent'],
-                            'Engineering' => ['mechanical', 'electrical', 'civil', 'structural'],
-                            'Management' => ['manager', 'director', 'lead', 'head of', 'product', 'project'],
-                        ];
-
-                        foreach ($categoryKeywords as $cat => $keywords) {
-                            foreach ($keywords as $keyword) {
-                                if (str_contains($combined, $keyword)) {
-                                    $catName = $cat;
-                                    break 2;
-                                }
-                            }
-                        }
-
-                        $cat = JobCategory::firstOrCreate(
-                            ['slug' => Str::slug($catName)],
-                            ['name' => $catName]
-                        );
+                        $cat = \App\Helpers\CategoryResolver::resolve(null, $title);
 
                         // Map employment type
                         $type = 'Full-time';
