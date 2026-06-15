@@ -54,7 +54,7 @@ class FetchJobsCommand extends Command
         foreach ($sources as $src) {
             $this->newLine();
             $this->info("📡 Fetching from: " . strtoupper($src));
-            
+
             match ($src) {
                 'remotive' => $this->fetchRemotive($limit),
                 'arbeitnow' => $this->fetchArbeitnow($limit),
@@ -77,7 +77,7 @@ class FetchJobsCommand extends Command
     private function fetchRemotive(int $limit): void
     {
         try {
-            $response = Http::timeout(30)->get('https://remotive.com/api/remote-jobs', [
+            $response = Http::withoutVerifying()->timeout(30)->get('https://remotive.com/api/remote-jobs', [
                 'limit' => $limit,
             ]);
 
@@ -129,7 +129,7 @@ class FetchJobsCommand extends Command
             $maxPages = ceil($limit / 100);
 
             while (count($allJobs) < $limit && $page <= $maxPages) {
-                $response = Http::timeout(30)->get("https://www.arbeitnow.com/api/job-board-api", [
+                $response = Http::withoutVerifying()->timeout(30)->get("https://www.arbeitnow.com/api/job-board-api", [
                     'page' => $page,
                 ]);
 
@@ -141,7 +141,8 @@ class FetchJobsCommand extends Command
                 $data = $response->json();
                 $jobs = $data['data'] ?? [];
 
-                if (empty($jobs)) break;
+                if (empty($jobs))
+                    break;
 
                 $allJobs = array_merge($allJobs, $jobs);
                 $page++;
@@ -318,7 +319,7 @@ class FetchJobsCommand extends Command
     private function extractRequirements(string $html): string
     {
         $text = $this->cleanHtml($html);
-        
+
         // Try to find a requirements/qualifications section
         $patterns = [
             '/(?:requirements|qualifications|what we.+look|what you.+need|you should have|must have)[\s:]*\n(.+?)(?:\n\n|$)/is',
@@ -364,22 +365,20 @@ class FetchJobsCommand extends Command
             $maxPages = ceil($limit / $itemsPerPage);
 
             $this->info("  🔍 Querying JSearch for Indonesian jobs...");
-            
+
             while (count($allJobs) < $limit && $page <= $maxPages) {
                 if ($page > 1) {
                     sleep(2);
                 }
 
-                $response = Http::withHeaders([
-                    'X-API-Key' => $apiKey,
-                ])->withOptions([
-                    'curl' => [
-                        CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
-                    ]
-                ])->timeout(30)->get('https://api.openwebninja.com/jsearch/search-v2', [
-                    'query' => 'developer jobs in new york',
+                $response = Http::withoutVerifying()->withHeaders([
+                    'X-RapidAPI-Key' => $apiKey,
+                    'X-RapidAPI-Host' => 'jsearch.p.rapidapi.com'
+                ])->timeout(30)->get('https://jsearch.p.rapidapi.com/search', [
+                    'query' => 'jobs in new york',
                     'page' => $page,
                     'num_pages' => 1,
+                    'country' => 'us',
                 ]);
 
                 if (!$response->successful()) {
@@ -390,7 +389,8 @@ class FetchJobsCommand extends Command
                 $data = $response->json();
                 $jobs = $data['data']['jobs'] ?? $data['data'] ?? [];
 
-                if (empty($jobs)) break;
+                if (empty($jobs))
+                    break;
 
                 $allJobs = array_merge($allJobs, $jobs);
                 $page++;

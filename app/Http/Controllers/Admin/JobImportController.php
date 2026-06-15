@@ -105,7 +105,7 @@ class JobImportController extends Controller
         // Fetch from Remotive
         if ($source === 'all' || $source === 'remotive') {
             try {
-                $response = Http::timeout(30)->get('https://remotive.com/api/remote-jobs', ['limit' => $limit]);
+                $response = Http::withoutVerifying()->timeout(30)->get('https://remotive.com/api/remote-jobs', ['limit' => $limit]);
                 if ($response->successful()) {
                     $jobs = $response->json('jobs') ?? [];
                     foreach (array_slice($jobs, 0, $limit) as $job) {
@@ -140,7 +140,7 @@ class JobImportController extends Controller
         // Fetch from Arbeitnow
         if ($source === 'all' || $source === 'arbeitnow') {
             try {
-                $response = Http::timeout(30)->get('https://www.arbeitnow.com/api/job-board-api');
+                $response = Http::withoutVerifying()->timeout(30)->get('https://www.arbeitnow.com/api/job-board-api');
                 if ($response->successful()) {
                     $jobs = $response->json('data') ?? [];
                     foreach (array_slice($jobs, 0, $limit) as $job) {
@@ -189,21 +189,20 @@ class JobImportController extends Controller
                             sleep(2);
                         }
 
-                        $response = Http::withHeaders([
-                            'X-API-Key' => $apiKey,
-                        ])->withOptions([
-                            'curl' => [
-                                CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
-                            ]
-                        ])->timeout(30)->get('https://api.openwebninja.com/jsearch/search-v2', [
-                            'query' => 'developer jobs in new york',
+                        $response = Http::withoutVerifying()->withHeaders([
+                            'X-RapidAPI-Key' => $apiKey,
+                            'X-RapidAPI-Host' => 'jsearch.p.rapidapi.com'
+                        ])->timeout(30)->get('https://jsearch.p.rapidapi.com/search', [
+                            'query' => 'jobs in new york',
                             'page' => $page,
                             'num_pages' => 1,
+                            'country' => 'us',
                         ]);
 
                         if ($response->successful()) {
                             $jobs = $response->json('data.jobs') ?? $response->json('data') ?? [];
-                            if (empty($jobs)) break;
+                            if (empty($jobs))
+                                break;
                             $allJobs = array_merge($allJobs, $jobs);
                             $page++;
                         } else {
@@ -311,7 +310,7 @@ class JobImportController extends Controller
     public function clearJobs(Request $request)
     {
         JobListing::query()->delete();
-        
+
         // Optionally delete categories that are no longer used
         $categoriesWithJobs = JobListing::pluck('category_id')->unique();
         JobCategory::whereNotIn('id', $categoriesWithJobs)->delete();

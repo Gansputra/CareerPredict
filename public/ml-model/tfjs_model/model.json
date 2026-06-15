@@ -207,7 +207,7 @@
   },
   "weightsManifest": [
     {
-      "paths": ["group1-shard1of3.bin", "group1-shard2of3.bin", "group1-shard3of3.bin"],
+      "paths": ["group1-shard1of3.dat", "group1-shard2of3.dat", "group1-shard3of3.dat"],
       "weights": [
         {"name": "batch_normalization/gamma", "shape": [512], "dtype": "float32"},
         {"name": "batch_normalization/beta", "shape": [512], "dtype": "float32"},

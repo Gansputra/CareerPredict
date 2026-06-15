@@ -312,6 +312,17 @@
 async function startAIPrediction() {
     const rawCvText = @json($rawText ?? '');
     
+    // Helper to get relative path preserving subdirectories (for XAMPP/subdirectory support)
+    function getRelativeUrl(path) {
+        try {
+            const baseUrl = @json(asset(''));
+            const url = new URL(path, baseUrl);
+            return url.pathname;
+        } catch (e) {
+            return '/' + path;
+        }
+    }
+    
     if (!rawCvText || rawCvText.trim().length < 50) {
         document.getElementById('ai-loading').classList.add('hidden');
         document.getElementById('ai-error').classList.remove('hidden');
@@ -502,12 +513,32 @@ async function startAIPrediction() {
         return text;
     }
 
+    const fetchLogs = [];
+    const originalFetch = window.fetch;
     try {
+        window.fetch = async function(...args) {
+            const url = args[0];
+            try {
+                const response = await originalFetch.apply(this, args);
+                const clone = response.clone();
+                const blob = await clone.blob();
+                const msg = `Fetch OK: ${url} | Status: ${response.status} | Size: ${blob.size} B | Type: ${response.headers.get('content-type')}`;
+                console.log(msg);
+                fetchLogs.push(msg);
+                return response;
+            } catch (err) {
+                const msg = `Fetch FAIL: ${url} | Error: ${err.message || err}`;
+                console.error(msg);
+                fetchLogs.push(msg);
+                throw err;
+            }
+        };
+
         // 1. Fetch metadata files parallelly
         const [labelMappingRes, tfidfVocabRes, tfidfIdfRes] = await Promise.all([
-            fetch("{{ asset('ml-model/label_mapping.json') }}"),
-            fetch("{{ asset('ml-model/tfidf_vocab.json') }}"),
-            fetch("{{ asset('ml-model/tfidf_idf.json') }}")
+            fetch(getRelativeUrl("ml-model/label_mapping.json")),
+            fetch(getRelativeUrl("ml-model/tfidf_vocab.json")),
+            fetch(getRelativeUrl("ml-model/tfidf_idf.json"))
         ]);
 
         if (!labelMappingRes.ok || !tfidfVocabRes.ok || !tfidfIdfRes.ok) {
@@ -562,7 +593,7 @@ async function startAIPrediction() {
         }
 
         // 4. Load Model and Predict
-        const model = await tf.loadLayersModel("{{ asset('ml-model/tfjs_model/model.json') }}");
+        const model = await tf.loadLayersModel(getRelativeUrl("ml-model/tfjs_model/model.json"));
         const tensor = tf.tensor2d([Array.from(vector)], [1, vocabSize]);
         const prediction = model.predict(tensor);
         const scores = await prediction.data();
@@ -668,8 +699,9 @@ async function startAIPrediction() {
 
         // 6. Save prediction to DB via Fetch API
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const saveCategoryUrl = new URL("{{ route('cv.saveCategory') }}").pathname;
         
-        fetch("{{ route('cv.saveCategory') }}", {
+        fetch(saveCategoryUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -733,11 +765,15 @@ async function startAIPrediction() {
             <div class="mt-3 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-left max-w-lg mx-auto overflow-auto">
                 <p class="font-mono text-[11px] text-red-400 font-bold mb-1">Error Details:</p>
                 <pre class="font-mono text-[10px] text-red-300 whitespace-pre-wrap">${error.stack || error.message || error}</pre>
+                <p class="font-mono text-[11px] text-cyan-400 font-bold mt-2 mb-1">Network Logs:</p>
+                <pre class="font-mono text-[10px] text-cyan-300 whitespace-pre-wrap">${fetchLogs.join('\n') || 'No network requests logged.'}</pre>
                 <p class="font-mono text-[11px] text-yellow-400 font-bold mt-2 mb-1">tf Object Info:</p>
                 <pre class="font-mono text-[10px] text-yellow-300">${tfInfo}</pre>
             </div>
         `;
         errEl.classList.remove('hidden');
+    } finally {
+        window.fetch = originalFetch;
     }
 }
 
