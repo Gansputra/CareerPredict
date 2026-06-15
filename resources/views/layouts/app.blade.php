@@ -18,6 +18,17 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <style>
+            /* Hide scrollbar for Chrome, Safari and Opera */
+            .no-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+            /* Hide scrollbar for IE, Edge and Firefox */
+            .no-scrollbar {
+                -ms-overflow-style: none;  /* IE and Edge */
+                scrollbar-width: none;  /* Firefox */
+            }
+        </style>
     </head>
     <body class="antialiased selection:bg-blue-500/30 transition-colors duration-300"
           x-data="{ sidebarOpen: false, theme: localStorage.getItem('theme') || 'dark' }" 
@@ -53,7 +64,7 @@
                     </button>
                 </div>
 
-                <nav class="px-4 space-y-2 pb-6 flex-1 overflow-y-auto">
+                <nav class="px-4 space-y-2 pb-6 flex-1 overflow-y-auto no-scrollbar">
                     @if(!Auth::user()->isAdmin())
                     <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-4">Menu Utama</p>
                     
