@@ -48,8 +48,33 @@
     </div>
     @endif
 
+    <style>
+        /* Premium thin scrollbar for Kanban */
+        .kanban-scrollbar::-webkit-scrollbar {
+            height: 6px;
+        }
+        .kanban-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.4);
+            border-radius: 999px;
+        }
+        .kanban-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.25);
+            border-radius: 999px;
+        }
+        .kanban-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(59, 130, 246, 0.5);
+        }
+        /* Drag-to-scroll cursor style */
+        .kanban-draggable {
+            cursor: grab;
+        }
+        .kanban-draggable:active {
+            cursor: grabbing;
+        }
+    </style>
+
     {{-- Kanban Board --}}
-    <div class="overflow-x-auto pb-4">
+    <div class="overflow-x-auto pb-4 kanban-scrollbar kanban-draggable">
         <div class="flex gap-5 min-w-max">
 
             @foreach($columns as $key => $col)
@@ -272,6 +297,36 @@ document.addEventListener('DOMContentLoaded', () => {
         toast.querySelector('div').className = toast.querySelector('div').className.replace(/bg-(emerald|red)-500/g, isError ? 'bg-red-500' : 'bg-emerald-500');
         setTimeout(() => toast.classList.add('hidden'), 2500);
     }
+
+    // Drag to scroll horizontally (Trello-style)
+    const slider = document.querySelector('.overflow-x-auto');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    slider.addEventListener('mousedown', (e) => {
+        // Skip drag to scroll if clicking inside a card or interactive elements
+        if (e.target.closest('.kanban-card') || e.target.closest('button') || e.target.closest('a') || e.target.closest('input')) return;
+        isDown = true;
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+    });
+
+    slider.addEventListener('mouseleave', () => {
+        isDown = false;
+    });
+
+    slider.addEventListener('mouseup', () => {
+        isDown = false;
+    });
+
+    slider.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 1.5; // Scroll speed factor
+        slider.scrollLeft = scrollLeft - walk;
+    });
 });
 </script>
 @endpush

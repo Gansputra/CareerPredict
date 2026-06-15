@@ -176,7 +176,7 @@
             <!-- Main Content -->
             <div class="lg:ml-72 transition-all duration-300">
                 <!-- Top Header -->
-                <header class="sticky top-0 z-30 bg-[#0f172a]/80 backdrop-blur-md border-b border-slate-800 px-4 sm:px-8 py-4">
+                <header class="fixed top-0 right-0 left-0 lg:left-72 z-30 bg-[#0f172a]/80 backdrop-blur-md border-b border-slate-800 px-4 sm:px-8 py-4">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <button @click="sidebarOpen = !sidebarOpen" class="p-2 rounded-lg hover:bg-slate-800 transition-colors lg:hidden">
@@ -206,7 +206,7 @@
                 </header>
 
                 <!-- Page Content -->
-                <main class="p-4 sm:p-6 lg:p-8">
+                <main class="p-4 sm:p-6 lg:p-8 pt-24 sm:pt-28 lg:pt-28">
                     @if(isset($header))
                         <div class="mb-8">
                             {{ $header }}

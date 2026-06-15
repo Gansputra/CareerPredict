@@ -5,7 +5,7 @@
 @section('content')
 <div class="space-y-8">
     <!-- Filter Section -->
-    <div class="glass p-4" x-data="{ 
+    <div class="glass p-4 relative z-30" x-data="{ 
         showFilters: {{ (request('category') || request('location') || (request('sort') && request('sort') !== 'date_desc')) ? 'true' : 'false' }},
         selectedCategory: '{{ request('category') }}',
         selectedLocation: '{{ request('location') }}',
@@ -181,21 +181,28 @@
                 <div class="relative" x-data="{
                     open: false,
                     options: [
-                        { val: 'date_desc', name: '🕒 Terbaru' },
-                        { val: 'date_asc', name: '⏳ Terlama' },
-                        { val: 'salary_desc', name: '💵 Gaji Tertinggi' },
-                        { val: 'salary_asc', name: '📉 Gaji Terendah' },
-                        { val: 'company_asc', name: '🏢 Perusahaan (A-Z)' },
-                        { val: 'company_desc', name: '🏢 Perusahaan (Z-A)' }
+                        { val: 'date_desc', name: 'Terbaru', icon: 'fa-clock text-blue-400' },
+                        { val: 'date_asc', name: 'Terlama', icon: 'fa-history text-slate-400' },
+                        { val: 'salary_desc', name: 'Gaji Tertinggi', icon: 'fa-arrow-trend-up text-emerald-400' },
+                        { val: 'salary_asc', name: 'Gaji Terendah', icon: 'fa-arrow-trend-down text-rose-400' },
+                        { val: 'company_asc', name: 'Perusahaan (A-Z)', icon: 'fa-sort-alpha-down text-sky-400' },
+                        { val: 'company_desc', name: 'Perusahaan (Z-A)', icon: 'fa-sort-alpha-down-alt text-sky-400' }
                     ],
                     get selectedLabel() {
                         let opt = this.options.find(o => o.val == selectedSort);
-                        return opt ? opt.name : '🕒 Terbaru';
+                        return opt ? opt.name : 'Terbaru';
+                    },
+                    get selectedIcon() {
+                        let opt = this.options.find(o => o.val == selectedSort);
+                        return opt ? opt.icon : 'fa-clock text-blue-400';
                     }
                 }">
                     <input type="hidden" name="sort" :value="selectedSort">
                     <button type="button" @click="open = !open" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm flex items-center justify-between text-left focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all select-none">
-                        <span class="truncate" x-text="selectedLabel">🕒 Terbaru</span>
+                        <span class="truncate flex items-center gap-2">
+                            <i :class="'fas ' + selectedIcon"></i>
+                            <span x-text="selectedLabel">Terbaru</span>
+                        </span>
                         <i class="fas fa-chevron-down text-slate-500 text-xs transition-transform" :class="open ? 'rotate-180' : ''"></i>
                     </button>
                     
@@ -214,7 +221,10 @@
                             <template x-for="opt in options" :key="opt.val">
                                 <button type="button" @click="selectedSort = opt.val; open = false" 
                                         class="w-full px-4 py-2 text-left text-sm text-slate-300 hover:bg-blue-600 hover:text-white flex items-center justify-between transition-colors custom-dropdown-option">
-                                    <span class="truncate" x-text="opt.name"></span>
+                                    <span class="truncate flex items-center gap-2">
+                                        <i :class="'fas ' + opt.icon" class="w-4 text-center"></i>
+                                        <span x-text="opt.name"></span>
+                                    </span>
                                     <i class="fas fa-check text-xs text-blue-400 custom-dropdown-option-selected" x-show="selectedSort == opt.val"></i>
                                 </button>
                             </template>
