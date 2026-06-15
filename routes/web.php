@@ -48,6 +48,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Learning Roadmap
     Route::get('/roadmap', [App\Http\Controllers\RoadmapController::class, 'index'])->name('roadmap.index');
+
+    // Job Market Trends
+    Route::get('/market-trends', [App\Http\Controllers\MarketTrendsController::class, 'index'])->name('market.index');
     Route::get('/roadmap/{slug}', [App\Http\Controllers\RoadmapController::class, 'show'])->name('roadmap.show');
 
     // Skill Matrix

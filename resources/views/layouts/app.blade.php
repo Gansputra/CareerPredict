@@ -98,6 +98,12 @@
                         <span class="font-medium">Info Gaji</span>
                     </a>
 
+                    <a href="{{ route('market.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('market.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
+                        <i class="fas fa-chart-mixed text-lg w-6"></i>
+                        <span class="font-medium">Tren Pasar Kerja</span>
+                        <span class="ml-auto text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">Baru</span>
+                    </a>
+
                     <a href="{{ route('skillmatrix.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('skillmatrix.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
                         <i class="fas fa-layer-group text-lg w-6"></i>
                         <span class="font-medium">Matriks Keahlian</span>
