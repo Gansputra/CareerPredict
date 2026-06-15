@@ -77,9 +77,19 @@ class FetchJobsCommand extends Command
     private function fetchRemotive(int $limit): void
     {
         try {
-            $response = Http::withoutVerifying()->timeout(30)->get('https://remotive.com/api/remote-jobs', [
-                'limit' => $limit,
-            ]);
+            $response = Http::withoutVerifying()
+                ->withHeaders([
+                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                ])
+                ->withOptions([
+                    'curl' => [
+                        CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+                    ]
+                ])
+                ->timeout(30)
+                ->get('https://remotive.com/api/remote-jobs', [
+                    'limit' => $limit,
+                ]);
 
             if (!$response->successful()) {
                 $this->error("  ❌ Remotive API returned status: {$response->status()}");
@@ -129,9 +139,19 @@ class FetchJobsCommand extends Command
             $maxPages = ceil($limit / 100);
 
             while (count($allJobs) < $limit && $page <= $maxPages) {
-                $response = Http::withoutVerifying()->timeout(30)->get("https://www.arbeitnow.com/api/job-board-api", [
-                    'page' => $page,
-                ]);
+                $response = Http::withoutVerifying()
+                    ->withHeaders([
+                        'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                    ])
+                    ->withOptions([
+                        'curl' => [
+                            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+                        ]
+                    ])
+                    ->timeout(30)
+                    ->get("https://www.arbeitnow.com/api/job-board-api", [
+                        'page' => $page,
+                    ]);
 
                 if (!$response->successful()) {
                     $this->error("  ❌ Arbeitnow API returned status: {$response->status()}");
@@ -183,10 +203,7 @@ class FetchJobsCommand extends Command
      */
     private function saveJob(array $data): void
     {
-        $category = JobCategory::firstOrCreate(
-            ['slug' => Str::slug($data['category'])],
-            ['name' => $data['category']]
-        );
+        $category = \App\Helpers\CategoryResolver::resolve($data['category'], $data['title']);
 
         $existing = JobListing::where('title', $data['title'])
             ->where('company_name', $data['company_name'])
@@ -371,15 +388,24 @@ class FetchJobsCommand extends Command
                     sleep(2);
                 }
 
-                $response = Http::withoutVerifying()->withHeaders([
-                    'X-RapidAPI-Key' => $apiKey,
-                    'X-RapidAPI-Host' => 'jsearch.p.rapidapi.com'
-                ])->timeout(30)->get('https://jsearch.p.rapidapi.com/search', [
-                    'query' => 'jobs in new york',
-                    'page' => $page,
-                    'num_pages' => 1,
-                    'country' => 'us',
-                ]);
+                $response = Http::withoutVerifying()
+                    ->withHeaders([
+                        'X-RapidAPI-Key' => $apiKey,
+                        'X-RapidAPI-Host' => 'jsearch.p.rapidapi.com',
+                        'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                    ])
+                    ->withOptions([
+                        'curl' => [
+                            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4
+                        ]
+                    ])
+                    ->timeout(30)
+                    ->get('https://jsearch.p.rapidapi.com/search', [
+                        'query' => 'jobs in new york',
+                        'page' => $page,
+                        'num_pages' => 1,
+                        'country' => 'us',
+                    ]);
 
                 if (!$response->successful()) {
                     $this->error("  ❌ JSearch API returned status: {$response->status()} - " . $response->body());

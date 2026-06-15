@@ -59,6 +59,8 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
-        return view('dashboard', compact('stats', 'personalityScores', 'progress', 'topMatches', 'recentRecommendations', 'recentApplications'));
+        $activeSponsors = \App\Models\SponsorBanner::where('is_active', true)->orderBy('order', 'asc')->get();
+
+        return view('dashboard', compact('stats', 'personalityScores', 'progress', 'topMatches', 'recentRecommendations', 'recentApplications', 'activeSponsors'));
     }
 }

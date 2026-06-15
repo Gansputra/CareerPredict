@@ -18,6 +18,17 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <style>
+            /* Hide scrollbar for Chrome, Safari and Opera */
+            .no-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+            /* Hide scrollbar for IE, Edge and Firefox */
+            .no-scrollbar {
+                -ms-overflow-style: none;  /* IE and Edge */
+                scrollbar-width: none;  /* Firefox */
+            }
+        </style>
     </head>
     <body class="antialiased selection:bg-blue-500/30 transition-colors duration-300"
           x-data="{ sidebarOpen: false, theme: localStorage.getItem('theme') || 'dark' }" 
@@ -53,7 +64,7 @@
                     </button>
                 </div>
 
-                <nav class="px-4 space-y-2 pb-6 flex-1 overflow-y-auto">
+                <nav class="px-4 space-y-2 pb-6 flex-1 overflow-y-auto no-scrollbar">
                     @if(!Auth::user()->isAdmin())
                     <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-4">Menu Utama</p>
                     
@@ -124,6 +135,10 @@
                         <i class="fas fa-users-cog text-lg w-6"></i>
                         <span class="font-medium">Kelola User</span>
                     </a>
+                    <a href="{{ route('admin.sponsors.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all {{ request()->routeIs('admin.sponsors.*') ? 'bg-slate-700 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}">
+                        <i class="fas fa-ad text-lg w-6"></i>
+                        <span class="font-medium">Kelola Sponsor</span>
+                    </a>
                     @endif
 
                     <p class="px-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 mt-8 mb-4">Akun</p>
@@ -161,7 +176,7 @@
             <!-- Main Content -->
             <div class="lg:ml-72 transition-all duration-300">
                 <!-- Top Header -->
-                <header class="sticky top-0 z-30 bg-[#0f172a]/80 backdrop-blur-md border-b border-slate-800 px-4 sm:px-8 py-4">
+                <header class="fixed top-0 right-0 left-0 lg:left-72 z-30 bg-[#0f172a]/80 backdrop-blur-md border-b border-slate-800 px-4 sm:px-8 py-4">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <button @click="sidebarOpen = !sidebarOpen" class="p-2 rounded-lg hover:bg-slate-800 transition-colors lg:hidden">
@@ -191,7 +206,7 @@
                 </header>
 
                 <!-- Page Content -->
-                <main class="p-4 sm:p-6 lg:p-8">
+                <main class="p-4 sm:p-6 lg:p-8 pt-24 sm:pt-28 lg:pt-28">
                     @if(isset($header))
                         <div class="mb-8">
                             {{ $header }}

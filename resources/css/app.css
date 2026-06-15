@@ -776,6 +776,44 @@ html, body {
     max-width: 100vw;
 }
 
+/* ── Custom Scrollbar (Global) ───────────────────────────────────────── */
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, 0.35);
+    border-radius: 999px;
+    transition: background 0.2s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(99, 102, 241, 0.65);
+}
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(99, 102, 241, 0.35) transparent;
+}
+
+/* Light mode scrollbar */
+.light-mode ::-webkit-scrollbar-thumb {
+    background: rgba(99, 102, 241, 0.25);
+}
+.light-mode ::-webkit-scrollbar-thumb:hover {
+    background: rgba(99, 102, 241, 0.5);
+}
+.light-mode * {
+    scrollbar-color: rgba(99, 102, 241, 0.25) transparent;
+}
+
 /* Light mode overrides for modal content */
 .light-mode .modal-container h2 {
     color: #0f172a !important;
