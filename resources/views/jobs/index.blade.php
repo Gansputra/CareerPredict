@@ -14,6 +14,7 @@
         initialType: @json(request('type', '')),
         categoryLocationMap: @json($categoryLocationMap),
         allLocations: @json($allLocations),
+        categories: @json($categories->map(fn($c) => ['id' => (string)$c->id, 'name' => $c->name])->values()),
     };
     document.addEventListener('alpine:init', function () {
         Alpine.data('jobSearch', function () {
@@ -27,6 +28,7 @@
                 selectedType: cfg.initialType,
                 categoryLocationMap: cfg.categoryLocationMap,
                 allLocations: cfg.allLocations,
+                categoryOptions: cfg.categories,
                 showFilters: cfg.initialCategory !== '' || cfg.initialLocation !== '' || (cfg.initialSort !== 'date_desc' && cfg.initialSort !== ''),
 
                 jobs: [],
@@ -198,7 +200,7 @@
     {{-- ============================================================ --}}
     {{-- FILTER SECTION                                                --}}
     {{-- ============================================================ --}}
-    <div class="glass p-4 relative z-30">
+    <div class="glass p-4 relative z-40" style="overflow:visible;">
         <div class="space-y-4">
             {{-- Main Search Bar Row --}}
             <div class="flex flex-col sm:flex-row gap-3">
@@ -257,20 +259,17 @@
                  x-transition:leave-start="opacity-100 translate-y-0"
                  x-transition:leave-end="opacity-0 -translate-y-2"
                  class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3 border-t border-slate-800/60"
-                 style="display: none;">
+                 style="display: none; overflow: visible;">
 
                 {{-- Category Dropdown --}}
                 <div class="relative" x-data="{
                     open: false,
                     search: '',
-                    options: [
-                        { id: '', name: 'Semua Kategori' },
-                        @foreach($categories as $cat)
-                        { id: '{{ $cat->id }}', name: '{{ $cat->name }}' },
-                        @endforeach
-                    ],
+                    get options() {
+                        return [{ id: '', name: 'Semua Kategori' }].concat(categoryOptions);
+                    },
                     get selectedLabel() {
-                        let opt = this.options.find(o => o.id == $root.selectedCategory);
+                        let opt = this.options.find(o => o.id == selectedCategory);
                         return opt ? opt.name : 'Semua Kategori';
                     },
                     get filteredOptions() {
@@ -299,10 +298,10 @@
                         <div class="max-h-60 overflow-y-auto py-1">
                             <template x-for="opt in filteredOptions" :key="opt.id">
                                 <button type="button"
-                                        @click="$root.selectedCategory = opt.id; $root.selectedLocation = ''; $root.fetchJobs(); open = false; search = ''"
+                                        @click="selectedCategory = opt.id; selectedLocation = ''; fetchJobs(); open = false; search = ''"
                                         class="w-full px-4 py-2 text-left text-sm text-slate-300 hover:bg-blue-600 hover:text-white flex items-center justify-between transition-colors custom-dropdown-option">
                                     <span class="truncate" x-text="opt.name"></span>
-                                    <i class="fas fa-check text-xs text-blue-400 custom-dropdown-option-selected" x-show="$root.selectedCategory == opt.id"></i>
+                                    <i class="fas fa-check text-xs text-blue-400 custom-dropdown-option-selected" x-show="selectedCategory == opt.id"></i>
                                 </button>
                             </template>
                             <div x-show="filteredOptions.length === 0" class="px-4 py-3 text-xs text-slate-500 text-center">Tidak ada hasil</div>
@@ -315,14 +314,14 @@
                     open: false,
                     search: '',
                     get locationOptions() {
-                        let map = $root.categoryLocationMap;
-                        let all = $root.allLocations;
-                        let cat = $root.selectedCategory;
+                        let map = categoryLocationMap;
+                        let all = allLocations;
+                        let cat = selectedCategory;
                         let list = cat && map[cat] ? map[cat] : all;
                         return [{ val: '', name: 'Semua Lokasi' }].concat(list.map(l => ({ val: l, name: l })));
                     },
                     get selectedLabel() {
-                        let opt = this.locationOptions.find(o => o.val == $root.selectedLocation);
+                        let opt = this.locationOptions.find(o => o.val == selectedLocation);
                         return opt ? opt.name : 'Semua Lokasi';
                     },
                     get filteredOptions() {
@@ -351,10 +350,10 @@
                         <div class="max-h-60 overflow-y-auto py-1">
                             <template x-for="opt in filteredOptions" :key="opt.val">
                                 <button type="button"
-                                        @click="$root.selectedLocation = opt.val; $root.fetchJobs(); open = false; search = ''"
+                                        @click="selectedLocation = opt.val; fetchJobs(); open = false; search = ''"
                                         class="w-full px-4 py-2 text-left text-sm text-slate-300 hover:bg-blue-600 hover:text-white flex items-center justify-between transition-colors custom-dropdown-option">
                                     <span class="truncate" x-text="opt.name"></span>
-                                    <i class="fas fa-check text-xs text-blue-400 custom-dropdown-option-selected" x-show="$root.selectedLocation == opt.val"></i>
+                                    <i class="fas fa-check text-xs text-blue-400 custom-dropdown-option-selected" x-show="selectedLocation == opt.val"></i>
                                 </button>
                             </template>
                             <div x-show="filteredOptions.length === 0" class="px-4 py-3 text-xs text-slate-500 text-center">Tidak ada hasil</div>
@@ -374,10 +373,10 @@
                         { val: 'company_desc', name: 'Perusahaan (Z-A)', icon: 'fa-sort-alpha-down-alt text-sky-400' },
                     ],
                     get selectedLabel() {
-                        return (this.options.find(o => o.val == $root.selectedSort) ?? this.options[0]).name;
+                        return (this.options.find(o => o.val == selectedSort) ?? this.options[0]).name;
                     },
                     get selectedIcon() {
-                        return (this.options.find(o => o.val == $root.selectedSort) ?? this.options[0]).icon;
+                        return (this.options.find(o => o.val == selectedSort) ?? this.options[0]).icon;
                     }
                 }">
                     <button type="button" @click="open = !open" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white text-sm flex items-center justify-between text-left focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all select-none">
@@ -398,13 +397,13 @@
                         <div class="py-1">
                             <template x-for="opt in options" :key="opt.val">
                                 <button type="button"
-                                        @click="$root.selectedSort = opt.val; $root.fetchJobs(); open = false"
+                                        @click="selectedSort = opt.val; fetchJobs(); open = false"
                                         class="w-full px-4 py-2 text-left text-sm text-slate-300 hover:bg-blue-600 hover:text-white flex items-center justify-between transition-colors custom-dropdown-option">
                                     <span class="flex items-center gap-2">
                                         <i :class="'fas w-4 text-center ' + opt.icon"></i>
                                         <span x-text="opt.name"></span>
                                     </span>
-                                    <i class="fas fa-check text-xs text-blue-400 custom-dropdown-option-selected" x-show="$root.selectedSort == opt.val"></i>
+                                    <i class="fas fa-check text-xs text-blue-400 custom-dropdown-option-selected" x-show="selectedSort == opt.val"></i>
                                 </button>
                             </template>
                         </div>
