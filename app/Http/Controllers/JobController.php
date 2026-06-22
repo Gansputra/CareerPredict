@@ -8,8 +8,23 @@ use App\Models\JobListing;
 use App\Models\JobCategory;
 use Illuminate\Support\Facades\Auth;
 
+// Canonical job-type aliases: each key maps to ALL equivalent raw values in the DB.
+// When the user picks a type, the filter uses whereIn() against all aliases.
+
 class JobController extends Controller
 {
+    /**
+     * All known synonyms / raw DB values grouped under a canonical display label.
+     * Key   = value sent by the frontend (matches $workTypes['val'] in the Blade view).
+     * Value = array of raw strings that may appear in job_listings.type.
+     */
+    private array $typeAliases = [
+        'Penuh Waktu'         => ['Penuh Waktu', 'Full-time', 'full_time'],
+        'Paruh Waktu'         => ['Paruh Waktu', 'Part-time', 'part_time'],
+        'Kontrak'             => ['Kontrak', 'Contract', 'contract'],
+        'Jarak Jauh (Remote)' => ['Jarak Jauh (Remote)', 'Remote', 'remote', 'freelance'],
+    ];
+
     public function index(Request $request)
     {
         $query = JobListing::with('category')->active();
@@ -28,7 +43,8 @@ class JobController extends Controller
         }
 
         if ($request->filled('type')) {
-            $query->where('type', $request->type);
+            $aliases = $this->typeAliases[$request->type] ?? [$request->type];
+            $query->whereIn('type', $aliases);
         }
 
         if ($request->filled('location')) {
@@ -133,7 +149,8 @@ class JobController extends Controller
         }
 
         if ($request->filled('type')) {
-            $query->where('type', $request->type);
+            $aliases = $this->typeAliases[$request->type] ?? [$request->type];
+            $query->whereIn('type', $aliases);
         }
 
         if ($request->filled('location')) {
